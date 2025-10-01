@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencari Anime - WhatAnime Scraper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 Pencari Anime</h1>
+            <p class="subtitle">Temukan judul anime dari gambar atau screenshot</p>
+        </header>
+
+        <div class="upload-section">
+            <div class="upload-box" id="uploadBox">
+                <div class="upload-content">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p class="upload-text">Klik untuk upload gambar atau seret ke sini</p>
+                    <p class="upload-hint">Atau masukkan URL gambar di bawah</p>
+                </div>
+                <input type="file" id="fileInput" accept="image/*" hidden>
+            </div>
+
+            <div class="url-input-section">
+                <input type="text" id="urlInput" placeholder="Atau masukkan URL gambar di sini..." class="url-input">
+                <button id="searchByUrl" class="btn-search">Cari Anime</button>
+            </div>
+        </div>
+
+        <div id="preview" class="preview-section" style="display: none;">
+            <h3>Preview Gambar:</h3>
+            <img id="previewImage" src="" alt="Preview">
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Mencari anime...</p>
+        </div>
+
+        <div id="results" class="results-section"></div>
+    </div>
+
+    <footer>
+        <p id="currentDateTime"></p>
+        <p>Dibuat dengan ❤️ menggunakan trace.moe API</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
