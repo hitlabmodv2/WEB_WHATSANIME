@@ -1,5 +1,4 @@
 let selectedFile = null;
-let selectedImageUrl = null;
 
 const uploadBox = document.getElementById('uploadBox');
 const fileInput = document.getElementById('fileInput');
@@ -11,12 +10,7 @@ const searchText = document.getElementById('searchText');
 const loadingText = document.getElementById('loadingText');
 const resultsSection = document.getElementById('resultsSection');
 const resultsContainer = document.getElementById('resultsContainer');
-const tabUpload = document.getElementById('tabUpload');
-const tabUrl = document.getElementById('tabUrl');
 const uploadContent = document.getElementById('uploadContent');
-const urlContent = document.getElementById('urlContent');
-const urlInput = document.getElementById('urlInput');
-const btnLoadUrl = document.getElementById('btnLoadUrl');
 const scraperSelect = document.getElementById('scraperSelect');
 const loadingContainer = document.getElementById('loadingContainer');
 const loadingBar = document.getElementById('loadingBar');
@@ -55,36 +49,16 @@ function animateProgressBar() {
 
 function handleFile(file) {
     selectedFile = file;
-    selectedImageUrl = null;
     const reader = new FileReader();
     
     reader.onload = (e) => {
         previewImage.src = e.target.result;
         uploadContent.style.display = 'none';
-        urlContent.style.display = 'none';
         previewBox.style.display = 'block';
         btnSearch.disabled = false;
     };
     
     reader.readAsDataURL(file);
-}
-
-function handleImageUrl(url) {
-    selectedImageUrl = url;
-    selectedFile = null;
-    
-    previewImage.src = url;
-    previewImage.onerror = () => {
-        alert('Gagal memuat gambar. Periksa URL dan coba lagi.');
-        selectedImageUrl = null;
-        btnSearch.disabled = true;
-    };
-    previewImage.onload = () => {
-        uploadContent.style.display = 'none';
-        urlContent.style.display = 'none';
-        previewBox.style.display = 'block';
-        btnSearch.disabled = false;
-    };
 }
 
 function resetToUploadTab() {
@@ -96,15 +70,10 @@ function resetToUploadTab() {
     });
     
     selectedFile = null;
-    selectedImageUrl = null;
     previewBox.style.display = 'none';
     uploadContent.style.display = 'block';
-    urlContent.style.display = 'none';
-    tabUpload.classList.add('active');
-    tabUrl.classList.remove('active');
     btnSearch.disabled = true;
     fileInput.value = '';
-    urlInput.value = '';
     resultsSection.style.display = 'none';
     resultsContainer.innerHTML = '';
 }
@@ -193,35 +162,48 @@ async function displayTraceMoeResults(results) {
                 `${getSeasonIndonesian(animeData.season)} ${animeData.seasonYear}` : '';
             const source = getSourceIndonesian(animeData.source);
             const rating = animeData.averageScore ? `${animeData.averageScore}/100` : 'N/A';
+            const coverImage = animeData.coverImage?.extraLarge || animeData.coverImage?.large || '';
             
             cardHTML += `
                 <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
                     <span class="spoiler-icon">▼</span> Sembunyikan Informasi Anime
                 </button>
                 <div class="anime-info spoiler-content" id="${cardId}" style="display: none;">
-                    <h3 style="margin-top: 0; margin-bottom: 15px; color: var(--primary-color);">Informasi Anime</h3>
+                    <h3 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 1.1em;">Informasi Anime</h3>
                     
-                    <div class="info-line"><strong>Tipe:</strong> ${animeData.format || 'Unknown'}</div>
-                    ${animeData.episodes ? `<div class="info-line"><strong>Episodes:</strong> ${animeData.episodes}</div>` : ''}
-                    <div class="info-line"><strong>Status:</strong> ${status}</div>
-                    ${startDateFormatted || endDateFormatted ? `<div class="info-line"><strong>Ditayangkan:</strong> ${startDateFormatted}${endDateFormatted ? ' - ' + endDateFormatted : ''}</div>` : ''}
-                    ${season ? `<div class="info-line"><strong>Musim Tayang:</strong> ${season}</div>` : ''}
-                    <div class="info-line"><strong>Studio:</strong> ${studios}</div>
-                    <div class="info-line"><strong>Sumber:</strong> ${source}</div>
-                    <div class="info-line"><strong>Genre:</strong> ${genres}</div>
-                    ${animeData.duration ? `<div class="info-line"><strong>Durasi:</strong> ${animeData.duration} menit per episode</div>` : ''}
-                    <div class="info-line"><strong>Rating:</strong> ${rating}</div>
+                    <div class="anime-info-container">
+                        ${coverImage ? `
+                            <div class="anime-cover">
+                                <img src="${coverImage}" alt="Cover Anime" class="cover-image">
+                            </div>
+                        ` : ''}
+                        
+                        <div class="anime-details">
+                            <div class="info-line"><strong>Tipe:</strong> ${animeData.format || 'Unknown'}</div>
+                            ${animeData.episodes ? `<div class="info-line"><strong>Episodes:</strong> ${animeData.episodes}</div>` : ''}
+                            <div class="info-line"><strong>Status:</strong> ${status}</div>
+                            ${startDateFormatted || endDateFormatted ? `<div class="info-line"><strong>Ditayangkan:</strong> ${startDateFormatted}${endDateFormatted ? ' - ' + endDateFormatted : ''}</div>` : ''}
+                            ${season ? `<div class="info-line"><strong>Musim Tayang:</strong> ${season}</div>` : ''}
+                            <div class="info-line"><strong>Studio:</strong> ${studios}</div>
+                            <div class="info-line"><strong>Sumber:</strong> ${source}</div>
+                            <div class="info-line"><strong>Genre:</strong> ${genres}</div>
+                            ${animeData.duration ? `<div class="info-line"><strong>Durasi:</strong> ${animeData.duration} menit per episode</div>` : ''}
+                            <div class="info-line"><strong>Rating:</strong> ${rating}</div>
+                        </div>
+                    </div>
                     
                     ${allTitles.length > 0 ? `
-                        <div class="alias-section" style="margin-top: 15px;">
-                            <strong>📋 Judul Alternatif:</strong>
-                            ${allTitles.map(alias => `<div class="alias">${alias}</div>`).join('')}
+                        <div class="alias-section">
+                            <strong style="color: var(--primary-color);">📋 Judul Alternatif:</strong>
+                            <div class="alias-list">
+                                ${allTitles.map(alias => `<div class="alias">${alias}</div>`).join('')}
+                            </div>
                         </div>
                     ` : ''}
                     
                     ${animeData.externalLinks?.length ? `
-                        <div class="external-links" style="margin-top: 15px;">
-                            <strong>🔗 Link Eksternal:</strong>
+                        <div class="external-links">
+                            <strong style="color: var(--primary-color);">🔗 Link Eksternal:</strong>
                             <div class="links-container">
                                 ${animeData.externalLinks.slice(0, 5).map(link => 
                                     `<a href="${link.url}" target="_blank" class="ext-link">${link.site}</a>`
@@ -344,6 +326,10 @@ async function fetchAnilistData(anilistId) {
                 seasonYear
                 source
                 averageScore
+                coverImage {
+                    extraLarge
+                    large
+                }
                 startDate {
                     year
                     month
@@ -500,47 +486,12 @@ fileInput.addEventListener('change', (e) => {
     }
 });
 
-tabUpload.addEventListener('click', () => {
-    if (previewBox.style.display === 'block') {
-        return;
-    }
-    tabUpload.classList.add('active');
-    tabUrl.classList.remove('active');
-    uploadContent.style.display = 'block';
-    urlContent.style.display = 'none';
-});
-
-tabUrl.addEventListener('click', () => {
-    if (previewBox.style.display === 'block') {
-        return;
-    }
-    tabUrl.classList.add('active');
-    tabUpload.classList.remove('active');
-    urlContent.style.display = 'block';
-    uploadContent.style.display = 'none';
-});
-
-btnLoadUrl.addEventListener('click', () => {
-    const url = urlInput.value.trim();
-    if (!url) {
-        alert('Masukkan URL gambar terlebih dahulu');
-        return;
-    }
-    handleImageUrl(url);
-});
-
-urlInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        btnLoadUrl.click();
-    }
-});
-
 btnRemove.addEventListener('click', () => {
     resetToUploadTab();
 });
 
 btnSearch.addEventListener('click', async () => {
-    if (!selectedFile && !selectedImageUrl) return;
+    if (!selectedFile) return;
 
     btnSearch.disabled = true;
     searchText.style.display = 'none';
@@ -571,26 +522,19 @@ btnSearch.addEventListener('click', async () => {
 });
 
 async function searchTraceMoe() {
-    let response;
-    
-    if (selectedImageUrl) {
-        console.log('Searching with URL:', selectedImageUrl);
-        response = await fetch(`https://api.trace.moe/search?url=${encodeURIComponent(selectedImageUrl)}`);
-    } else {
-        console.log('Searching with uploaded file');
-        const formData = new FormData();
-        formData.append('image', selectedFile);
-        response = await fetch('https://api.trace.moe/search', {
-            method: 'POST',
-            body: formData
-        });
-    }
+    console.log('Searching with uploaded file');
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+    const response = await fetch('https://api.trace.moe/search', {
+        method: 'POST',
+        body: formData
+    });
 
     const data = await response.json();
     console.log('Trace.moe API response:', data);
     
     if (data.error) {
-        alert(`Error dari Trace.moe: ${data.error}\n\nKemungkinan URL gambar tidak dapat diakses oleh API. Coba upload gambar langsung atau gunakan URL gambar yang publik.`);
+        alert(`Error dari Trace.moe: ${data.error}`);
         resultsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Tidak ada hasil ditemukan.</p>';
         resultsSection.style.display = 'block';
         return;
@@ -606,24 +550,16 @@ async function searchTraceMoe() {
 }
 
 async function searchSauceNAO() {
-    let imageUrl = selectedImageUrl;
+    const formData = new FormData();
+    formData.append('file', selectedFile);
     
-    if (selectedFile) {
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        
-        const response = await fetch('https://saucenao.com/search.php?output_type=2&numres=5', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        displaySauceNAOResults(data.results);
-    } else if (imageUrl) {
-        const response = await fetch(`https://saucenao.com/search.php?output_type=2&numres=5&url=${encodeURIComponent(imageUrl)}`);
-        const data = await response.json();
-        displaySauceNAOResults(data.results);
-    }
+    const response = await fetch('https://saucenao.com/search.php?output_type=2&numres=5', {
+        method: 'POST',
+        body: formData
+    });
+    
+    const data = await response.json();
+    displaySauceNAOResults(data.results);
 }
 
 function toggleSpoiler(id) {
