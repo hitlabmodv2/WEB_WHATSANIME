@@ -118,7 +118,19 @@ async function displayTraceMoeResults(results) {
         return;
     }
 
-    const topResults = results.slice(0, 5);
+    const uniqueResults = [];
+    const seen = new Set();
+    
+    for (const result of results) {
+        const key = `${result.anilist || result.filename}-${result.episode}-${Math.floor(result.from)}`;
+        if (!seen.has(key)) {
+            seen.add(key);
+            uniqueResults.push(result);
+        }
+        if (uniqueResults.length >= 5) break;
+    }
+    
+    const topResults = uniqueResults;
     
     for (const result of topResults) {
         const similarity = (result.similarity * 100).toFixed(2);
@@ -231,7 +243,20 @@ async function displaySauceNAOResults(results) {
         return;
     }
 
-    const topResults = results.slice(0, 5);
+    const uniqueResults = [];
+    const seen = new Set();
+    
+    for (const result of results) {
+        const data = result.data || {};
+        const key = `${data.title || data.source}-${data.author || data.member_name}`;
+        if (!seen.has(key)) {
+            seen.add(key);
+            uniqueResults.push(result);
+        }
+        if (uniqueResults.length >= 5) break;
+    }
+    
+    const topResults = uniqueResults;
     
     for (const result of topResults) {
         const similarity = result.header?.similarity || 0;
@@ -539,3 +564,20 @@ window.toggleSpoiler = toggleSpoiler;
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
+
+const scrollToTopBtn = document.getElementById('scrollToTop');
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        scrollToTopBtn.classList.add('show');
+    } else {
+        scrollToTopBtn.classList.remove('show');
+    }
+});
+
+scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
