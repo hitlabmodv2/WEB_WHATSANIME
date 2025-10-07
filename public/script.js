@@ -92,10 +92,12 @@ async function displayResults(results) {
         const card = document.createElement('div');
         card.className = 'result-card';
         
+        const cardId = `card-${Math.random().toString(36).substr(2, 9)}`;
+        
         let cardHTML = `
             <div class="result-media">
                 ${result.video ? `
-                    <video class="result-video" controls autoplay muted loop>
+                    <video class="result-video" controls muted loop playsinline>
                         <source src="${result.video}" type="video/mp4">
                     </video>
                 ` : result.image ? `
@@ -103,11 +105,11 @@ async function displayResults(results) {
                 ` : ''}
             </div>
             <div class="result-content">
-                <div class="result-header">
-                    <div class="file-info">
-                        <div class="filename">${result.filename}</div>
-                        <div class="timestamp">${timestampFrom}/${duration}</div>
-                        <div class="similarity-badge">${similarity}%</div>
+                <div class="result-summary">
+                    <div class="filename">${result.filename}</div>
+                    <div class="timestamp-row">
+                        <span class="timestamp">⏱️ ${timestampFrom}/${duration}</span>
+                        <span class="similarity-badge">✓ ${similarity}%</span>
                     </div>
                 </div>
         `;
@@ -130,26 +132,29 @@ async function displayResults(results) {
                 `${animeData.endDate.year}-${String(animeData.endDate.month).padStart(2, '0')}-${String(animeData.endDate.day).padStart(2, '0')}` : '';
             
             cardHTML += `
-                <div class="anime-info">
+                <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
+                    <span class="spoiler-icon">▼</span> Detail Anime
+                </button>
+                <div class="anime-info spoiler-content" id="${cardId}" style="display: none;">
                     <div class="anime-titles">
                         ${titles.map(t => `<div class="anime-title">${t}</div>`).join('')}
                     </div>
-                    ${animeData.episodes ? `<div class="info-line">${animeData.episodes} episode ${animeData.duration}-minute ${animeData.format || 'TV'} anime.</div>` : ''}
-                    ${startDate ? `<div class="info-line">Airing from ${startDate}${endDate ? ' to ' + endDate : ''}.</div>` : ''}
+                    ${animeData.episodes ? `<div class="info-line">📺 ${animeData.episodes} episode ${animeData.duration}-minute ${animeData.format || 'TV'} anime.</div>` : ''}
+                    ${startDate ? `<div class="info-line">📅 Airing from ${startDate}${endDate ? ' to ' + endDate : ''}.</div>` : ''}
                     
                     ${allTitles.length > titles.length ? `
                         <div class="alias-section">
-                            <strong>Alias</strong>
+                            <strong>🏷️ Alias</strong>
                             ${allTitles.slice(titles.length).map(alias => `<div class="alias">${alias}</div>`).join('')}
                         </div>
                     ` : ''}
                     
-                    ${genres ? `<div class="info-line"><strong>Genre:</strong> ${genres}</div>` : ''}
-                    ${studios ? `<div class="info-line"><strong>Studio:</strong> ${studios}</div>` : ''}
+                    ${genres ? `<div class="info-line"><strong>🎭 Genre:</strong> ${genres}</div>` : ''}
+                    ${studios ? `<div class="info-line"><strong>🎬 Studio:</strong> ${studios}</div>` : ''}
                     
                     ${animeData.externalLinks?.length ? `
                         <div class="external-links">
-                            <strong>External Links:</strong>
+                            <strong>🔗 External Links:</strong>
                             <div class="links-container">
                                 ${animeData.externalLinks.slice(0, 5).map(link => 
                                     `<a href="${link.url}" target="_blank" class="ext-link">${link.site}</a>`
@@ -350,6 +355,22 @@ btnSearch.addEventListener('click', async () => {
         loadingText.style.display = 'none';
     }
 });
+
+function toggleSpoiler(id) {
+    const content = document.getElementById(id);
+    const btn = content.previousElementSibling;
+    const icon = btn.querySelector('.spoiler-icon');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.textContent = '▲';
+    } else {
+        content.style.display = 'none';
+        icon.textContent = '▼';
+    }
+}
+
+window.toggleSpoiler = toggleSpoiler;
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
