@@ -82,45 +82,95 @@ async function displayResults(results) {
         const episode = result.episode || '?';
         const timestampFrom = formatTime(result.from);
         const timestampTo = formatTime(result.to);
+        const duration = formatTime(result.duration || 0);
         
-        let animeTitle = result.filename || 'Unknown';
-        
+        let animeData = null;
         if (result.anilist) {
-            try {
-                const anilistData = await fetchAnilistTitle(result.anilist);
-                if (anilistData) {
-                    animeTitle = anilistData;
-                }
-            } catch (e) {
-                animeTitle = result.filename.split('/').pop().split('[')[0].trim() || result.filename;
-            }
+            animeData = await fetchAnilistData(result.anilist);
         }
         
         const card = document.createElement('div');
         card.className = 'result-card';
-        card.innerHTML = `
-            <div class="result-header">
-                <div>
-                    <div class="anime-title">${animeTitle}</div>
+        
+        let cardHTML = `
+            <div class="result-media">
+                ${result.video ? `
+                    <video class="result-video" controls autoplay muted loop>
+                        <source src="${result.video}" type="video/mp4">
+                    </video>
+                ` : result.image ? `
+                    <img src="${result.image}" alt="Scene" class="result-thumbnail">
+                ` : ''}
+            </div>
+            <div class="result-content">
+                <div class="result-header">
+                    <div class="file-info">
+                        <div class="filename">${result.filename}</div>
+                        <div class="timestamp">${timestampFrom}/${duration}</div>
+                        <div class="similarity-badge">${similarity}%</div>
+                    </div>
                 </div>
-                <span class="similarity-badge">${similarity}%</span>
-            </div>
-            <div class="result-info">
-                <strong>Episode:</strong> ${episode}
-            </div>
-            <div class="result-info">
-                <strong>Waktu:</strong> ${timestampFrom} - ${timestampTo}
-            </div>
-            ${result.image ? `<img src="${result.image}" alt="Scene" class="result-thumbnail">` : ''}
         `;
         
+        if (animeData) {
+            const titles = [
+                animeData.title?.native,
+                animeData.title?.romaji,
+                animeData.title?.english
+            ].filter(Boolean);
+            
+            const allTitles = [...new Set([...titles, ...(animeData.synonyms || [])])];
+            
+            const studios = animeData.studios?.nodes?.map(s => s.name).join(', ') || '';
+            const genres = animeData.genres?.join(', ') || '';
+            
+            const startDate = animeData.startDate ? 
+                `${animeData.startDate.year}-${String(animeData.startDate.month).padStart(2, '0')}-${String(animeData.startDate.day).padStart(2, '0')}` : '';
+            const endDate = animeData.endDate ? 
+                `${animeData.endDate.year}-${String(animeData.endDate.month).padStart(2, '0')}-${String(animeData.endDate.day).padStart(2, '0')}` : '';
+            
+            cardHTML += `
+                <div class="anime-info">
+                    <div class="anime-titles">
+                        ${titles.map(t => `<div class="anime-title">${t}</div>`).join('')}
+                    </div>
+                    ${animeData.episodes ? `<div class="info-line">${animeData.episodes} episode ${animeData.duration}-minute ${animeData.format || 'TV'} anime.</div>` : ''}
+                    ${startDate ? `<div class="info-line">Airing from ${startDate}${endDate ? ' to ' + endDate : ''}.</div>` : ''}
+                    
+                    ${allTitles.length > titles.length ? `
+                        <div class="alias-section">
+                            <strong>Alias</strong>
+                            ${allTitles.slice(titles.length).map(alias => `<div class="alias">${alias}</div>`).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    ${genres ? `<div class="info-line"><strong>Genre:</strong> ${genres}</div>` : ''}
+                    ${studios ? `<div class="info-line"><strong>Studio:</strong> ${studios}</div>` : ''}
+                    
+                    ${animeData.externalLinks?.length ? `
+                        <div class="external-links">
+                            <strong>External Links:</strong>
+                            <div class="links-container">
+                                ${animeData.externalLinks.slice(0, 5).map(link => 
+                                    `<a href="${link.url}" target="_blank" class="ext-link">${link.site}</a>`
+                                ).join('')}
+                                ${animeData.siteUrl ? `<a href="${animeData.siteUrl}" target="_blank" class="ext-link">AniList</a>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+        
+        cardHTML += `</div>`;
+        card.innerHTML = cardHTML;
         resultsContainer.appendChild(card);
     }
 
     resultsSection.style.display = 'block';
 }
 
-async function fetchAnilistTitle(anilistId) {
+async function fetchAnilistData(anilistId) {
     try {
         const query = `
         query ($id: Int) {
@@ -130,6 +180,31 @@ async function fetchAnilistTitle(anilistId) {
                     english
                     native
                 }
+                synonyms
+                format
+                episodes
+                duration
+                startDate {
+                    year
+                    month
+                    day
+                }
+                endDate {
+                    year
+                    month
+                    day
+                }
+                genres
+                studios {
+                    nodes {
+                        name
+                    }
+                }
+                externalLinks {
+                    site
+                    url
+                }
+                siteUrl
             }
         }`;
         
@@ -146,9 +221,7 @@ async function fetchAnilistTitle(anilistId) {
         });
         
         const data = await response.json();
-        const title = data.data?.Media?.title;
-        
-        return title?.english || title?.romaji || title?.native || null;
+        return data.data?.Media || null;
     } catch (error) {
         return null;
     }
