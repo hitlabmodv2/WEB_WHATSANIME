@@ -66,7 +66,7 @@ function resetToUploadTab() {
     resultsSection.style.display = 'none';
 }
 
-function displayResults(results) {
+async function displayResults(results) {
     resultsContainer.innerHTML = '';
     
     if (!results || results.length === 0) {
@@ -77,17 +77,31 @@ function displayResults(results) {
 
     const topResults = results.slice(0, 5);
     
-    topResults.forEach((result) => {
+    for (const result of topResults) {
         const similarity = (result.similarity * 100).toFixed(2);
-        const episode = result.episode || 'Unknown';
-        const timestamp = formatTime(result.from);
+        const episode = result.episode || '?';
+        const timestampFrom = formatTime(result.from);
+        const timestampTo = formatTime(result.to);
+        
+        let animeTitle = result.filename || 'Unknown';
+        
+        if (result.anilist) {
+            try {
+                const anilistData = await fetchAnilistTitle(result.anilist);
+                if (anilistData) {
+                    animeTitle = anilistData;
+                }
+            } catch (e) {
+                animeTitle = result.filename.split('/').pop().split('[')[0].trim() || result.filename;
+            }
+        }
         
         const card = document.createElement('div');
         card.className = 'result-card';
         card.innerHTML = `
             <div class="result-header">
                 <div>
-                    <div class="anime-title">${result.filename || 'Unknown'}</div>
+                    <div class="anime-title">${animeTitle}</div>
                 </div>
                 <span class="similarity-badge">${similarity}%</span>
             </div>
@@ -95,15 +109,49 @@ function displayResults(results) {
                 <strong>Episode:</strong> ${episode}
             </div>
             <div class="result-info">
-                <strong>Waktu:</strong> ${timestamp}
+                <strong>Waktu:</strong> ${timestampFrom} - ${timestampTo}
             </div>
             ${result.image ? `<img src="${result.image}" alt="Scene" class="result-thumbnail">` : ''}
         `;
         
         resultsContainer.appendChild(card);
-    });
+    }
 
     resultsSection.style.display = 'block';
+}
+
+async function fetchAnilistTitle(anilistId) {
+    try {
+        const query = `
+        query ($id: Int) {
+            Media (id: $id, type: ANIME) {
+                title {
+                    romaji
+                    english
+                    native
+                }
+            }
+        }`;
+        
+        const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: { id: anilistId }
+            })
+        });
+        
+        const data = await response.json();
+        const title = data.data?.Media?.title;
+        
+        return title?.english || title?.romaji || title?.native || null;
+    } catch (error) {
+        return null;
+    }
 }
 
 function formatTime(seconds) {
