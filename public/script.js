@@ -17,6 +17,7 @@ const uploadContent = document.getElementById('uploadContent');
 const urlContent = document.getElementById('urlContent');
 const urlInput = document.getElementById('urlInput');
 const btnLoadUrl = document.getElementById('btnLoadUrl');
+const scraperSelect = document.getElementById('scraperSelect');
 
 function handleFile(file) {
     selectedFile = file;
@@ -74,7 +75,7 @@ function resetToUploadTab() {
     resultsContainer.innerHTML = '';
 }
 
-async function displayResults(results) {
+async function displayTraceMoeResults(results) {
     resultsContainer.innerHTML = '';
     
     if (!results || results.length === 0) {
@@ -176,6 +177,72 @@ async function displayResults(results) {
         }
         
         cardHTML += `</div>`;
+        card.innerHTML = cardHTML;
+        resultsContainer.appendChild(card);
+    }
+
+    resultsSection.style.display = 'block';
+}
+
+async function displaySauceNAOResults(results) {
+    resultsContainer.innerHTML = '';
+    
+    if (!results || results.length === 0) {
+        resultsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Tidak ada hasil ditemukan.</p>';
+        resultsSection.style.display = 'block';
+        return;
+    }
+
+    const topResults = results.slice(0, 5);
+    
+    for (const result of topResults) {
+        const similarity = result.header?.similarity || 0;
+        const data = result.data || {};
+        
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        const cardId = `card-${Math.random().toString(36).substr(2, 9)}`;
+        
+        let cardHTML = `
+            <div class="result-media">
+                ${result.header?.thumbnail ? `
+                    <img src="${result.header.thumbnail}" alt="Result" class="result-thumbnail">
+                ` : ''}
+            </div>
+            <div class="result-content">
+                <div class="result-summary">
+                    <div class="filename">${data.title || data.source || 'Unknown'}</div>
+                    <div class="timestamp-row">
+                        <span class="timestamp">🎨 ${data.author || data.member_name || 'Unknown Artist'}</span>
+                        <span class="similarity-badge">✓ ${similarity}%</span>
+                    </div>
+                </div>
+                <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
+                    <span class="spoiler-icon">▼</span> Detail
+                </button>
+                <div class="anime-info spoiler-content" id="${cardId}" style="display: none;">
+                    ${data.title ? `<div class="anime-title">${data.title}</div>` : ''}
+                    ${data.part ? `<div class="info-line">📖 ${data.part}</div>` : ''}
+                    ${data.year ? `<div class="info-line">📅 ${data.year}</div>` : ''}
+                    ${data.est_time ? `<div class="info-line">⏱️ ${data.est_time}</div>` : ''}
+                    ${data.author || data.member_name ? `<div class="info-line"><strong>👤 Artist:</strong> ${data.author || data.member_name}</div>` : ''}
+                    ${data.material || data.source ? `<div class="info-line"><strong>📚 Source:</strong> ${data.material || data.source}</div>` : ''}
+                    ${data.characters ? `<div class="info-line"><strong>👥 Characters:</strong> ${data.characters}</div>` : ''}
+                    ${result.header?.index_name ? `<div class="info-line"><strong>🗂️ Database:</strong> ${result.header.index_name}</div>` : ''}
+                    ${data.ext_urls?.length ? `
+                        <div class="external-links">
+                            <strong>🔗 External Links:</strong>
+                            <div class="links-container">
+                                ${data.ext_urls.slice(0, 5).map(url => 
+                                    `<a href="${url}" target="_blank" class="ext-link">${new URL(url).hostname}</a>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+        
         card.innerHTML = cardHTML;
         resultsContainer.appendChild(card);
     }
@@ -339,21 +406,13 @@ btnSearch.addEventListener('click', async () => {
     resultsSection.style.display = 'none';
 
     try {
-        let response;
+        const scraper = scraperSelect.value;
         
-        if (selectedImageUrl) {
-            response = await fetch(`https://api.trace.moe/search?url=${encodeURIComponent(selectedImageUrl)}`);
-        } else {
-            const formData = new FormData();
-            formData.append('image', selectedFile);
-            response = await fetch('https://api.trace.moe/search', {
-                method: 'POST',
-                body: formData
-            });
+        if (scraper === 'tracemoe') {
+            await searchTraceMoe();
+        } else if (scraper === 'saucenao') {
+            await searchSauceNAO();
         }
-
-        const data = await response.json();
-        displayResults(data.result);
     } catch (error) {
         console.error('Error:', error);
         alert('Terjadi kesalahan saat mencari anime. Silakan coba lagi.');
@@ -363,6 +422,40 @@ btnSearch.addEventListener('click', async () => {
         loadingText.style.display = 'none';
     }
 });
+
+async function searchTraceMoe() {
+    let response;
+    
+    if (selectedImageUrl) {
+        response = await fetch(`https://api.trace.moe/search?url=${encodeURIComponent(selectedImageUrl)}`);
+    } else {
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+        response = await fetch('https://api.trace.moe/search', {
+            method: 'POST',
+            body: formData
+        });
+    }
+
+    const data = await response.json();
+    displayTraceMoeResults(data.result);
+}
+
+async function searchSauceNAO() {
+    let imageUrl = selectedImageUrl;
+    
+    if (selectedFile) {
+        const reader = new FileReader();
+        imageUrl = await new Promise((resolve) => {
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(selectedFile);
+        });
+    }
+
+    const response = await fetch(`https://saucenao.com/search.php?output_type=2&url=${encodeURIComponent(imageUrl)}`);
+    const data = await response.json();
+    displaySauceNAOResults(data.results);
+}
 
 function toggleSpoiler(id) {
     const content = document.getElementById(id);
