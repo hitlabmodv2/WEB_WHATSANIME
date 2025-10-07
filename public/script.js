@@ -18,6 +18,40 @@ const urlContent = document.getElementById('urlContent');
 const urlInput = document.getElementById('urlInput');
 const btnLoadUrl = document.getElementById('btnLoadUrl');
 const scraperSelect = document.getElementById('scraperSelect');
+const loadingContainer = document.getElementById('loadingContainer');
+const loadingBar = document.getElementById('loadingBar');
+const loadingPercentage = document.getElementById('loadingPercentage');
+
+function animateProgressBar() {
+    let progress = 0;
+    loadingContainer.style.display = 'block';
+    loadingBar.style.width = '0%';
+    loadingPercentage.textContent = '0%';
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 95) {
+            progress = 95;
+        }
+        loadingBar.style.width = progress + '%';
+        loadingPercentage.textContent = Math.floor(progress) + '%';
+    }, 200);
+    
+    return {
+        complete: () => {
+            clearInterval(interval);
+            loadingBar.style.width = '100%';
+            loadingPercentage.textContent = '100%';
+            setTimeout(() => {
+                loadingContainer.style.display = 'none';
+            }, 500);
+        },
+        stop: () => {
+            clearInterval(interval);
+            loadingContainer.style.display = 'none';
+        }
+    };
+}
 
 function handleFile(file) {
     selectedFile = file;
@@ -320,8 +354,10 @@ function getAccuracyLabel(similarity) {
         return { text: '100% Akurat', class: 'accuracy-perfect' };
     } else if (similarity >= 90) {
         return { text: 'Cocok', class: 'accuracy-high' };
-    } else {
+    } else if (similarity >= 80) {
         return { text: 'Tidak Cocok', class: 'accuracy-low' };
+    } else {
+        return { text: 'Tidak Cocok Sekali', class: 'accuracy-very-low' };
     }
 }
 
@@ -422,6 +458,8 @@ btnSearch.addEventListener('click', async () => {
     searchText.style.display = 'none';
     loadingText.style.display = 'inline';
     resultsSection.style.display = 'none';
+    
+    const progressBar = animateProgressBar();
 
     try {
         const scraper = scraperSelect.value;
@@ -431,8 +469,11 @@ btnSearch.addEventListener('click', async () => {
         } else if (scraper === 'saucenao') {
             await searchSauceNAO();
         }
+        
+        progressBar.complete();
     } catch (error) {
         console.error('Error:', error);
+        progressBar.stop();
         alert('Terjadi kesalahan saat mencari anime. Silakan coba lagi.');
     } finally {
         btnSearch.disabled = false;
