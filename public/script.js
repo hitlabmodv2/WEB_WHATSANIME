@@ -92,6 +92,7 @@ async function displayTraceMoeResults(results) {
         const timestampFrom = formatTime(result.from);
         const timestampTo = formatTime(result.to);
         const duration = formatTime(result.duration || 0);
+        const accuracyInfo = getAccuracyLabel(parseFloat(similarity));
         
         let animeData = null;
         if (result.anilist) {
@@ -118,7 +119,10 @@ async function displayTraceMoeResults(results) {
                     <div class="filename">${result.filename}</div>
                     <div class="timestamp-row">
                         <span class="timestamp">⏱️ ${timestampFrom}/${duration}</span>
-                        <span class="similarity-badge">✓ ${similarity}%</span>
+                        <div class="similarity-container">
+                            <span class="similarity-badge">✓ ${similarity}%</span>
+                            <span class="accuracy-label ${accuracyInfo.class}">${accuracyInfo.text}</span>
+                        </div>
                     </div>
                 </div>
         `;
@@ -198,6 +202,7 @@ async function displaySauceNAOResults(results) {
     for (const result of topResults) {
         const similarity = result.header?.similarity || 0;
         const data = result.data || {};
+        const accuracyInfo = getAccuracyLabel(parseFloat(similarity));
         
         const card = document.createElement('div');
         card.className = 'result-card';
@@ -214,7 +219,10 @@ async function displaySauceNAOResults(results) {
                     <div class="filename">${data.title || data.source || 'Unknown'}</div>
                     <div class="timestamp-row">
                         <span class="timestamp">🎨 ${data.author || data.member_name || 'Unknown Artist'}</span>
-                        <span class="similarity-badge">✓ ${similarity}%</span>
+                        <div class="similarity-container">
+                            <span class="similarity-badge">✓ ${similarity}%</span>
+                            <span class="accuracy-label ${accuracyInfo.class}">${accuracyInfo.text}</span>
+                        </div>
                     </div>
                 </div>
                 <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
@@ -304,6 +312,20 @@ async function fetchAnilistData(anilistId) {
         return data.data?.Media || null;
     } catch (error) {
         return null;
+    }
+}
+
+function getAccuracyLabel(similarity) {
+    if (similarity >= 95) {
+        return { text: 'Sangat Cocok', class: 'accuracy-perfect' };
+    } else if (similarity >= 85) {
+        return { text: 'Cocok', class: 'accuracy-high' };
+    } else if (similarity >= 70) {
+        return { text: 'Cukup Cocok', class: 'accuracy-medium' };
+    } else if (similarity >= 50) {
+        return { text: 'Kurang Cocok', class: 'accuracy-low' };
+    } else {
+        return { text: 'Tidak Cocok', class: 'accuracy-very-low' };
     }
 }
 
