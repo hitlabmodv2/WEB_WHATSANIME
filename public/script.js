@@ -182,38 +182,46 @@ async function displayTraceMoeResults(results) {
             
             const allTitles = [...new Set([...titles, ...(animeData.synonyms || [])])];
             
-            const studios = animeData.studios?.nodes?.map(s => s.name).join(', ') || '';
-            const genres = animeData.genres?.join(', ') || '';
+            const studios = animeData.studios?.nodes?.map(s => s.name).join(', ') || 'Unknown';
+            const genres = animeData.genres?.join(', ') || 'Unknown';
             
-            const startDate = animeData.startDate ? 
-                `${animeData.startDate.year}-${String(animeData.startDate.month).padStart(2, '0')}-${String(animeData.startDate.day).padStart(2, '0')}` : '';
-            const endDate = animeData.endDate ? 
-                `${animeData.endDate.year}-${String(animeData.endDate.month).padStart(2, '0')}-${String(animeData.endDate.day).padStart(2, '0')}` : '';
+            const startDateFormatted = formatDateIndonesian(animeData.startDate);
+            const endDateFormatted = formatDateIndonesian(animeData.endDate);
+            
+            const status = getStatusIndonesian(animeData.status);
+            const season = animeData.season && animeData.seasonYear ? 
+                `${getSeasonIndonesian(animeData.season)} ${animeData.seasonYear}` : '';
+            const source = getSourceIndonesian(animeData.source);
+            const rating = animeData.averageScore ? `${animeData.averageScore}/100` : 'N/A';
             
             cardHTML += `
                 <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
-                    <span class="spoiler-icon">▼</span> Detail Anime
+                    <span class="spoiler-icon">▼</span> Sembunyikan Informasi Anime
                 </button>
-                <div class="anime-info spoiler-content" id="${cardId}" style="display: none;">
-                    <div class="anime-titles">
-                        ${titles.map(t => `<div class="anime-title">${t}</div>`).join('')}
-                    </div>
-                    ${animeData.episodes ? `<div class="info-line">📺 ${animeData.episodes} episode ${animeData.duration}-minute ${animeData.format || 'TV'} anime.</div>` : ''}
-                    ${startDate ? `<div class="info-line">📅 Airing from ${startDate}${endDate ? ' to ' + endDate : ''}.</div>` : ''}
+                <div class="anime-info spoiler-content" id="${cardId}">
+                    <h3 style="margin-top: 0; margin-bottom: 15px; color: var(--primary-color);">Informasi Anime</h3>
                     
-                    ${allTitles.length > titles.length ? `
-                        <div class="alias-section">
-                            <strong>🏷️ Alias</strong>
-                            ${allTitles.slice(titles.length).map(alias => `<div class="alias">${alias}</div>`).join('')}
+                    <div class="info-line"><strong>Tipe:</strong> ${animeData.format || 'Unknown'}</div>
+                    ${animeData.episodes ? `<div class="info-line"><strong>Episodes:</strong> ${animeData.episodes}</div>` : ''}
+                    <div class="info-line"><strong>Status:</strong> ${status}</div>
+                    ${startDateFormatted || endDateFormatted ? `<div class="info-line"><strong>Ditayangkan:</strong> ${startDateFormatted}${endDateFormatted ? ' - ' + endDateFormatted : ''}</div>` : ''}
+                    ${season ? `<div class="info-line"><strong>Musim Tayang:</strong> ${season}</div>` : ''}
+                    <div class="info-line"><strong>Studio:</strong> ${studios}</div>
+                    <div class="info-line"><strong>Sumber:</strong> ${source}</div>
+                    <div class="info-line"><strong>Genre:</strong> ${genres}</div>
+                    ${animeData.duration ? `<div class="info-line"><strong>Durasi:</strong> ${animeData.duration} menit per episode</div>` : ''}
+                    <div class="info-line"><strong>Rating:</strong> ${rating}</div>
+                    
+                    ${allTitles.length > 0 ? `
+                        <div class="alias-section" style="margin-top: 15px;">
+                            <strong>📋 Judul Alternatif:</strong>
+                            ${allTitles.map(alias => `<div class="alias">${alias}</div>`).join('')}
                         </div>
                     ` : ''}
                     
-                    ${genres ? `<div class="info-line"><strong>🎭 Genre:</strong> ${genres}</div>` : ''}
-                    ${studios ? `<div class="info-line"><strong>🎬 Studio:</strong> ${studios}</div>` : ''}
-                    
                     ${animeData.externalLinks?.length ? `
-                        <div class="external-links">
-                            <strong>🔗 External Links:</strong>
+                        <div class="external-links" style="margin-top: 15px;">
+                            <strong>🔗 Link Eksternal:</strong>
                             <div class="links-container">
                                 ${animeData.externalLinks.slice(0, 5).map(link => 
                                     `<a href="${link.url}" target="_blank" class="ext-link">${link.site}</a>`
@@ -331,6 +339,11 @@ async function fetchAnilistData(anilistId) {
                 format
                 episodes
                 duration
+                status
+                season
+                seasonYear
+                source
+                averageScore
                 startDate {
                     year
                     month
@@ -372,6 +385,56 @@ async function fetchAnilistData(anilistId) {
     } catch (error) {
         return null;
     }
+}
+
+function getStatusIndonesian(status) {
+    const statusMap = {
+        'FINISHED': 'Selesai Tayang',
+        'RELEASING': 'Sedang Tayang',
+        'NOT_YET_RELEASED': 'Belum Tayang',
+        'CANCELLED': 'Dibatalkan',
+        'HIATUS': 'Hiatus'
+    };
+    return statusMap[status] || status;
+}
+
+function getSeasonIndonesian(season) {
+    const seasonMap = {
+        'WINTER': 'Winter',
+        'SPRING': 'Spring',
+        'SUMMER': 'Summer',
+        'FALL': 'Fall'
+    };
+    return seasonMap[season] || season;
+}
+
+function getSourceIndonesian(source) {
+    const sourceMap = {
+        'ORIGINAL': 'Original',
+        'MANGA': 'Manga',
+        'LIGHT_NOVEL': 'Light Novel',
+        'VISUAL_NOVEL': 'Visual Novel',
+        'VIDEO_GAME': 'Video Game',
+        'OTHER': 'Lainnya',
+        'NOVEL': 'Novel',
+        'DOUJINSHI': 'Doujinshi',
+        'ANIME': 'Anime',
+        'WEB_NOVEL': 'Web Novel',
+        'LIVE_ACTION': 'Live Action',
+        'GAME': 'Game',
+        'COMIC': 'Comic',
+        'MULTIMEDIA_PROJECT': 'Multimedia Project',
+        'PICTURE_BOOK': 'Picture Book'
+    };
+    return sourceMap[source] || source;
+}
+
+function formatDateIndonesian(dateObj) {
+    if (!dateObj || !dateObj.year) return '';
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    const month = dateObj.month ? months[dateObj.month - 1] : '';
+    const day = dateObj.day || '';
+    return `${month} ${day}, ${dateObj.year}`.trim();
 }
 
 function getAccuracyLabel(similarity) {
@@ -511,8 +574,10 @@ async function searchTraceMoe() {
     let response;
     
     if (selectedImageUrl) {
+        console.log('Searching with URL:', selectedImageUrl);
         response = await fetch(`https://api.trace.moe/search?url=${encodeURIComponent(selectedImageUrl)}`);
     } else {
+        console.log('Searching with uploaded file');
         const formData = new FormData();
         formData.append('image', selectedFile);
         response = await fetch('https://api.trace.moe/search', {
@@ -522,6 +587,21 @@ async function searchTraceMoe() {
     }
 
     const data = await response.json();
+    console.log('Trace.moe API response:', data);
+    
+    if (data.error) {
+        alert(`Error dari Trace.moe: ${data.error}\n\nKemungkinan URL gambar tidak dapat diakses oleh API. Coba upload gambar langsung atau gunakan URL gambar yang publik.`);
+        resultsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Tidak ada hasil ditemukan.</p>';
+        resultsSection.style.display = 'block';
+        return;
+    }
+    
+    if (!data.result || data.result.length === 0) {
+        resultsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Tidak ada hasil ditemukan.</p>';
+        resultsSection.style.display = 'block';
+        return;
+    }
+    
     displayTraceMoeResults(data.result);
 }
 
