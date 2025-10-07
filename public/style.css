@@ -252,8 +252,8 @@ main {
 .result-card {
     background: var(--card-bg);
     border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
     transition: all 0.3s ease;
 }
 
@@ -262,21 +262,45 @@ main {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-.result-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 12px;
+.result-media {
+    width: 100%;
+    background: #000;
 }
 
-.anime-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-color);
+.result-video {
+    width: 100%;
+    display: block;
+    max-height: 400px;
+}
+
+.result-thumbnail {
+    width: 100%;
+    display: block;
+}
+
+.result-content {
+    padding: 20px;
+}
+
+.file-info {
+    margin-bottom: 16px;
+}
+
+.filename {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
     margin-bottom: 4px;
+    word-break: break-word;
+}
+
+.timestamp {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
 }
 
 .similarity-badge {
+    display: inline-block;
     background: var(--success-color);
     color: white;
     padding: 4px 12px;
@@ -285,20 +309,82 @@ main {
     font-weight: 600;
 }
 
-.result-info {
+.anime-info {
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+}
+
+.anime-titles {
+    margin-bottom: 12px;
+}
+
+.anime-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 4px;
+}
+
+.info-line {
     color: var(--text-secondary);
     font-size: 0.9rem;
     margin-bottom: 8px;
 }
 
-.result-info strong {
+.info-line strong {
     color: var(--text-color);
 }
 
-.result-thumbnail {
-    width: 100%;
+.alias-section {
+    margin: 12px 0;
+    padding: 12px;
+    background: rgba(99, 102, 241, 0.05);
     border-radius: 8px;
-    margin-top: 12px;
+}
+
+.alias-section strong {
+    display: block;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.alias {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.external-links {
+    margin-top: 16px;
+}
+
+.external-links strong {
+    display: block;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ext-link {
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.ext-link:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 footer {
