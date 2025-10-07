@@ -25,7 +25,8 @@ function handleFile(file) {
     
     reader.onload = (e) => {
         previewImage.src = e.target.result;
-        uploadBox.style.display = 'none';
+        uploadContent.style.display = 'none';
+        urlContent.style.display = 'none';
         previewBox.style.display = 'block';
         btnSearch.disabled = false;
     };
@@ -44,10 +45,25 @@ function handleImageUrl(url) {
         btnSearch.disabled = true;
     };
     previewImage.onload = () => {
-        uploadBox.style.display = 'none';
+        uploadContent.style.display = 'none';
+        urlContent.style.display = 'none';
         previewBox.style.display = 'block';
         btnSearch.disabled = false;
     };
+}
+
+function resetToUploadTab() {
+    selectedFile = null;
+    selectedImageUrl = null;
+    previewBox.style.display = 'none';
+    uploadContent.style.display = 'block';
+    urlContent.style.display = 'none';
+    tabUpload.classList.add('active');
+    tabUrl.classList.remove('active');
+    btnSearch.disabled = true;
+    fileInput.value = '';
+    urlInput.value = '';
+    resultsSection.style.display = 'none';
 }
 
 function displayResults(results) {
@@ -142,6 +158,9 @@ fileInput.addEventListener('change', (e) => {
 });
 
 tabUpload.addEventListener('click', () => {
+    if (previewBox.style.display === 'block') {
+        return;
+    }
     tabUpload.classList.add('active');
     tabUrl.classList.remove('active');
     uploadContent.style.display = 'block';
@@ -149,6 +168,9 @@ tabUpload.addEventListener('click', () => {
 });
 
 tabUrl.addEventListener('click', () => {
+    if (previewBox.style.display === 'block') {
+        return;
+    }
     tabUrl.classList.add('active');
     tabUpload.classList.remove('active');
     urlContent.style.display = 'block';
@@ -171,14 +193,7 @@ urlInput.addEventListener('keypress', (e) => {
 });
 
 btnRemove.addEventListener('click', () => {
-    selectedFile = null;
-    selectedImageUrl = null;
-    uploadBox.style.display = 'block';
-    previewBox.style.display = 'none';
-    btnSearch.disabled = true;
-    fileInput.value = '';
-    urlInput.value = '';
-    resultsSection.style.display = 'none';
+    resetToUploadTab();
 });
 
 btnSearch.addEventListener('click', async () => {
