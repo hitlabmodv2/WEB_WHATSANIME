@@ -122,7 +122,7 @@ async function displayTraceMoeResults(results) {
     const seen = new Set();
     
     for (const result of results) {
-        const key = `${result.anilist || result.filename}-${result.episode}-${Math.floor(result.from)}`;
+        const key = `${result.anilist || result.filename}-${result.episode || 'unknown'}`;
         if (!seen.has(key)) {
             seen.add(key);
             uniqueResults.push(result);
@@ -198,7 +198,7 @@ async function displayTraceMoeResults(results) {
                 <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
                     <span class="spoiler-icon">▼</span> Sembunyikan Informasi Anime
                 </button>
-                <div class="anime-info spoiler-content" id="${cardId}">
+                <div class="anime-info spoiler-content" id="${cardId}" style="display: none;">
                     <h3 style="margin-top: 0; margin-bottom: 15px; color: var(--primary-color);">Informasi Anime</h3>
                     
                     <div class="info-line"><strong>Tipe:</strong> ${animeData.format || 'Unknown'}</div>
