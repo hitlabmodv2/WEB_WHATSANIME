@@ -9,3 +9,7 @@ run = ["sh", "-c", "npm run dev"]
 
 [agent]
 expertMode = true
+
+[[ports]]
+localPort = 3000
+externalPort = 80

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatAnime - Trace.moe Scraper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 WhatAnime Finder</h1>
+            <p class="subtitle">Cari tahu anime dari screenshot</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-box" id="uploadBox">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p class="upload-text">Klik atau drag gambar di sini</p>
+                    <p class="upload-hint">Format: JPG, PNG, GIF</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+                
+                <div class="preview-box" id="previewBox" style="display: none;">
+                    <img id="previewImage" src="" alt="Preview">
+                    <button class="btn-remove" id="btnRemove">✕ Hapus</button>
+                </div>
+
+                <button class="btn-search" id="btnSearch" disabled>
+                    <span id="searchText">🔍 Cari Anime</span>
+                    <span id="loadingText" style="display: none;">⏳ Mencari...</span>
+                </button>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h2>📋 Hasil Pencarian</h2>
+                <div id="resultsContainer"></div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p id="datetime"></p>
+                <p class="footer-text">Powered by Trace.moe API</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

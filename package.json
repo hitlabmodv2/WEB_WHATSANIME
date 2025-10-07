@@ -1,4 +1,3 @@
-
 {
   "name": "kennzy-website",
   "version": "1.0.0",
@@ -9,6 +8,7 @@
     "dev": "serve . -p 3000"
   },
   "dependencies": {
+    "express": "^5.1.0",
     "serve": "^14.2.1"
   },
   "engines": {
