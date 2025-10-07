@@ -343,6 +343,13 @@ main {
     font-size: 0.85rem;
 }
 
+.similarity-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
 .similarity-badge {
     display: inline-block;
     background: var(--success-color);
@@ -352,6 +359,29 @@ main {
     font-size: 0.8rem;
     font-weight: 600;
     white-space: nowrap;
+}
+
+.accuracy-label {
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.accuracy-perfect {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.accuracy-high {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.accuracy-low {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
 }
 
 .spoiler-btn {

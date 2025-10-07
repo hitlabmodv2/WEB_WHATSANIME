@@ -316,16 +316,12 @@ async function fetchAnilistData(anilistId) {
 }
 
 function getAccuracyLabel(similarity) {
-    if (similarity >= 95) {
-        return { text: 'Sangat Cocok', class: 'accuracy-perfect' };
-    } else if (similarity >= 85) {
+    if (similarity >= 98) {
+        return { text: '100% Akurat', class: 'accuracy-perfect' };
+    } else if (similarity >= 90) {
         return { text: 'Cocok', class: 'accuracy-high' };
-    } else if (similarity >= 70) {
-        return { text: 'Cukup Cocok', class: 'accuracy-medium' };
-    } else if (similarity >= 50) {
-        return { text: 'Kurang Cocok', class: 'accuracy-low' };
     } else {
-        return { text: 'Tidak Cocok', class: 'accuracy-very-low' };
+        return { text: 'Tidak Cocok', class: 'accuracy-low' };
     }
 }
 
