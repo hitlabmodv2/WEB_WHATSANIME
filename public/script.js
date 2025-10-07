@@ -53,6 +53,13 @@ function handleImageUrl(url) {
 }
 
 function resetToUploadTab() {
+    const videos = document.querySelectorAll('.result-video');
+    videos.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+        video.src = '';
+    });
+    
     selectedFile = null;
     selectedImageUrl = null;
     previewBox.style.display = 'none';
@@ -64,6 +71,7 @@ function resetToUploadTab() {
     fileInput.value = '';
     urlInput.value = '';
     resultsSection.style.display = 'none';
+    resultsContainer.innerHTML = '';
 }
 
 async function displayResults(results) {
