@@ -445,16 +445,21 @@ async function searchSauceNAO() {
     let imageUrl = selectedImageUrl;
     
     if (selectedFile) {
-        const reader = new FileReader();
-        imageUrl = await new Promise((resolve) => {
-            reader.onload = (e) => resolve(e.target.result);
-            reader.readAsDataURL(selectedFile);
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        
+        const response = await fetch('https://saucenao.com/search.php?output_type=2&numres=5', {
+            method: 'POST',
+            body: formData
         });
+        
+        const data = await response.json();
+        displaySauceNAOResults(data.results);
+    } else if (imageUrl) {
+        const response = await fetch(`https://saucenao.com/search.php?output_type=2&numres=5&url=${encodeURIComponent(imageUrl)}`);
+        const data = await response.json();
+        displaySauceNAOResults(data.results);
     }
-
-    const response = await fetch(`https://saucenao.com/search.php?output_type=2&url=${encodeURIComponent(imageUrl)}`);
-    const data = await response.json();
-    displaySauceNAOResults(data.results);
 }
 
 function toggleSpoiler(id) {
