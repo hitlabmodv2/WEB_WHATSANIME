@@ -43,22 +43,22 @@ body::before {
 
 body.bg-morning::before {
     background-image: url('backgrounds/morning.png');
-    opacity: 0.2;
+    opacity: 0.6;
 }
 
 body.bg-afternoon::before {
     background-image: url('backgrounds/afternoon.png');
-    opacity: 0.2;
+    opacity: 0.6;
 }
 
 body.bg-evening::before {
     background-image: url('backgrounds/evening.png');
-    opacity: 0.2;
+    opacity: 0.6;
 }
 
 body.bg-night::before {
     background-image: url('backgrounds/night.png');
-    opacity: 0.2;
+    opacity: 0.6;
 }
 
 @media (max-width: 768px) {
