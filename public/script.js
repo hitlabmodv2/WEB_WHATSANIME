@@ -105,18 +105,22 @@ async function displayTraceMoeResults(results) {
     
     const topResults = uniqueResults;
     
-    for (const result of topResults) {
+    const animeDataPromises = topResults.map(result => 
+        result.anilist ? fetchAnilistData(result.anilist) : Promise.resolve(null)
+    );
+    
+    const allAnimeData = await Promise.all(animeDataPromises);
+    
+    for (let i = 0; i < topResults.length; i++) {
+        const result = topResults[i];
+        const animeData = allAnimeData[i];
+        
         const similarity = (result.similarity * 100).toFixed(2);
         const episode = result.episode || '?';
         const timestampFrom = formatTime(result.from);
         const timestampTo = formatTime(result.to);
         const duration = formatTime(result.duration || 0);
         const accuracyInfo = getAccuracyLabel(parseFloat(similarity));
-        
-        let animeData = null;
-        if (result.anilist) {
-            animeData = await fetchAnilistData(result.anilist);
-        }
         
         const card = document.createElement('div');
         card.className = 'result-card';
@@ -126,11 +130,11 @@ async function displayTraceMoeResults(results) {
         let cardHTML = `
             <div class="result-media">
                 ${result.video ? `
-                    <video class="result-video" controls muted loop playsinline>
+                    <video class="result-video" controls muted loop playsinline preload="metadata">
                         <source src="${result.video}" type="video/mp4">
                     </video>
                 ` : result.image ? `
-                    <img src="${result.image}" alt="Scene" class="result-thumbnail">
+                    <img src="${result.image}" alt="Scene" class="result-thumbnail" loading="lazy">
                 ` : ''}
             </div>
             <div class="result-content">
@@ -178,7 +182,7 @@ async function displayTraceMoeResults(results) {
                     <div class="anime-info-container">
                         ${coverImage ? `
                             <div class="anime-cover">
-                                <img src="${coverImage}" alt="Cover Anime" class="cover-image">
+                                <img src="${coverImage}" alt="Cover Anime" class="cover-image" loading="lazy">
                             </div>
                         ` : ''}
                         
