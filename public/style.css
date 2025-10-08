@@ -120,9 +120,11 @@ main {
 
 .scraper-select {
     flex: 1;
-    background: var(--card-bg);
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: var(--text-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(99, 102, 241, 0.3);
     border-radius: 8px;
     padding: 10px 12px;
     font-size: 0.9rem;
@@ -137,7 +139,9 @@ main {
 
 .scraper-select:focus {
     border-color: var(--primary-color);
-    background: rgba(99, 102, 241, 0.05);
+    background: rgba(99, 102, 241, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .tabs {
@@ -221,8 +225,10 @@ main {
 }
 
 .upload-box {
-    background: var(--card-bg);
-    border: 2px dashed var(--border-color);
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px dashed rgba(99, 102, 241, 0.4);
     border-radius: 16px;
     padding: 40px 20px;
     text-align: center;
@@ -232,7 +238,9 @@ main {
 
 .upload-box:hover {
     border-color: var(--primary-color);
-    background: rgba(99, 102, 241, 0.05);
+    background: rgba(99, 102, 241, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .upload-box.dragover {
