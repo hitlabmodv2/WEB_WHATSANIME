@@ -10,13 +10,29 @@
 <body>
     <div class="container">
         <header>
-            <button class="menu-btn" id="menuBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
-                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-                    <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
-                </svg>
-            </button>
+            <div class="menu-container">
+                <button class="menu-btn" id="menuBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                        <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
+                    </svg>
+                </button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <button class="menu-item" id="openServerInfo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                        </svg>
+                        <span>Info Server</span>
+                    </button>
+                    <button class="menu-item" id="openDeveloper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        <span>Developer</span>
+                    </button>
+                </div>
+            </div>
             <h1>🎬 WhatAnime Finder</h1>
             <p class="subtitle">Cari tahu anime dari screenshot</p>
         </header>
@@ -80,7 +96,7 @@
 
     <div class="modal" id="devModal">
         <div class="modal-content">
-            <button class="modal-close" id="modalClose">✕</button>
+            <button class="modal-close" id="devModalClose">✕</button>
             <div class="modal-header">
                 <h2>👨‍💻 Developer Info</h2>
             </div>
@@ -114,6 +130,90 @@
                     </svg>
                     Hubungi Owner
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="serverModal">
+        <div class="modal-content">
+            <button class="modal-close" id="serverModalClose">✕</button>
+            <div class="modal-header">
+                <h2>🖥️ Info Server</h2>
+            </div>
+            <div class="modal-body">
+                <div class="server-info-grid">
+                    <div class="info-card">
+                        <div class="info-icon">💾</div>
+                        <div class="info-details">
+                            <div class="info-title">RAM Usage</div>
+                            <div class="info-value" id="ramUsage">Loading...</div>
+                            <div class="info-bar">
+                                <div class="info-bar-fill" id="ramBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">⚡</div>
+                        <div class="info-details">
+                            <div class="info-title">CPU Usage</div>
+                            <div class="info-value" id="cpuUsage">Loading...</div>
+                            <div class="info-bar">
+                                <div class="info-bar-fill cpu-bar" id="cpuBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">💿</div>
+                        <div class="info-details">
+                            <div class="info-title">Storage</div>
+                            <div class="info-value" id="storageUsage">Loading...</div>
+                            <div class="info-bar">
+                                <div class="info-bar-fill storage-bar" id="storageBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">🌐</div>
+                        <div class="info-details">
+                            <div class="info-title">Server Status</div>
+                            <div class="info-value server-status">
+                                <span class="status-dot online"></span> Online
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">⏱️</div>
+                        <div class="info-details">
+                            <div class="info-title">Uptime</div>
+                            <div class="info-value" id="uptime">Loading...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">📍</div>
+                        <div class="info-details">
+                            <div class="info-title">Server Location</div>
+                            <div class="info-value">Replit Cloud</div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card full-width">
+                        <div class="info-icon">🔧</div>
+                        <div class="info-details">
+                            <div class="info-title">Tech Stack</div>
+                            <div class="tech-badges">
+                                <span class="tech-badge">Node.js</span>
+                                <span class="tech-badge">Express</span>
+                                <span class="tech-badge">Vanilla JS</span>
+                                <span class="tech-badge">Trace.moe API</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

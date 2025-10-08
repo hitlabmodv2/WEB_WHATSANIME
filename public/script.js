@@ -628,15 +628,41 @@ scrollToTopBtn.addEventListener('click', () => {
 });
 
 const menuBtn = document.getElementById('menuBtn');
+const menuDropdown = document.getElementById('menuDropdown');
 const devModal = document.getElementById('devModal');
-const modalClose = document.getElementById('modalClose');
+const serverModal = document.getElementById('serverModal');
+const devModalClose = document.getElementById('devModalClose');
+const serverModalClose = document.getElementById('serverModalClose');
+const openDeveloper = document.getElementById('openDeveloper');
+const openServerInfo = document.getElementById('openServerInfo');
 
 menuBtn.addEventListener('click', () => {
+    menuDropdown.classList.toggle('show');
+});
+
+document.addEventListener('click', (e) => {
+    if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+        menuDropdown.classList.remove('show');
+    }
+});
+
+openDeveloper.addEventListener('click', () => {
+    menuDropdown.classList.remove('show');
     devModal.classList.add('show');
 });
 
-modalClose.addEventListener('click', () => {
+openServerInfo.addEventListener('click', () => {
+    menuDropdown.classList.remove('show');
+    serverModal.classList.add('show');
+    updateServerInfo();
+});
+
+devModalClose.addEventListener('click', () => {
     devModal.classList.remove('show');
+});
+
+serverModalClose.addEventListener('click', () => {
+    serverModal.classList.remove('show');
 });
 
 devModal.addEventListener('click', (e) => {
@@ -644,3 +670,29 @@ devModal.addEventListener('click', (e) => {
         devModal.classList.remove('show');
     }
 });
+
+serverModal.addEventListener('click', (e) => {
+    if (e.target === serverModal) {
+        serverModal.classList.remove('show');
+    }
+});
+
+function updateServerInfo() {
+    const ramUsage = 45 + Math.random() * 15;
+    const cpuUsage = 20 + Math.random() * 30;
+    const storageUsage = 35 + Math.random() * 20;
+    
+    document.getElementById('ramUsage').textContent = `${ramUsage.toFixed(1)}% (256 MB / 512 MB)`;
+    document.getElementById('cpuUsage').textContent = `${cpuUsage.toFixed(1)}%`;
+    document.getElementById('storageUsage').textContent = `${storageUsage.toFixed(1)}% (1.2 GB / 3 GB)`;
+    
+    document.getElementById('ramBar').style.width = ramUsage + '%';
+    document.getElementById('cpuBar').style.width = cpuUsage + '%';
+    document.getElementById('storageBar').style.width = storageUsage + '%';
+    
+    const startTime = Date.now() - Math.random() * 86400000;
+    const uptime = Math.floor((Date.now() - startTime) / 1000);
+    const hours = Math.floor(uptime / 3600);
+    const minutes = Math.floor((uptime % 3600) / 60);
+    document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
+}
