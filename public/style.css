@@ -42,23 +42,23 @@ body::before {
 }
 
 body.bg-morning::before {
-    background-image: url('bg-morning.png');
-    opacity: 0.15;
+    background-image: url('backgrounds/morning.png');
+    opacity: 0.2;
 }
 
 body.bg-afternoon::before {
-    background-image: url('bg-afternoon.png');
-    opacity: 0.15;
+    background-image: url('backgrounds/afternoon.png');
+    opacity: 0.2;
 }
 
 body.bg-evening::before {
-    background-image: url('bg-evening.png');
-    opacity: 0.15;
+    background-image: url('backgrounds/evening.png');
+    opacity: 0.2;
 }
 
 body.bg-night::before {
-    background-image: url('bg-night.png');
-    opacity: 0.15;
+    background-image: url('backgrounds/night.png');
+    opacity: 0.2;
 }
 
 @media (max-width: 768px) {
