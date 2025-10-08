@@ -459,6 +459,24 @@ function updateDateTime() {
     document.getElementById('datetime').textContent = formatter.format(now);
 }
 
+function updateBackground() {
+    const now = new Date();
+    const jakartaTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
+    const hour = jakartaTime.getHours();
+    
+    document.body.classList.remove('bg-morning', 'bg-afternoon', 'bg-evening', 'bg-night');
+    
+    if (hour >= 5 && hour < 12) {
+        document.body.classList.add('bg-morning');
+    } else if (hour >= 12 && hour < 18) {
+        document.body.classList.add('bg-afternoon');
+    } else if (hour >= 18 && hour < 21) {
+        document.body.classList.add('bg-evening');
+    } else {
+        document.body.classList.add('bg-night');
+    }
+}
+
 uploadBox.addEventListener('click', () => fileInput.click());
 
 uploadBox.addEventListener('dragover', (e) => {
@@ -580,6 +598,9 @@ window.toggleSpoiler = toggleSpoiler;
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
+
+updateBackground();
+setInterval(updateBackground, 60000);
 
 const scrollToTopBtn = document.getElementById('scrollToTop');
 
