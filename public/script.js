@@ -626,3 +626,21 @@ scrollToTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+const menuBtn = document.getElementById('menuBtn');
+const devModal = document.getElementById('devModal');
+const modalClose = document.getElementById('modalClose');
+
+menuBtn.addEventListener('click', () => {
+    devModal.classList.add('show');
+});
+
+modalClose.addEventListener('click', () => {
+    devModal.classList.remove('show');
+});
+
+devModal.addEventListener('click', (e) => {
+    if (e.target === devModal) {
+        devModal.classList.remove('show');
+    }
+});
