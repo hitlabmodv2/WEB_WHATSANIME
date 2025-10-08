@@ -17,19 +17,19 @@ const loadingBar = document.getElementById('loadingBar');
 const loadingPercentage = document.getElementById('loadingPercentage');
 
 function animateProgressBar() {
-    let progress = 0;
+    let progress = 10;
     loadingContainer.style.display = 'block';
-    loadingBar.style.width = '0%';
-    loadingPercentage.textContent = '0%';
+    loadingBar.style.width = '10%';
+    loadingPercentage.textContent = '10%';
     
     const interval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress > 95) {
-            progress = 95;
+        progress += Math.random() * 12;
+        if (progress > 90) {
+            progress = 90;
         }
         loadingBar.style.width = progress + '%';
         loadingPercentage.textContent = Math.floor(progress) + '%';
-    }, 200);
+    }, 150);
     
     return {
         complete: () => {
@@ -38,11 +38,15 @@ function animateProgressBar() {
             loadingPercentage.textContent = '100%';
             setTimeout(() => {
                 loadingContainer.style.display = 'none';
-            }, 500);
+                loadingBar.style.width = '0%';
+                loadingPercentage.textContent = '0%';
+            }, 400);
         },
         stop: () => {
             clearInterval(interval);
             loadingContainer.style.display = 'none';
+            loadingBar.style.width = '0%';
+            loadingPercentage.textContent = '0%';
         }
     };
 }
@@ -511,12 +515,12 @@ btnRemove.addEventListener('click', () => {
 btnSearch.addEventListener('click', async () => {
     if (!selectedFile) return;
 
+    const progressBar = animateProgressBar();
+    
     btnSearch.disabled = true;
     searchText.style.display = 'none';
     loadingText.style.display = 'inline';
     resultsSection.style.display = 'none';
-    
-    const progressBar = animateProgressBar();
 
     try {
         const scraper = scraperSelect.value;
