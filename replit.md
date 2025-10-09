@@ -4,6 +4,31 @@
 
 WhatAnime Finder is a web application that helps users identify anime from screenshots. The application uses the Trace.moe API to perform reverse image searches on anime screenshots. Users can upload images directly or provide image URLs to find matching anime scenes with detailed information including title, episode, timestamp, and similarity score.
 
+## Recent Updates (October 2025)
+
+### Mobile Responsiveness Improvements
+- Fixed header layout to prevent menu button overlap with title on mobile devices
+- Added responsive padding and spacing for optimal mobile viewing
+- Implemented mobile-specific styling for all modals and components
+
+### Enhanced Image Upload
+- Expanded supported format display: JPG, PNG, GIF, WebP, BMP, SVG
+- Improved scraper selection dropdown with clear descriptions (V1 - Trace.moe, V2 - SauceNAO)
+- Better dropdown visibility with optimized option styling
+
+### Developer Modal Features
+- Custom anime 2D coder avatar image (generated)
+- Skills section with visual progress bars (Node.js 90%, JavaScript 85%, Express.js 88%, HTML/CSS 92%)
+- Achievement badges system (Code Master, Bug Hunter, Coffee Lover, Night Owl)
+- Coding streak counter with animated flame icon (365 days)
+- Motivational phrase rotation system (60-second intervals, lightweight performance)
+
+### Server Info Enhancements
+- Temperature monitoring display
+- Total requests counter
+- Detailed server information section (Platform, Runtime, Status)
+- Clear RAM usage indicator with total capacity display
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
@@ -87,3 +112,27 @@ Preferred communication style: Simple, everyday language.
 **Port Configuration**: Uses environment variable `$PORT` in start script for platform flexibility (Replit, Heroku, etc.)
 
 **Static Asset Serving**: All frontend files (HTML, CSS, JavaScript) served from the `public` directory
+
+## Project Structure
+
+### Key Files
+- `public/index.html` - Main application HTML with modals for developer info and server info
+- `public/style.css` - Complete styling including responsive design for mobile devices
+- `public/script.js` - Core application logic, API integration, and UI interactions
+- `public/coding-words.js` - Phrase rotation data for developer modal motivational messages
+- `public/dev-avatar.png` - Custom anime 2D coder avatar for developer profile
+- `public/backgrounds/` - Dynamic background images for different times of day
+- `server.js` - Express server configuration for static file serving
+
+### Design Decisions
+
+**Performance Optimization**
+- Replaced heavy character-by-character typing animation with lightweight 60-second phrase rotation
+- Optimized mobile layouts to reduce unnecessary rendering
+- Minimal JavaScript footprint with no external framework dependencies
+
+**User Experience**
+- Achievement badges provide gamification element
+- Skills visualization helps users understand developer expertise
+- Server info transparency builds trust with clear metrics display
+- Mobile-first responsive design ensures accessibility across all devices
