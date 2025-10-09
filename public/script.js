@@ -646,9 +646,25 @@ document.addEventListener('click', (e) => {
     }
 });
 
+let phraseInterval = null;
+let currentPhraseIndex = 0;
+
+function rotatePhrase() {
+    const phraseElement = document.getElementById('typingText');
+    if (!phraseElement || !window.codingPhrases) return;
+    
+    phraseElement.textContent = codingPhrases[currentPhraseIndex];
+    currentPhraseIndex = (currentPhraseIndex + 1) % codingPhrases.length;
+}
+
 openDeveloper.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     devModal.classList.add('show');
+    
+    if (!phraseInterval) {
+        rotatePhrase();
+        phraseInterval = setInterval(rotatePhrase, 60000);
+    }
 });
 
 openServerInfo.addEventListener('click', () => {
@@ -681,10 +697,14 @@ function updateServerInfo() {
     const ramUsage = 45 + Math.random() * 15;
     const cpuUsage = 20 + Math.random() * 30;
     const storageUsage = 35 + Math.random() * 20;
+    const temperature = 45 + Math.random() * 15;
+    const totalRequests = 1250 + Math.floor(Math.random() * 500);
     
     document.getElementById('ramUsage').textContent = `${ramUsage.toFixed(1)}% (256 MB / 512 MB)`;
     document.getElementById('cpuUsage').textContent = `${cpuUsage.toFixed(1)}%`;
     document.getElementById('storageUsage').textContent = `${storageUsage.toFixed(1)}% (1.2 GB / 3 GB)`;
+    document.getElementById('temperature').textContent = `${temperature.toFixed(1)}°C`;
+    document.getElementById('totalRequests').textContent = totalRequests.toLocaleString();
     
     document.getElementById('ramBar').style.width = ramUsage + '%';
     document.getElementById('cpuBar').style.width = cpuUsage + '%';
