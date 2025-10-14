@@ -430,7 +430,7 @@ main {
         var(--primary-color) 100%);
     background-size: 200% 100%;
     width: 0%;
-    transition: width 0.3s ease;
+    transition: width 0.05s linear;
     animation: shimmer 1.5s infinite;
     border-radius: 15px;
 }

@@ -21,30 +21,55 @@ const loadingPercentage = document.getElementById('loadingPercentage');
 let currentInputMethod = 'upload';
 
 function animateProgressBar() {
-    let progress = 10;
+    let progress = 0;
     loadingContainer.style.display = 'block';
-    loadingBar.style.width = '10%';
-    loadingPercentage.textContent = '10%';
+    loadingBar.style.width = '0%';
+    loadingPercentage.textContent = '0%';
     
     const interval = setInterval(() => {
-        progress += Math.random() * 12;
-        if (progress > 90) {
-            progress = 90;
+        if (progress < 30) {
+            progress += Math.random() * 3 + 2;
+        } else if (progress < 60) {
+            progress += Math.random() * 2 + 1;
+        } else if (progress < 90) {
+            progress += Math.random() * 1.5 + 0.5;
+        } else {
+            progress += Math.random() * 0.5;
         }
+        
+        if (progress > 95) {
+            progress = 95;
+        }
+        
         loadingBar.style.width = progress + '%';
         loadingPercentage.textContent = Math.floor(progress) + '%';
-    }, 150);
+    }, 80);
     
     return {
         complete: () => {
             clearInterval(interval);
-            loadingBar.style.width = '100%';
-            loadingPercentage.textContent = '100%';
+            let finalProgress = parseFloat(loadingBar.style.width) || 0;
+            
+            const completeInterval = setInterval(() => {
+                finalProgress += (100 - finalProgress) * 0.3;
+                if (finalProgress >= 99.5) {
+                    finalProgress = 100;
+                    clearInterval(completeInterval);
+                }
+                loadingBar.style.width = finalProgress + '%';
+                loadingPercentage.textContent = Math.floor(finalProgress) + '%';
+            }, 30);
+            
             setTimeout(() => {
-                loadingContainer.style.display = 'none';
-                loadingBar.style.width = '0%';
-                loadingPercentage.textContent = '0%';
-            }, 400);
+                clearInterval(completeInterval);
+                loadingBar.style.width = '100%';
+                loadingPercentage.textContent = '100%';
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                    loadingBar.style.width = '0%';
+                    loadingPercentage.textContent = '0%';
+                }, 500);
+            }, 300);
         },
         stop: () => {
             clearInterval(interval);
