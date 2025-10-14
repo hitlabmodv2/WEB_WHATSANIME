@@ -1,138 +1,213 @@
-# WhatAnime Finder
+# WhatAnime Finder - Pencari Anime dari Screenshot
 
-## Overview
+## Tentang Aplikasi
 
-WhatAnime Finder is a web application that helps users identify anime from screenshots. The application uses the Trace.moe API to perform reverse image searches on anime screenshots. Users can upload images directly or provide image URLs to find matching anime scenes with detailed information including title, episode, timestamp, and similarity score.
+WhatAnime Finder adalah aplikasi web yang membantu pengguna menemukan anime dari screenshot atau gambar. Aplikasi ini menggunakan API Trace.moe untuk melakukan pencarian gambar terbalik (reverse image search) pada screenshot anime. Pengguna dapat mengunggah gambar secara langsung atau memasukkan URL gambar untuk menemukan scene anime yang cocok dengan informasi detail termasuk judul, episode, timestamp, dan tingkat kecocokan.
 
-## Recent Updates (October 2025)
+## Pembaruan Terbaru (Oktober 2025)
 
-### Mobile Responsiveness Improvements
-- Fixed header layout to prevent menu button overlap with title on mobile devices
-- Added responsive padding and spacing for optimal mobile viewing
-- Implemented mobile-specific styling for all modals and components
+### Fitur Pencarian dengan URL Gambar ✨
+- **Tab switching** antara upload gambar dan URL gambar
+- **Input URL gambar** langsung seperti trace.moe
+- Validasi URL otomatis untuk memastikan gambar valid
+- Preview gambar dari URL sebelum pencarian
 
-### Enhanced Image Upload
-- Expanded supported format display: JPG, PNG, GIF, WebP, BMP, SVG
-- Improved scraper selection dropdown with clear descriptions (V1 - Trace.moe, V2 - SauceNAO)
-- Better dropdown visibility with optimized option styling
+### Penyederhanaan Scraper 🎯
+- **Hanya menggunakan Trace.moe** sebagai scraper utama
+- Menghapus scraper v2 (SauceNAO) untuk fokus pada akurasi anime
+- Interface lebih sederhana dan mudah digunakan
 
-### Developer Modal Features
-- Custom anime 2D coder avatar image (generated)
-- Skills section with visual progress bars (Node.js 90%, JavaScript 85%, Express.js 88%, HTML/CSS 92%)
-- Achievement badges system (Code Master, Bug Hunter, Coffee Lover, Night Owl)
-- Coding streak counter with animated flame icon (365 days)
-- Motivational phrase rotation system (60-second intervals, lightweight performance)
+### Tampilan Mobile Responsive 📱
+- Header layout yang optimal untuk perangkat mobile
+- Tab buttons yang responsif dan mudah diakses
+- Input URL yang menyesuaikan dengan ukuran layar
+- Semua komponen sudah dioptimasi untuk tampilan mobile
 
-### Server Info Enhancements
-- Temperature monitoring display
-- Total requests counter
-- Detailed server information section (Platform, Runtime, Status)
-- Clear RAM usage indicator with total capacity display
+### Fitur Modal Developer
+- Avatar anime 2D khusus untuk developer
+- Bagian skills dengan progress bar visual (Node.js 90%, JavaScript 85%, Express.js 88%, HTML/CSS 92%)
+- Sistem badge achievement (Code Master, Bug Hunter, Coffee Lover, Night Owl)
+- Counter streak coding dengan ikon api animasi (365 hari)
+- Sistem rotasi frase motivasi (interval 60 detik)
 
-## User Preferences
+### Info Server
+- Monitoring suhu server
+- Counter total request
+- Informasi server detail (Platform, Runtime, Status)
+- Indikator penggunaan RAM dengan tampilan kapasitas total
 
-Preferred communication style: Simple, everyday language.
+## Preferensi Pengguna
 
-## System Architecture
+Gaya komunikasi yang disukai: Bahasa sederhana dan mudah dipahami dalam bahasa Indonesia.
 
-### Frontend Architecture
+## Arsitektur Sistem
+
+### Arsitektur Frontend
 
 **Single Page Application (SPA)**
-- Pure vanilla JavaScript implementation without frameworks
-- Client-side image handling and preview functionality
-- Tab-based interface for dual input methods (file upload vs URL)
-- Real-time image preview before search execution
+- Implementasi JavaScript murni tanpa framework
+- Fungsi preview dan handling gambar di sisi klien
+- Interface dengan tab untuk dua metode input (upload file vs URL)
+- Preview gambar real-time sebelum pencarian
 
-**Design Pattern**: The frontend uses an event-driven architecture where user interactions (file selection, URL input, tab switching) trigger corresponding handler functions that update the UI state.
+**Pola Desain**: Frontend menggunakan arsitektur event-driven dimana interaksi pengguna (pemilihan file, input URL, perpindahan tab) memicu fungsi handler yang mengupdate state UI.
 
-**Rationale**: Vanilla JavaScript was chosen for simplicity and to avoid framework overhead for a lightweight application. This reduces bundle size and improves initial load performance.
+**Alasan**: JavaScript vanilla dipilih untuk kesederhanaan dan menghindari overhead framework untuk aplikasi ringan. Ini mengurangi ukuran bundle dan meningkatkan performa loading awal.
 
-### Backend Architecture
+### Arsitektur Backend
 
-**Express.js Server**
-- Static file server serving frontend assets from the `public` directory
-- Simple routing configuration with a single root route handler
-- JSON middleware for potential API endpoint expansion
+**Server Express.js**
+- Server file statis yang melayani asset frontend dari direktori `public`
+- Konfigurasi routing sederhana dengan satu root route handler
+- Middleware JSON untuk ekspansi endpoint API di masa depan
 
-**Design Pattern**: The server follows a minimal Express.js pattern focused on static file serving. The architecture allows for easy API endpoint addition in the future.
+**Pola Desain**: Server mengikuti pola Express.js minimal yang fokus pada serving file statis. Arsitektur memungkinkan penambahan API endpoint dengan mudah di masa depan.
 
-**Server Configuration**:
-- Listens on port 5000 by default
-- Binds to 0.0.0.0 for external accessibility
-- Uses express.static middleware for efficient static file delivery
+**Konfigurasi Server**:
+- Listen pada port 5000 secara default
+- Bind ke 0.0.0.0 untuk aksesibilitas eksternal
+- Menggunakan middleware express.static untuk delivery file statis yang efisien
 
-**Alternative Considered**: Using the `serve` package (included in dependencies) as a simpler static server. Express was chosen to allow future backend API development without architectural changes.
+### Penyimpanan Data
 
-### Data Storage
+**Tanpa Implementasi Database**
+- Aplikasi beroperasi secara stateless
+- Tidak ada persistensi data pengguna
+- Pemrosesan gambar terjadi di sisi klien sebelum dikirim ke API
 
-**No Database Implementation**
-- Application operates statelessly
-- No user data persistence
-- Image processing happens client-side before API submission
+**Alasan**: Fungsi inti aplikasi (identifikasi anime) sepenuhnya bergantung pada API eksternal Trace.moe. Tidak ada kebutuhan autentikasi pengguna atau penyimpanan data, membuat database tidak diperlukan dan mengurangi kompleksitas infrastruktur.
 
-**Rationale**: The application's core functionality (anime identification) relies entirely on the external Trace.moe API. No user authentication or data storage requirements exist, making a database unnecessary and reducing infrastructure complexity.
+### Autentikasi & Otorisasi
 
-### Authentication & Authorization
+**Tanpa Sistem Autentikasi**
+- Aplikasi akses publik
+- Tidak ada akun pengguna atau manajemen session
+- Penanganan request stateless
 
-**No Authentication System**
-- Public access application
-- No user accounts or session management
-- Stateless request handling
+**Alasan**: Aplikasi menyediakan layanan utilitas publik tanpa fitur personal, menghilangkan kebutuhan autentikasi.
 
-**Rationale**: The application provides a public utility service without personalized features, eliminating authentication requirements.
+## Dependensi Eksternal
 
-## External Dependencies
-
-### Third-Party APIs
+### API Pihak Ketiga
 
 **Trace.moe API**
-- Primary service for anime scene identification
-- Accepts image uploads or URLs for reverse image search
-- Returns anime metadata including title, episode, timestamp, and similarity score
-- No API key required for basic usage
+- Layanan utama untuk identifikasi scene anime
+- Menerima upload gambar atau URL untuk reverse image search
+- Mengembalikan metadata anime termasuk judul, episode, timestamp, dan skor kecocokan
+- Tidak memerlukan API key untuk penggunaan dasar
 
-**Integration Method**: Client-side API calls directly from the browser (expected implementation based on UI structure)
+**Metode Integrasi**: Panggilan API langsung dari browser di sisi klien
 
-### NPM Packages
+**AniList GraphQL API**
+- Digunakan untuk mendapatkan informasi detail anime tambahan
+- Menyediakan data seperti studio, genre, rating, dan link eksternal
+- Tidak memerlukan autentikasi untuk query publik
 
-**Production Dependencies**:
-- `express` (v5.1.0): Web server framework
-- `serve` (v14.2.1): Alternative static file server (currently unused but available)
+### Package NPM
 
-**Development Tools**:
-- `@zeit/schemas`: Configuration schemas
-- `ajv`: JSON schema validation (transitive dependency)
+**Dependensi Produksi**:
+- `express` (v5.1.0): Framework web server
+- `serve` (v14.2.1): Server file statis alternatif (tersedia tapi tidak digunakan)
 
-### Runtime Requirements
+**Tool Development**:
+- `@zeit/schemas`: Schema konfigurasi
+- `ajv`: Validasi schema JSON (transitive dependency)
 
-**Node.js**: Version 18.0.0 or higher required for modern JavaScript features and Express 5.x compatibility
+### Kebutuhan Runtime
 
-### Deployment Configuration
+**Node.js**: Versi 18.0.0 atau lebih tinggi diperlukan untuk fitur JavaScript modern dan kompatibilitas Express 5.x
 
-**Port Configuration**: Uses environment variable `$PORT` in start script for platform flexibility (Replit, Heroku, etc.)
+### Konfigurasi Deployment
 
-**Static Asset Serving**: All frontend files (HTML, CSS, JavaScript) served from the `public` directory
+**Konfigurasi Port**: Menggunakan environment variable `$PORT` dalam script start untuk fleksibilitas platform (Replit, Heroku, dll.)
 
-## Project Structure
+**Serving Asset Statis**: Semua file frontend (HTML, CSS, JavaScript) dilayani dari direktori `public`
 
-### Key Files
-- `public/index.html` - Main application HTML with modals for developer info and server info
-- `public/style.css` - Complete styling including responsive design for mobile devices
-- `public/script.js` - Core application logic, API integration, and UI interactions
-- `public/coding-words.js` - Phrase rotation data for developer modal motivational messages
-- `public/dev-avatar.png` - Custom anime 2D coder avatar for developer profile
-- `public/backgrounds/` - Dynamic background images for different times of day
-- `server.js` - Express server configuration for static file serving
+## Struktur Proyek
 
-### Design Decisions
+### File Kunci
+- `public/index.html` - HTML aplikasi utama dengan modal untuk info developer dan info server
+- `public/style.css` - Styling lengkap termasuk desain responsif untuk perangkat mobile
+- `public/script.js` - Logika aplikasi inti, integrasi API, dan interaksi UI
+- `public/coding-words.js` - Data rotasi frase untuk pesan motivasi di modal developer
+- `public/dev-avatar.png` - Avatar anime 2D khusus untuk profil developer
+- `public/backgrounds/` - Gambar background dinamis untuk waktu yang berbeda dalam sehari
+- `server.js` - Konfigurasi server Express untuk serving file statis
 
-**Performance Optimization**
-- Replaced heavy character-by-character typing animation with lightweight 60-second phrase rotation
-- Optimized mobile layouts to reduce unnecessary rendering
-- Minimal JavaScript footprint with no external framework dependencies
+### Keputusan Desain
 
-**User Experience**
-- Achievement badges provide gamification element
-- Skills visualization helps users understand developer expertise
-- Server info transparency builds trust with clear metrics display
-- Mobile-first responsive design ensures accessibility across all devices
+**Optimasi Performa**
+- Mengganti animasi typing karakter per karakter yang berat dengan rotasi frase ringan 60 detik
+- Layout mobile yang dioptimasi untuk mengurangi rendering yang tidak perlu
+- Footprint JavaScript minimal tanpa dependensi framework eksternal
+
+**Pengalaman Pengguna**
+- Badge achievement memberikan elemen gamifikasi
+- Visualisasi skills membantu pengguna memahami keahlian developer
+- Transparansi info server membangun kepercayaan dengan tampilan metrik yang jelas
+- Desain responsif mobile-first memastikan aksesibilitas di semua perangkat
+
+**Fitur Input Ganda**
+- Tab switching yang smooth antara upload dan URL
+- Validasi input yang komprehensif untuk kedua metode
+- Handling error yang user-friendly
+- Preview konsisten untuk kedua metode input
+
+## Cara Penggunaan
+
+### Upload Gambar
+1. Klik tab "Upload Gambar" (default)
+2. Klik area upload atau drag & drop gambar
+3. Preview gambar akan muncul
+4. Klik tombol "🔍 Cari Anime"
+5. Hasil pencarian akan ditampilkan dengan detail lengkap
+
+### URL Gambar
+1. Klik tab "URL Gambar"
+2. Masukkan URL gambar yang valid (https://...)
+3. Klik "Muat Gambar" atau tekan Enter
+4. Preview gambar akan muncul
+5. Klik tombol "🔍 Cari Anime"
+6. Hasil pencarian akan ditampilkan dengan detail lengkap
+
+## Fitur Tambahan
+
+### Background Dinamis
+Aplikasi menampilkan background yang berubah sesuai waktu (zona waktu Jakarta/WIB):
+- **Pagi** (05:00 - 11:59): Background morning.png
+- **Siang** (12:00 - 17:59): Background afternoon.png
+- **Sore** (18:00 - 20:59): Background evening.png
+- **Malam** (21:00 - 04:59): Background night.png
+
+### Informasi Hasil
+Setiap hasil pencarian menampilkan:
+- Video preview atau thumbnail scene
+- Nama file/judul anime
+- Timestamp dan durasi
+- Persentase kecocokan dengan label akurasi
+- Informasi detail anime (dapat dibuka/tutup)
+- Studio produksi, genre, rating, dll
+- Judul alternatif anime
+- Link eksternal untuk info lebih lanjut
+
+### Modal Info
+- **Developer Info**: Profil developer dengan skills, achievements, dan streak
+- **Server Info**: Monitoring resource server (RAM, CPU, Storage, Uptime, dll)
+
+## Tech Stack
+
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Backend**: Node.js, Express.js
+- **API**: Trace.moe API, AniList GraphQL API
+- **Deployment**: Replit
+- **Runtime**: Node.js v20
+
+## Catatan Penting
+
+⚠️ **Scraper yang Digunakan**: Aplikasi hanya menggunakan Trace.moe sebagai scraper utama untuk hasil yang lebih akurat dan fokus pada anime.
+
+✅ **Mobile Responsive**: Semua fitur sudah dioptimasi untuk tampilan mobile dengan breakpoint di 768px, 640px, dan 480px.
+
+🎨 **UI/UX**: Interface dirancang dengan dark theme yang nyaman di mata dengan elemen glassmorphism modern.
+
+🚀 **Performa**: Aplikasi ringan tanpa framework frontend, loading cepat dengan minimal dependencies.
