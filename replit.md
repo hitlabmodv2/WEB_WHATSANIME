@@ -6,6 +6,14 @@ WhatAnime Finder adalah aplikasi web yang membantu pengguna menemukan anime dari
 
 ## Pembaruan Terbaru (Oktober 2025)
 
+### Tombol Situs Anime Indonesia 🇮🇩 (NEW!)
+- **Tombol direct link** ke situs streaming & download anime sub Indo
+- **3 situs populer**: Otakudesu (streaming), Animasu (streaming), Kusonime (batch download)
+- **Auto search**: Tombol langsung mencari anime berdasarkan judul di masing-masing situs
+- **Styling menarik**: Gradient buttons dengan warna berbeda untuk setiap situs
+- **Responsive mobile**: Layout vertikal full-width di layar kecil untuk kemudahan akses
+- **Informasi jelas**: Catatan kecil yang menjelaskan fungsi tombol
+
 ### Fitur Pencarian dengan URL Gambar ✨
 - **Tab switching** antara upload gambar dan URL gambar
 - **Input URL gambar** langsung seperti trace.moe

@@ -169,19 +169,29 @@ async function loadImageFromUrl() {
     }
 }
 
-function generateOtakudesuUrl(title) {
-    const searchQuery = encodeURIComponent(title?.romaji || title?.english || title?.native || '');
-    return `https://otakudesu.cloud/?s=${searchQuery}`;
+const animeSitesIndo = [
+    { name: 'Samehadaku', url: 'https://samehadaku.li/?s=', icon: '📺', color: 'red' },
+    { name: 'Anichin', url: 'https://anichin.vip/?s=', icon: '🎬', color: 'blue' },
+    { name: 'Nimegami', url: 'https://nimegami.id/?s=', icon: '💾', color: 'green' },
+    { name: 'Animeindo', url: 'https://anime-indo.net/?s=', icon: '🎯', color: 'purple' },
+    { name: 'Otakudesu', url: 'https://otakudesu.cloud/?s=', icon: '🌟', color: 'orange' },
+    { name: 'Kusonime', url: 'https://kusonime.com/?s=', icon: '📦', color: 'teal' },
+    { name: 'Layaranime', url: 'https://layaranime.com/?s=', icon: '🎞️', color: 'pink' },
+    { name: 'Anoboy', url: 'https://anoboy.be/?s=', icon: '🎪', color: 'indigo' },
+    { name: 'Kuramanime', url: 'https://kuramanime.net/?s=', icon: '🦊', color: 'amber' },
+    { name: 'Neonime', url: 'https://neonime.fun/?s=', icon: '✨', color: 'cyan' },
+    { name: 'Oploverz', url: 'https://oploverz.asia/?s=', icon: '🎮', color: 'rose' },
+    { name: 'Anikyojin', url: 'https://anikyojin.net/?s=', icon: '⚡', color: 'lime' }
+];
+
+function getRandomAnimeSites(count = 4) {
+    const shuffled = [...animeSitesIndo].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
 }
 
-function generateAnimasuUrl(title) {
+function generateAnimeUrl(baseUrl, title) {
     const searchQuery = encodeURIComponent(title?.romaji || title?.english || title?.native || '');
-    return `https://animasu.cc/?s=${searchQuery}`;
-}
-
-function generateKusonimeUrl(title) {
-    const searchQuery = encodeURIComponent(title?.romaji || title?.english || title?.native || '');
-    return `https://kusonime.com/?s=${searchQuery}`;
+    return baseUrl + searchQuery;
 }
 
 async function displayTraceMoeResults(results) {
@@ -326,20 +336,24 @@ async function displayTraceMoeResults(results) {
                     <div class="indo-anime-links">
                         <strong style="color: var(--primary-color);">🇮🇩 Nonton & Download Anime Sub Indo:</strong>
                         <div class="indo-links-container">
-                            <a href="${generateOtakudesuUrl(animeData.title)}" target="_blank" class="indo-link otakudesu">
+                            <a href="${generateSamehadakuUrl(animeData.title)}" target="_blank" class="indo-link samehadaku">
                                 <span class="link-icon">📺</span>
-                                <span class="link-text">Otakudesu</span>
+                                <span class="link-text">Samehadaku</span>
                             </a>
-                            <a href="${generateAnimasuUrl(animeData.title)}" target="_blank" class="indo-link animasu">
+                            <a href="${generateAnichinUrl(animeData.title)}" target="_blank" class="indo-link anichin">
                                 <span class="link-icon">🎬</span>
-                                <span class="link-text">Animasu</span>
+                                <span class="link-text">Anichin</span>
                             </a>
-                            <a href="${generateKusonimeUrl(animeData.title)}" target="_blank" class="indo-link kusonime">
+                            <a href="${generateNimegamiUrl(animeData.title)}" target="_blank" class="indo-link nimegami">
                                 <span class="link-icon">💾</span>
-                                <span class="link-text">Kusonime</span>
+                                <span class="link-text">Nimegami</span>
+                            </a>
+                            <a href="${generateAnimeindoUrl(animeData.title)}" target="_blank" class="indo-link animeindo">
+                                <span class="link-icon">🎯</span>
+                                <span class="link-text">Animeindo</span>
                             </a>
                         </div>
-                        <p class="indo-links-note">*Klik untuk mencari anime di situs streaming & download batch sub Indo</p>
+                        <p class="indo-links-note">*Klik untuk mencari anime di situs streaming & download batch sub Indo terpopuler</p>
                     </div>
                 </div>
             `;

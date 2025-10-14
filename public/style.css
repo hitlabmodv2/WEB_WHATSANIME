@@ -813,34 +813,44 @@ main {
     color: white;
 }
 
-.indo-link.otakudesu {
+.indo-link.samehadaku {
     background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
-.indo-link.otakudesu:hover {
+.indo-link.samehadaku:hover {
     background: linear-gradient(135deg, #dc2626, #b91c1c);
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
-.indo-link.animasu {
+.indo-link.anichin {
     background: linear-gradient(135deg, #3b82f6, #2563eb);
 }
 
-.indo-link.animasu:hover {
+.indo-link.anichin:hover {
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
-.indo-link.kusonime {
+.indo-link.nimegami {
     background: linear-gradient(135deg, #10b981, #059669);
 }
 
-.indo-link.kusonime:hover {
+.indo-link.nimegami:hover {
     background: linear-gradient(135deg, #059669, #047857);
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.indo-link.animeindo {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.indo-link.animeindo:hover {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 
 .indo-links-note {
