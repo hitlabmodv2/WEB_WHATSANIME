@@ -133,11 +133,17 @@ async function loadImageFromUrl() {
         urlLoadBtn.disabled = true;
         urlLoadBtn.innerHTML = '<span>⏳ Memuat...</span>';
         
-        const response = await fetch(url);
-        const blob = await response.blob();
+        const response = await fetch('/proxy-image', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ url })
+        });
         
-        if (!blob.type.startsWith('image/')) {
-            alert('URL yang diberikan bukan gambar yang valid!');
+        if (!response.ok) {
+            const error = await response.json();
+            alert(error.error || 'Gagal memuat gambar dari URL!');
             urlLoadBtn.disabled = false;
             urlLoadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -145,6 +151,7 @@ async function loadImageFromUrl() {
             return;
         }
         
+        const blob = await response.blob();
         const file = new File([blob], 'image-from-url.jpg', { type: blob.type });
         handleFile(file);
         
