@@ -336,24 +336,14 @@ async function displayTraceMoeResults(results) {
                     <div class="indo-anime-links">
                         <strong style="color: var(--primary-color);">🇮🇩 Nonton & Download Anime Sub Indo:</strong>
                         <div class="indo-links-container">
-                            <a href="${generateSamehadakuUrl(animeData.title)}" target="_blank" class="indo-link samehadaku">
-                                <span class="link-icon">📺</span>
-                                <span class="link-text">Samehadaku</span>
-                            </a>
-                            <a href="${generateAnichinUrl(animeData.title)}" target="_blank" class="indo-link anichin">
-                                <span class="link-icon">🎬</span>
-                                <span class="link-text">Anichin</span>
-                            </a>
-                            <a href="${generateNimegamiUrl(animeData.title)}" target="_blank" class="indo-link nimegami">
-                                <span class="link-icon">💾</span>
-                                <span class="link-text">Nimegami</span>
-                            </a>
-                            <a href="${generateAnimeindoUrl(animeData.title)}" target="_blank" class="indo-link animeindo">
-                                <span class="link-icon">🎯</span>
-                                <span class="link-text">Animeindo</span>
-                            </a>
+                            ${getRandomAnimeSites(4).map(site => `
+                                <a href="${generateAnimeUrl(site.url, animeData.title)}" target="_blank" class="indo-link">
+                                    <span class="link-icon">${site.icon}</span>
+                                    <span class="link-text">${site.name}</span>
+                                </a>
+                            `).join('')}
                         </div>
-                        <p class="indo-links-note">*Klik untuk mencari anime di situs streaming & download batch sub Indo terpopuler</p>
+                        <p class="indo-links-note">*Situs acak dari 12 situs streaming & download batch sub Indo terpopuler - Refresh untuk situs berbeda</p>
                     </div>
                 </div>
             `;
