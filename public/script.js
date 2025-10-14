@@ -169,6 +169,21 @@ async function loadImageFromUrl() {
     }
 }
 
+function generateOtakudesuUrl(title) {
+    const searchQuery = encodeURIComponent(title?.romaji || title?.english || title?.native || '');
+    return `https://otakudesu.cloud/?s=${searchQuery}`;
+}
+
+function generateAnimasuUrl(title) {
+    const searchQuery = encodeURIComponent(title?.romaji || title?.english || title?.native || '');
+    return `https://animasu.cc/?s=${searchQuery}`;
+}
+
+function generateKusonimeUrl(title) {
+    const searchQuery = encodeURIComponent(title?.romaji || title?.english || title?.native || '');
+    return `https://kusonime.com/?s=${searchQuery}`;
+}
+
 async function displayTraceMoeResults(results) {
     resultsContainer.innerHTML = '';
     
@@ -307,6 +322,25 @@ async function displayTraceMoeResults(results) {
                             </div>
                         </div>
                     ` : ''}
+                    
+                    <div class="indo-anime-links">
+                        <strong style="color: var(--primary-color);">🇮🇩 Nonton & Download Anime Sub Indo:</strong>
+                        <div class="indo-links-container">
+                            <a href="${generateOtakudesuUrl(animeData.title)}" target="_blank" class="indo-link otakudesu">
+                                <span class="link-icon">📺</span>
+                                <span class="link-text">Otakudesu</span>
+                            </a>
+                            <a href="${generateAnimasuUrl(animeData.title)}" target="_blank" class="indo-link animasu">
+                                <span class="link-icon">🎬</span>
+                                <span class="link-text">Animasu</span>
+                            </a>
+                            <a href="${generateKusonimeUrl(animeData.title)}" target="_blank" class="indo-link kusonime">
+                                <span class="link-icon">💾</span>
+                                <span class="link-text">Kusonime</span>
+                            </a>
+                        </div>
+                        <p class="indo-links-note">*Klik untuk mencari anime di situs streaming & download batch sub Indo</p>
+                    </div>
                 </div>
             `;
         }

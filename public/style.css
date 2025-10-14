@@ -715,6 +715,22 @@ main {
         margin-bottom: 2px;
         min-width: auto;
     }
+    
+    .indo-links-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .indo-link {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 14px;
+    }
+    
+    .indo-links-note {
+        font-size: 0.7rem;
+        text-align: center;
+    }
 }
 
 .external-links {
@@ -749,6 +765,89 @@ main {
 .ext-link:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
+}
+
+.indo-anime-links {
+    margin-top: 16px;
+    padding: 14px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(99, 102, 241, 0.08));
+    border-radius: 10px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.indo-anime-links strong {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #ef4444, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.indo-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.indo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.link-icon {
+    font-size: 1rem;
+}
+
+.link-text {
+    color: white;
+}
+
+.indo-link.otakudesu {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.indo-link.otakudesu:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.indo-link.animasu {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.indo-link.animasu:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.indo-link.kusonime {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.indo-link.kusonime:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.indo-links-note {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 6px 0 0 0;
+    font-style: italic;
 }
 
 footer {
