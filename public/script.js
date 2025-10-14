@@ -11,10 +11,14 @@ const loadingText = document.getElementById('loadingText');
 const resultsSection = document.getElementById('resultsSection');
 const resultsContainer = document.getElementById('resultsContainer');
 const uploadContent = document.getElementById('uploadContent');
-const scraperSelect = document.getElementById('scraperSelect');
+const urlContent = document.getElementById('urlContent');
+const urlInput = document.getElementById('urlInput');
+const urlLoadBtn = document.getElementById('urlLoadBtn');
 const loadingContainer = document.getElementById('loadingContainer');
 const loadingBar = document.getElementById('loadingBar');
 const loadingPercentage = document.getElementById('loadingPercentage');
+
+let currentInputMethod = 'upload';
 
 function animateProgressBar() {
     let progress = 10;
@@ -58,6 +62,7 @@ function handleFile(file) {
     reader.onload = (e) => {
         previewImage.src = e.target.result;
         uploadContent.style.display = 'none';
+        urlContent.style.display = 'none';
         previewBox.style.display = 'block';
         btnSearch.disabled = false;
     };
@@ -75,11 +80,86 @@ function resetToUploadTab() {
     
     selectedFile = null;
     previewBox.style.display = 'none';
-    uploadContent.style.display = 'block';
+    if (currentInputMethod === 'upload') {
+        uploadContent.style.display = 'block';
+    } else {
+        urlContent.style.display = 'block';
+    }
     btnSearch.disabled = true;
     fileInput.value = '';
+    urlInput.value = '';
     resultsSection.style.display = 'none';
     resultsContainer.innerHTML = '';
+}
+
+function switchTab(tabName) {
+    currentInputMethod = tabName;
+    
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.tab-btn').classList.add('active');
+    
+    uploadContent.classList.remove('active');
+    urlContent.classList.remove('active');
+    
+    if (tabName === 'upload') {
+        uploadContent.classList.add('active');
+        uploadContent.style.display = 'block';
+        urlContent.style.display = 'none';
+    } else {
+        urlContent.classList.add('active');
+        urlContent.style.display = 'block';
+        uploadContent.style.display = 'none';
+    }
+    
+    resetToUploadTab();
+}
+
+async function loadImageFromUrl() {
+    const url = urlInput.value.trim();
+    
+    if (!url) {
+        alert('Masukkan URL gambar terlebih dahulu!');
+        return;
+    }
+    
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        alert('URL harus dimulai dengan http:// atau https://');
+        return;
+    }
+    
+    try {
+        urlLoadBtn.disabled = true;
+        urlLoadBtn.innerHTML = '<span>⏳ Memuat...</span>';
+        
+        const response = await fetch(url);
+        const blob = await response.blob();
+        
+        if (!blob.type.startsWith('image/')) {
+            alert('URL yang diberikan bukan gambar yang valid!');
+            urlLoadBtn.disabled = false;
+            urlLoadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>Muat Gambar`;
+            return;
+        }
+        
+        const file = new File([blob], 'image-from-url.jpg', { type: blob.type });
+        handleFile(file);
+        
+        urlLoadBtn.disabled = false;
+        urlLoadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>Muat Gambar`;
+    } catch (error) {
+        console.error('Error loading image:', error);
+        alert('Gagal memuat gambar dari URL. Pastikan URL valid dan dapat diakses!');
+        urlLoadBtn.disabled = false;
+        urlLoadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>Muat Gambar`;
+    }
 }
 
 async function displayTraceMoeResults(results) {
@@ -232,88 +312,6 @@ async function displayTraceMoeResults(results) {
     resultsSection.style.display = 'block';
 }
 
-async function displaySauceNAOResults(results) {
-    resultsContainer.innerHTML = '';
-    
-    if (!results || results.length === 0) {
-        resultsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Tidak ada hasil ditemukan.</p>';
-        resultsSection.style.display = 'block';
-        return;
-    }
-
-    const uniqueResults = [];
-    const seen = new Set();
-    
-    for (const result of results) {
-        const data = result.data || {};
-        const key = `${data.title || data.source}-${data.author || data.member_name}`;
-        if (!seen.has(key)) {
-            seen.add(key);
-            uniqueResults.push(result);
-        }
-        if (uniqueResults.length >= 5) break;
-    }
-    
-    const topResults = uniqueResults;
-    
-    for (const result of topResults) {
-        const similarity = result.header?.similarity || 0;
-        const data = result.data || {};
-        const accuracyInfo = getAccuracyLabel(parseFloat(similarity));
-        
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        const cardId = `card-${Math.random().toString(36).substr(2, 9)}`;
-        
-        let cardHTML = `
-            <div class="result-media">
-                ${result.header?.thumbnail ? `
-                    <img src="${result.header.thumbnail}" alt="Result" class="result-thumbnail">
-                ` : ''}
-            </div>
-            <div class="result-content">
-                <div class="result-summary">
-                    <div class="filename">${data.title || data.source || 'Unknown'}</div>
-                    <div class="timestamp-row">
-                        <span class="timestamp">🎨 ${data.author || data.member_name || 'Unknown Artist'}</span>
-                        <div class="similarity-container">
-                            <span class="similarity-badge">✓ ${similarity}%</span>
-                            <span class="accuracy-label ${accuracyInfo.class}">${accuracyInfo.text}</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
-                    <span class="spoiler-icon">▼</span> Detail
-                </button>
-                <div class="anime-info spoiler-content" id="${cardId}" style="display: none;">
-                    ${data.title ? `<div class="anime-title">${data.title}</div>` : ''}
-                    ${data.part ? `<div class="info-line">📖 ${data.part}</div>` : ''}
-                    ${data.year ? `<div class="info-line">📅 ${data.year}</div>` : ''}
-                    ${data.est_time ? `<div class="info-line">⏱️ ${data.est_time}</div>` : ''}
-                    ${data.author || data.member_name ? `<div class="info-line"><strong>👤 Artist:</strong> ${data.author || data.member_name}</div>` : ''}
-                    ${data.material || data.source ? `<div class="info-line"><strong>📚 Source:</strong> ${data.material || data.source}</div>` : ''}
-                    ${data.characters ? `<div class="info-line"><strong>👥 Characters:</strong> ${data.characters}</div>` : ''}
-                    ${result.header?.index_name ? `<div class="info-line"><strong>🗂️ Database:</strong> ${result.header.index_name}</div>` : ''}
-                    ${data.ext_urls?.length ? `
-                        <div class="external-links">
-                            <strong>🔗 External Links:</strong>
-                            <div class="links-container">
-                                ${data.ext_urls.slice(0, 5).map(url => 
-                                    `<a href="${url}" target="_blank" class="ext-link">${new URL(url).hostname}</a>`
-                                ).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            </div>
-        `;
-        
-        card.innerHTML = cardHTML;
-        resultsContainer.appendChild(card);
-    }
-
-    resultsSection.style.display = 'block';
-}
 
 async function fetchAnilistData(anilistId) {
     try {
@@ -527,14 +525,7 @@ btnSearch.addEventListener('click', async () => {
     resultsSection.style.display = 'none';
 
     try {
-        const scraper = scraperSelect.value;
-        
-        if (scraper === 'tracemoe') {
-            await searchTraceMoe();
-        } else if (scraper === 'saucenao') {
-            await searchSauceNAO();
-        }
-        
+        await searchTraceMoe();
         progressBar.complete();
     } catch (error) {
         console.error('Error:', error);
@@ -575,18 +566,6 @@ async function searchTraceMoe() {
     displayTraceMoeResults(data.result);
 }
 
-async function searchSauceNAO() {
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-    
-    const response = await fetch('https://saucenao.com/search.php?output_type=2&numres=5', {
-        method: 'POST',
-        body: formData
-    });
-    
-    const data = await response.json();
-    displaySauceNAOResults(data.results);
-}
 
 function toggleSpoiler(id) {
     const content = document.getElementById(id);
@@ -625,6 +604,21 @@ scrollToTopBtn.addEventListener('click', () => {
         top: 0,
         behavior: 'smooth'
     });
+});
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const tabName = btn.getAttribute('data-tab');
+        switchTab(tabName);
+    });
+});
+
+urlLoadBtn.addEventListener('click', loadImageFromUrl);
+
+urlInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        loadImageFromUrl();
+    }
 });
 
 const menuBtn = document.getElementById('menuBtn');

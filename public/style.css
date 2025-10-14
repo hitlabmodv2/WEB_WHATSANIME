@@ -198,97 +198,67 @@ main {
     margin-bottom: 30px;
 }
 
-.scraper-selector {
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.scraper-selector label {
-    color: var(--text-color);
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.scraper-select {
-    flex: 1;
-    background: rgba(30, 41, 59, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: var(--text-color);
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 0.9rem;
-    outline: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.scraper-select option {
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 10px;
-    font-weight: 500;
-}
-
-.scraper-select:hover {
-    border-color: var(--primary-color);
-}
-
-.scraper-select:focus {
-    border-color: var(--primary-color);
-    background: rgba(99, 102, 241, 0.2);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-}
-
-.tabs {
+.input-method-tabs {
     display: flex;
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    background: rgba(30, 41, 59, 0.3);
+    padding: 6px;
+    border-radius: 12px;
 }
 
 .tab-btn {
     flex: 1;
-    background: var(--card-bg);
+    background: transparent;
     color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 0.95rem;
-    font-weight: 500;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 .tab-btn:hover {
-    background: rgba(99, 102, 241, 0.1);
-    border-color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.2);
     color: var(--text-color);
 }
 
 .tab-btn.active {
     background: var(--primary-color);
     color: white;
-    border-color: var(--primary-color);
+}
+
+.tab-btn svg {
+    flex-shrink: 0;
 }
 
 .tab-content {
-    margin-bottom: 16px;
+    display: none;
 }
 
-.url-input-box {
+.tab-content.active {
+    display: block;
+}
+
+.url-input-container {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    align-items: stretch;
 }
 
 .url-input {
     flex: 1;
-    background: var(--card-bg);
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: var(--text-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(99, 102, 241, 0.3);
     border-radius: 12px;
     padding: 14px 16px;
     font-size: 0.95rem;
@@ -298,30 +268,41 @@ main {
 
 .url-input:focus {
     border-color: var(--primary-color);
-    background: rgba(99, 102, 241, 0.05);
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .url-input::placeholder {
     color: var(--text-secondary);
 }
 
-.btn-load-url {
-    background: var(--card-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
+.url-load-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
     border-radius: 12px;
-    padding: 0 20px;
-    font-size: 0.95rem;
-    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.btn-load-url:hover {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
+.url-load-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.url-load-btn:active {
+    transform: translateY(0);
+}
+
+.url-load-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .upload-box {

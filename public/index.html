@@ -39,15 +39,22 @@
 
         <main>
             <div class="upload-section">
-                <div class="scraper-selector">
-                    <label for="scraperSelect">Pilih Scraper:</label>
-                    <select id="scraperSelect" class="scraper-select">
-                        <option value="tracemoe">V1 - Trace.moe (Anime Detection)</option>
-                        <option value="saucenao">V2 - SauceNAO (Multi Source)</option>
-                    </select>
+                <div class="input-method-tabs">
+                    <button class="tab-btn active" data-tab="upload">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Upload Gambar
+                    </button>
+                    <button class="tab-btn" data-tab="url">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        URL Gambar
+                    </button>
                 </div>
 
-                <div class="tab-content" id="uploadContent">
+                <div class="tab-content active" id="uploadContent">
                     <div class="upload-box" id="uploadBox">
                         <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -55,6 +62,18 @@
                         <p class="upload-text">Klik atau drag gambar di sini</p>
                         <p class="upload-hint">Mendukung: JPG, PNG, GIF, WebP, BMP, SVG</p>
                         <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="urlContent" style="display: none;">
+                    <div class="url-input-container">
+                        <input type="text" id="urlInput" class="url-input" placeholder="Masukkan URL gambar (https://...)" />
+                        <button class="url-load-btn" id="urlLoadBtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Muat Gambar
+                        </button>
                     </div>
                 </div>
                 
