@@ -603,6 +603,21 @@ main {
     background: rgba(99, 102, 241, 0.2);
 }
 
+.dev-spoiler-btn {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+    border: 1px solid rgba(168, 85, 247, 0.5);
+    color: #a855f7;
+    margin-top: 8px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+}
+
+.dev-spoiler-btn:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+    transform: translateY(-1px);
+}
+
 .spoiler-icon {
     transition: transform 0.3s ease;
 }

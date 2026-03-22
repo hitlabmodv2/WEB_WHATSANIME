@@ -661,6 +661,25 @@ function toggleSpoiler(id) {
 
 window.toggleSpoiler = toggleSpoiler;
 
+function toggleDevSpoiler() {
+    const content = document.getElementById('devSpoilerContent');
+    const icon = document.getElementById('devSpoilerIcon');
+    const btn = document.getElementById('devSpoilerBtn');
+
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        content.classList.add('spoiler-content');
+        icon.textContent = '▲';
+        btn.childNodes[1].textContent = ' Sembunyikan Info Lanjutan';
+    } else {
+        content.style.display = 'none';
+        icon.textContent = '▼';
+        btn.childNodes[1].textContent = ' Lihat Info Lebih Lanjut';
+    }
+}
+
+window.toggleDevSpoiler = toggleDevSpoiler;
+
 updateDateTime();
 setInterval(updateDateTime, 1000);
 
