@@ -746,10 +746,6 @@ main {
         gap: 8px;
     }
     
-    .indo-links-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .indo-link {
         width: 100%;
         justify-content: center;
@@ -823,7 +819,7 @@ main {
 
 .indo-links-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin: 10px 0 8px;
 }
