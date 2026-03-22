@@ -4,12 +4,12 @@
   "description": "Personal website for Bang Wily",
   "main": "index.html",
   "scripts": {
-    "start": "npx serve . -p $PORT",
-    "dev": "serve . -p 3000"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "serve": "^14.2.1"
+    "express": "^5.2.1",
+    "serve": "^14.2.6"
   },
   "engines": {
     "node": ">=18.0.0"
