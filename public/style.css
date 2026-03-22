@@ -698,9 +698,51 @@ main {
 }
 
 .synopsis-section strong {
-    display: block;
     font-size: 0.95rem;
-    margin-bottom: 8px;
+    margin-bottom: 0;
+}
+
+.section-spoiler-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+.section-spoiler-title {
+    font-size: 0.9rem;
+    display: flex !important;
+    align-items: center;
+    margin-bottom: 0 !important;
+}
+
+.section-spoiler-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    padding: 4px 11px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-radius: 6px;
+    color: var(--primary-color);
+    transition: all 0.25s ease;
+    letter-spacing: 0.2px;
+}
+
+.section-spoiler-btn:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.section-spoiler-btn.active {
+    background: rgba(99, 102, 241, 0.18);
+    border-color: var(--primary-color);
 }
 
 .synopsis-text {
@@ -718,9 +760,8 @@ main {
 }
 
 .alias-section strong {
-    display: block;
     font-size: 0.95rem;
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .alias-list {
@@ -781,9 +822,8 @@ main {
 }
 
 .external-links strong {
-    display: block;
     font-size: 0.95rem;
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .links-container {

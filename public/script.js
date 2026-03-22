@@ -334,15 +334,29 @@ async function displayTraceMoeResults(results) {
                     
                     ${animeData.description ? `
                         <div class="synopsis-section">
-                            <strong style="color: var(--primary-color);">📖 Sinopsis:</strong>
-                            <p class="synopsis-text">${animeData.description.replace(/\n/g, ' ').substring(0, 400)}${animeData.description.length > 400 ? '...' : ''}</p>
+                            <div class="section-spoiler-header">
+                                <strong class="section-spoiler-title">📖 Sinopsis</strong>
+                                <button class="section-spoiler-btn" onclick="toggleInlineSpoiler('syn-${cardId}', this, 'Tampilkan', 'Sembunyikan')">
+                                    <span class="spoiler-icon">▼</span>
+                                    <span class="section-spoiler-label">Tampilkan</span>
+                                </button>
+                            </div>
+                            <div id="syn-${cardId}" class="spoiler-content" style="display:none;">
+                                <p class="synopsis-text">${animeData.description.replace(/\n/g, ' ').substring(0, 400)}${animeData.description.length > 400 ? '...' : ''}</p>
+                            </div>
                         </div>
                     ` : ''}
                     
                     ${allTitles.length > 0 ? `
                         <div class="alias-section">
-                            <strong style="color: var(--primary-color);">📋 Judul Alternatif:</strong>
-                            <div class="alias-list">
+                            <div class="section-spoiler-header">
+                                <strong class="section-spoiler-title">📋 Judul Alternatif</strong>
+                                <button class="section-spoiler-btn" onclick="toggleInlineSpoiler('alias-${cardId}', this, 'Tampilkan', 'Sembunyikan')">
+                                    <span class="spoiler-icon">▼</span>
+                                    <span class="section-spoiler-label">Tampilkan</span>
+                                </button>
+                            </div>
+                            <div id="alias-${cardId}" class="spoiler-content alias-list" style="display:none;">
                                 ${allTitles.map(alias => `<div class="alias">${alias}</div>`).join('')}
                             </div>
                         </div>
@@ -350,8 +364,14 @@ async function displayTraceMoeResults(results) {
                     
                     ${animeData.externalLinks?.length ? `
                         <div class="external-links">
-                            <strong style="color: var(--primary-color);">🔗 Link Eksternal:</strong>
-                            <div class="links-container">
+                            <div class="section-spoiler-header">
+                                <strong class="section-spoiler-title">🔗 Link Eksternal</strong>
+                                <button class="section-spoiler-btn" onclick="toggleInlineSpoiler('ext-${cardId}', this, 'Tampilkan', 'Sembunyikan')">
+                                    <span class="spoiler-icon">▼</span>
+                                    <span class="section-spoiler-label">Tampilkan</span>
+                                </button>
+                            </div>
+                            <div id="ext-${cardId}" class="spoiler-content links-container" style="display:none;">
                                 ${animeData.externalLinks.slice(0, 5).map(link => 
                                     `<a href="${link.url}" target="_blank" class="ext-link">${link.site}</a>`
                                 ).join('')}
@@ -707,6 +727,26 @@ function toggleIndoSpoiler(id, btn) {
 }
 
 window.toggleIndoSpoiler = toggleIndoSpoiler;
+
+function toggleInlineSpoiler(id, btn, showText, hideText) {
+    const content = document.getElementById(id);
+    const icon = btn.querySelector('.spoiler-icon');
+    const label = btn.querySelector('.section-spoiler-label');
+
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.textContent = '▲';
+        label.textContent = hideText;
+        btn.classList.add('active');
+    } else {
+        content.style.display = 'none';
+        icon.textContent = '▼';
+        label.textContent = showText;
+        btn.classList.remove('active');
+    }
+}
+
+window.toggleInlineSpoiler = toggleInlineSpoiler;
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
