@@ -1399,27 +1399,57 @@ footer {
     color: var(--text-secondary);
 }
 
-.whatsapp-btn {
+.contact-section {
+    text-align: center;
+    margin-top: 4px;
+}
+
+.contact-label {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.contact-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.whatsapp-btn,
+.facebook-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #25D366, #128C7E);
-    color: white;
+    gap: 8px;
+    flex: 1;
+    padding: 12px 10px;
     border: none;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
+    color: white;
+}
+
+.whatsapp-btn {
+    background: linear-gradient(135deg, #25D366, #128C7E);
 }
 
 .whatsapp-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+}
+
+.facebook-btn {
+    background: linear-gradient(135deg, #1877F2, #0c5abf);
+}
+
+.facebook-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4);
 }
 
 .server-info-grid {
