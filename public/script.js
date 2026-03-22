@@ -766,30 +766,39 @@ async function updateServerInfo() {
     try {
         const res = await fetch('/api/server-info');
         const info = await res.json();
-
-        const { ram, cpu, uptime, totalRequests } = info;
+        const { ram, cpu, heap, uptime, totalRequests, nodeVersion, platform, arch, pid } = info;
 
         document.getElementById('ramUsage').textContent = `${ram.percent}% (${ram.usedMB} MB / ${ram.totalMB} MB)`;
         document.getElementById('ramBar').style.width = ram.percent + '%';
-        document.getElementById('ramTotal').textContent = `Total: ${ram.totalMB} MB`;
+        document.getElementById('ramTotal').textContent = `Free: ${ram.freeMB} MB`;
 
-        document.getElementById('cpuUsage').textContent = `${cpu.percent}%`;
-        document.getElementById('cpuBar').style.width = cpu.percent + '%';
+        document.getElementById('cpuUsage').textContent = `${cpu.percent}% (Load: ${cpu.load1})`;
+        document.getElementById('cpuBar').style.width = Math.min(cpu.percent, 100) + '%';
+        document.getElementById('cpuLoad5').textContent = `Load 5m: ${cpu.load5}`;
 
-        document.getElementById('storageUsage').textContent = 'Replit Cloud';
-        document.getElementById('storageBar').style.width = '0%';
+        document.getElementById('heapUsage').textContent = `${heap.percent}% (${heap.usedMB} MB / ${heap.totalMB} MB)`;
+        document.getElementById('heapBar').style.width = heap.percent + '%';
+        document.getElementById('heapRss').textContent = `RSS: ${heap.rssMB} MB`;
 
-        document.getElementById('temperature').textContent = 'N/A';
-        document.getElementById('totalRequests').textContent = totalRequests.toLocaleString();
+        document.getElementById('cpuCores').textContent = `${cpu.count} Core`;
+        document.getElementById('cpuArch').textContent = `Arch: ${arch}`;
+        document.getElementById('cpuModel').textContent = cpu.model;
 
         const h = String(uptime.hours).padStart(2, '0');
         const m = String(uptime.minutes).padStart(2, '0');
         const s = String(uptime.seconds).padStart(2, '0');
         document.getElementById('uptime').textContent = `${h}j ${m}m ${s}d`;
+
+        document.getElementById('totalRequests').textContent = totalRequests.toLocaleString();
+
+        document.getElementById('svrPlatform').textContent = platform;
+        document.getElementById('svrArch').textContent = arch;
+        document.getElementById('svrNode').textContent = nodeVersion;
+        document.getElementById('svrPid').textContent = pid;
     } catch (e) {
-        document.getElementById('ramUsage').textContent = 'Tidak tersedia';
-        document.getElementById('cpuUsage').textContent = 'Tidak tersedia';
-        document.getElementById('uptime').textContent = 'Tidak tersedia';
+        ['ramUsage','cpuUsage','heapUsage','cpuCores','uptime','totalRequests'].forEach(id => {
+            document.getElementById(id).textContent = 'Tidak tersedia';
+        });
     }
 }
 

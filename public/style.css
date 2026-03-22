@@ -1575,6 +1575,10 @@ footer {
     background: linear-gradient(90deg, #f59e0b, #fbbf24);
 }
 
+.info-bar-fill.heap-bar {
+    background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+}
+
 .server-status {
     display: flex;
     align-items: center;

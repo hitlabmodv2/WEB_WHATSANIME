@@ -268,74 +268,86 @@
                             <div class="info-bar">
                                 <div class="info-bar-fill" id="ramBar"></div>
                             </div>
-                            <div class="info-subtitle" id="ramTotal">Total: 512 MB</div>
+                            <div class="info-subtitle" id="ramTotal">-</div>
                         </div>
                     </div>
-                    
+
                     <div class="info-card">
                         <div class="info-icon">⚡</div>
                         <div class="info-details">
-                            <div class="info-title">CPU Usage</div>
+                            <div class="info-title">CPU Load</div>
                             <div class="info-value" id="cpuUsage">Loading...</div>
                             <div class="info-bar">
                                 <div class="info-bar-fill cpu-bar" id="cpuBar"></div>
                             </div>
+                            <div class="info-subtitle" id="cpuLoad5">Load 5m: -</div>
                         </div>
                     </div>
-                    
+
                     <div class="info-card">
-                        <div class="info-icon">💿</div>
+                        <div class="info-icon">🧠</div>
                         <div class="info-details">
-                            <div class="info-title">Storage</div>
-                            <div class="info-value" id="storageUsage">Loading...</div>
+                            <div class="info-title">Heap Memory</div>
+                            <div class="info-value" id="heapUsage">Loading...</div>
                             <div class="info-bar">
-                                <div class="info-bar-fill storage-bar" id="storageBar"></div>
+                                <div class="info-bar-fill heap-bar" id="heapBar"></div>
                             </div>
+                            <div class="info-subtitle" id="heapRss">RSS: -</div>
                         </div>
                     </div>
-                    
+
+                    <div class="info-card">
+                        <div class="info-icon">🖥️</div>
+                        <div class="info-details">
+                            <div class="info-title">CPU Cores</div>
+                            <div class="info-value" id="cpuCores">Loading...</div>
+                            <div class="info-subtitle" id="cpuArch">Arch: -</div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">⏱️</div>
+                        <div class="info-details">
+                            <div class="info-title">Uptime Server</div>
+                            <div class="info-value" id="uptime">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">📊</div>
+                        <div class="info-details">
+                            <div class="info-title">Total Request</div>
+                            <div class="info-value" id="totalRequests">Loading...</div>
+                        </div>
+                    </div>
+
                     <div class="info-card">
                         <div class="info-icon">🌐</div>
                         <div class="info-details">
-                            <div class="info-title">Server Status</div>
+                            <div class="info-title">Status Server</div>
                             <div class="info-value server-status">
                                 <span class="status-dot online"></span> Online
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="info-card">
-                        <div class="info-icon">⏱️</div>
-                        <div class="info-details">
-                            <div class="info-title">Uptime</div>
-                            <div class="info-value" id="uptime">Loading...</div>
-                        </div>
-                    </div>
-                    
+
                     <div class="info-card">
                         <div class="info-icon">📍</div>
                         <div class="info-details">
-                            <div class="info-title">Server Location</div>
+                            <div class="info-title">Lokasi Server</div>
                             <div class="info-value">Replit Cloud</div>
+                            <div class="info-subtitle">USA 🇺🇸</div>
                         </div>
                     </div>
-                    
-                    <div class="info-card">
-                        <div class="info-icon">🌡️</div>
+
+                    <div class="info-card full-width">
+                        <div class="info-icon">💻</div>
                         <div class="info-details">
-                            <div class="info-title">Temperature</div>
-                            <div class="info-value" id="temperature">Loading...</div>
+                            <div class="info-title">Model CPU</div>
+                            <div class="info-value" id="cpuModel" style="font-size:0.8rem; word-break:break-all;">Loading...</div>
                         </div>
                     </div>
-                    
-                    <div class="info-card">
-                        <div class="info-icon">📊</div>
-                        <div class="info-details">
-                            <div class="info-title">Total Requests</div>
-                            <div class="info-value" id="totalRequests">Loading...</div>
-                        </div>
-                    </div>
-                    
+
                     <div class="info-card full-width">
                         <div class="info-icon">🔧</div>
                         <div class="info-details">
@@ -345,22 +357,32 @@
                                 <span class="tech-badge">Express</span>
                                 <span class="tech-badge">Vanilla JS</span>
                                 <span class="tech-badge">Trace.moe API</span>
+                                <span class="tech-badge">AniList API</span>
+                                <span class="tech-badge">SSE</span>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="info-card full-width">
                         <div class="info-icon">⚙️</div>
                         <div class="info-details">
-                            <div class="info-title">Server Info</div>
+                            <div class="info-title">Detail Server</div>
                             <div class="server-details">
                                 <div class="detail-row">
                                     <span class="detail-label">Platform:</span>
-                                    <span class="detail-value">Replit</span>
+                                    <span class="detail-value" id="svrPlatform">-</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Arsitektur:</span>
+                                    <span class="detail-value" id="svrArch">-</span>
                                 </div>
                                 <div class="detail-row">
                                     <span class="detail-label">Runtime:</span>
-                                    <span class="detail-value">Node.js v20</span>
+                                    <span class="detail-value" id="svrNode">-</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Process ID:</span>
+                                    <span class="detail-value" id="svrPid">-</span>
                                 </div>
                                 <div class="detail-row">
                                     <span class="detail-label">Status:</span>

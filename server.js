@@ -88,16 +88,27 @@ app.get('/api/server-info', (req, res) => {
   const seconds = uptimeSeconds % 60;
 
   const load = os.loadavg();
-  const cpuCount = os.cpus().length;
+  const cpus = os.cpus();
+  const cpuCount = cpus.length;
   const cpuPercent = Math.min(((load[0] / cpuCount) * 100).toFixed(1), 100);
+  const cpuModel = cpus[0]?.model?.trim() || 'Unknown';
+
+  const heap = process.memoryUsage();
+  const heapUsedMB = Math.round(heap.heapUsed / 1024 / 1024);
+  const heapTotalMB = Math.round(heap.heapTotal / 1024 / 1024);
+  const heapPercent = ((heap.heapUsed / heap.heapTotal) * 100).toFixed(1);
+  const rssMB = Math.round(heap.rss / 1024 / 1024);
 
   res.json({
-    ram: { percent: parseFloat(ramPercent), usedMB: ramUsedMB, totalMB: ramTotalMB },
-    cpu: { percent: parseFloat(cpuPercent) },
+    ram: { percent: parseFloat(ramPercent), usedMB: ramUsedMB, totalMB: ramTotalMB, freeMB: Math.round(os.freemem() / 1024 / 1024) },
+    cpu: { percent: parseFloat(cpuPercent), count: cpuCount, model: cpuModel, load1: load[0].toFixed(2), load5: load[1].toFixed(2) },
+    heap: { percent: parseFloat(heapPercent), usedMB: heapUsedMB, totalMB: heapTotalMB, rssMB },
     uptime: { hours, minutes, seconds },
     totalRequests,
     nodeVersion: process.version,
-    platform: os.platform()
+    platform: os.platform(),
+    arch: os.arch(),
+    pid: process.pid
   });
 });
 
