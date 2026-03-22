@@ -918,18 +918,29 @@ function rotatePhrase() {
     currentPhraseIndex = (currentPhraseIndex + 1) % codingPhrases.length;
 }
 
+function lockScroll() {
+    document.body.style.overflow = 'hidden';
+}
+
+function unlockScroll() {
+    document.body.style.overflow = '';
+}
+
 openUpdateLog.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     updateModal.classList.add('show');
+    lockScroll();
 });
 
 updateModalClose.addEventListener('click', () => {
     updateModal.classList.remove('show');
+    unlockScroll();
 });
 
 updateModal.addEventListener('click', (e) => {
     if (e.target === updateModal) {
         updateModal.classList.remove('show');
+        unlockScroll();
     }
 });
 
@@ -959,7 +970,7 @@ window.toggleUpdateEntry = toggleUpdateEntry;
 openDeveloper.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     devModal.classList.add('show');
-    
+    lockScroll();
     if (!phraseInterval) {
         rotatePhrase();
         phraseInterval = setInterval(rotatePhrase, 60000);
@@ -969,26 +980,31 @@ openDeveloper.addEventListener('click', () => {
 openServerInfo.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     serverModal.classList.add('show');
+    lockScroll();
     updateServerInfo();
 });
 
 devModalClose.addEventListener('click', () => {
     devModal.classList.remove('show');
+    unlockScroll();
 });
 
 serverModalClose.addEventListener('click', () => {
     serverModal.classList.remove('show');
+    unlockScroll();
 });
 
 devModal.addEventListener('click', (e) => {
     if (e.target === devModal) {
         devModal.classList.remove('show');
+        unlockScroll();
     }
 });
 
 serverModal.addEventListener('click', (e) => {
     if (e.target === serverModal) {
         serverModal.classList.remove('show');
+        unlockScroll();
     }
 });
 
