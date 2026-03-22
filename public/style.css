@@ -746,6 +746,10 @@ main {
         gap: 8px;
     }
     
+    .indo-links-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .indo-link {
         width: 100%;
         justify-content: center;
@@ -817,6 +821,33 @@ main {
     margin-bottom: 8px;
 }
 
+.indo-links-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 10px 0 8px;
+}
+
+.indo-link-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+    padding: 9px 6px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.indo-link-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
 .indo-link {
     display: inline-flex;
     align-items: center;
@@ -831,7 +862,7 @@ main {
 }
 
 .link-icon {
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 .link-text {

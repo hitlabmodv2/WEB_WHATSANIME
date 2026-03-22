@@ -195,24 +195,19 @@ async function loadImageFromUrl() {
 }
 
 const animeSitesIndo = [
-    { name: 'Samehadaku', url: 'https://samehadaku.li/?s=', icon: '📺', color: 'red' },
-    { name: 'Anichin', url: 'https://anichin.vip/?s=', icon: '🎬', color: 'blue' },
-    { name: 'Nimegami', url: 'https://nimegami.id/?s=', icon: '💾', color: 'green' },
-    { name: 'Animeindo', url: 'https://anime-indo.net/?s=', icon: '🎯', color: 'purple' },
-    { name: 'Otakudesu', url: 'https://otakudesu.cloud/?s=', icon: '🌟', color: 'orange' },
-    { name: 'Kusonime', url: 'https://kusonime.com/?s=', icon: '📦', color: 'teal' },
-    { name: 'Layaranime', url: 'https://layaranime.com/?s=', icon: '🎞️', color: 'pink' },
-    { name: 'Anoboy', url: 'https://anoboy.be/?s=', icon: '🎪', color: 'indigo' },
-    { name: 'Kuramanime', url: 'https://kuramanime.net/?s=', icon: '🦊', color: 'amber' },
-    { name: 'Neonime', url: 'https://neonime.fun/?s=', icon: '✨', color: 'cyan' },
-    { name: 'Oploverz', url: 'https://oploverz.asia/?s=', icon: '🎮', color: 'rose' },
-    { name: 'Anikyojin', url: 'https://anikyojin.net/?s=', icon: '⚡', color: 'lime' }
+    { name: 'Samehadaku', url: 'https://samehadaku.li/?s=', icon: '📺', bg: 'linear-gradient(135deg,#ef4444,#dc2626)' },
+    { name: 'Otakudesu', url: 'https://otakudesu.cloud/?s=', icon: '🌟', bg: 'linear-gradient(135deg,#f97316,#ea580c)' },
+    { name: 'Anichin', url: 'https://anichin.vip/?s=', icon: '🎬', bg: 'linear-gradient(135deg,#3b82f6,#2563eb)' },
+    { name: 'Kusonime', url: 'https://kusonime.com/?s=', icon: '📦', bg: 'linear-gradient(135deg,#14b8a6,#0d9488)' },
+    { name: 'Animeindo', url: 'https://anime-indo.net/?s=', icon: '🎯', bg: 'linear-gradient(135deg,#8b5cf6,#7c3aed)' },
+    { name: 'Anoboy', url: 'https://anoboy.be/?s=', icon: '🎪', bg: 'linear-gradient(135deg,#6366f1,#4f46e5)' },
+    { name: 'Nimegami', url: 'https://nimegami.id/?s=', icon: '💾', bg: 'linear-gradient(135deg,#10b981,#059669)' },
+    { name: 'Kuramanime', url: 'https://kuramanime.net/?s=', icon: '🦊', bg: 'linear-gradient(135deg,#f59e0b,#d97706)' },
+    { name: 'Layaranime', url: 'https://layaranime.com/?s=', icon: '🎞️', bg: 'linear-gradient(135deg,#ec4899,#db2777)' },
+    { name: 'Neonime', url: 'https://neonime.fun/?s=', icon: '✨', bg: 'linear-gradient(135deg,#06b6d4,#0891b2)' },
+    { name: 'Oploverz', url: 'https://oploverz.asia/?s=', icon: '🎮', bg: 'linear-gradient(135deg,#f43f5e,#e11d48)' },
+    { name: 'Anikyojin', url: 'https://anikyojin.net/?s=', icon: '⚡', bg: 'linear-gradient(135deg,#84cc16,#65a30d)' }
 ];
-
-function getRandomAnimeSites(count = 4) {
-    const shuffled = [...animeSitesIndo].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
-}
 
 function generateAnimeUrl(baseUrl, title) {
     const searchQuery = encodeURIComponent(title?.romaji || title?.english || title?.native || '');
@@ -367,15 +362,15 @@ async function displayTraceMoeResults(results) {
                     
                     <div class="indo-anime-links">
                         <strong style="color: var(--primary-color);">🇮🇩 Nonton & Download Anime Sub Indo:</strong>
-                        <div class="indo-links-container">
-                            ${getRandomAnimeSites(4).map(site => `
-                                <a href="${generateAnimeUrl(site.url, animeData.title)}" target="_blank" class="indo-link">
+                        <div class="indo-links-grid">
+                            ${animeSitesIndo.map(site => `
+                                <a href="${generateAnimeUrl(site.url, animeData.title)}" target="_blank" class="indo-link-card" style="background:${site.bg}">
                                     <span class="link-icon">${site.icon}</span>
                                     <span class="link-text">${site.name}</span>
                                 </a>
                             `).join('')}
                         </div>
-                        <p class="indo-links-note">*Situs acak dari 12 situs streaming & download batch sub Indo terpopuler - Refresh untuk situs berbeda</p>
+                        <p class="indo-links-note">Klik situs di atas untuk mencari anime ini langsung</p>
                     </div>
                 </div>
             `;
