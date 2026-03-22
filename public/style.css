@@ -1422,7 +1422,7 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    flex: 1;
+    width: 140px;
     padding: 12px 10px;
     border: none;
     border-radius: 12px;
