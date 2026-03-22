@@ -1,11 +1,40 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = 5000;
 
+const VISITS_FILE = path.join(__dirname, 'visits.json');
+
+function loadVisits() {
+  try {
+    if (fs.existsSync(VISITS_FILE)) {
+      const data = JSON.parse(fs.readFileSync(VISITS_FILE, 'utf8'));
+      return data.total || 0;
+    }
+  } catch (e) {}
+  return 0;
+}
+
+function saveVisits(total) {
+  try {
+    fs.writeFileSync(VISITS_FILE, JSON.stringify({ total }), 'utf8');
+  } catch (e) {}
+}
+
+let totalVisits = loadVisits();
+const sseClients = new Set();
+
+function broadcastStats() {
+  const data = JSON.stringify({ online: sseClients.size, total: totalVisits });
+  for (const client of sseClients) {
+    client.write(`data: ${data}\n\n`);
+  }
+}
+
 app.use(express.static('public', {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.js') || path.endsWith('.css') || path.endsWith('.html')) {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.html')) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
@@ -16,6 +45,23 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/api/stats', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  totalVisits++;
+  saveVisits(totalVisits);
+  sseClients.add(res);
+  broadcastStats();
+
+  req.on('close', () => {
+    sseClients.delete(res);
+    broadcastStats();
+  });
 });
 
 app.post('/proxy-image', async (req, res) => {

@@ -780,3 +780,31 @@ function updateServerInfo() {
     const minutes = Math.floor((uptime % 3600) / 60);
     document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
 }
+
+(function initStats() {
+    const onlineEl = document.getElementById('onlineCount');
+    const totalEl = document.getElementById('totalVisits');
+
+    function formatNumber(n) {
+        if (n >= 1000000) return (n / 1000000).toFixed(1) + 'jt';
+        if (n >= 1000) return (n / 1000).toFixed(1) + 'rb';
+        return n.toString();
+    }
+
+    function connect() {
+        const es = new EventSource('/api/stats');
+        es.onmessage = (e) => {
+            try {
+                const data = JSON.parse(e.data);
+                onlineEl.textContent = formatNumber(data.online);
+                totalEl.textContent = formatNumber(data.total);
+            } catch (_) {}
+        };
+        es.onerror = () => {
+            es.close();
+            setTimeout(connect, 5000);
+        };
+    }
+
+    connect();
+})();
