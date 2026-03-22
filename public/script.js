@@ -510,12 +510,10 @@ function formatDateIndonesian(dateObj) {
 function getAccuracyLabel(similarity) {
     if (similarity >= 95) {
         return { text: 'Sangat Akurat', class: 'accuracy-perfect' };
-    } else if (similarity >= 85) {
+    } else if (similarity >= 87) {
         return { text: 'Cocok', class: 'accuracy-high' };
-    } else if (similarity >= 70) {
-        return { text: 'Lumayan Cocok', class: 'accuracy-medium' };
-    } else if (similarity >= 50) {
-        return { text: 'Kurang Cocok', class: 'accuracy-low' };
+    } else if (similarity >= 80) {
+        return { text: 'Kurang Yakin', class: 'accuracy-medium' };
     } else {
         return { text: 'Tidak Cocok', class: 'accuracy-very-low' };
     }
