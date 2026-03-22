@@ -117,13 +117,13 @@ function resetToUploadTab() {
     resultsContainer.innerHTML = '';
 }
 
-function switchTab(tabName) {
+function switchTab(tabName, targetBtn) {
     currentInputMethod = tabName;
     
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    event.target.closest('.tab-btn').classList.add('active');
+    if (targetBtn) targetBtn.classList.add('active');
     
     uploadContent.classList.remove('active');
     urlContent.classList.remove('active');
@@ -311,7 +311,7 @@ async function displayTraceMoeResults(results) {
             
             cardHTML += `
                 <button class="spoiler-btn" onclick="toggleSpoiler('${cardId}')">
-                    <span class="spoiler-icon">▼</span> Sembunyikan Informasi Anime
+                    <span class="spoiler-icon">▼</span> Tampilkan Informasi Anime
                 </button>
                 <div class="anime-info spoiler-content" id="${cardId}" style="display: none;">
                     <h3 style="margin: 0 0 15px 0; color: var(--primary-color); font-size: 1.1em;">Informasi Anime</h3>
@@ -336,6 +336,13 @@ async function displayTraceMoeResults(results) {
                             <div class="info-line"><strong>Rating:</strong> ${rating}</div>
                         </div>
                     </div>
+                    
+                    ${animeData.description ? `
+                        <div class="synopsis-section">
+                            <strong style="color: var(--primary-color);">📖 Sinopsis:</strong>
+                            <p class="synopsis-text">${animeData.description.replace(/\n/g, ' ').substring(0, 400)}${animeData.description.length > 400 ? '...' : ''}</p>
+                        </div>
+                    ` : ''}
                     
                     ${allTitles.length > 0 ? `
                         <div class="alias-section">
@@ -426,6 +433,7 @@ async function fetchAnilistData(anilistId) {
                     site
                     url
                 }
+                description(asHtml: false)
                 siteUrl
             }
         }`;
@@ -500,14 +508,16 @@ function formatDateIndonesian(dateObj) {
 }
 
 function getAccuracyLabel(similarity) {
-    if (similarity >= 98) {
-        return { text: '100% Akurat', class: 'accuracy-perfect' };
-    } else if (similarity >= 90) {
+    if (similarity >= 95) {
+        return { text: 'Sangat Akurat', class: 'accuracy-perfect' };
+    } else if (similarity >= 85) {
         return { text: 'Cocok', class: 'accuracy-high' };
-    } else if (similarity >= 80) {
-        return { text: 'Tidak Cocok', class: 'accuracy-low' };
+    } else if (similarity >= 70) {
+        return { text: 'Lumayan Cocok', class: 'accuracy-medium' };
+    } else if (similarity >= 50) {
+        return { text: 'Kurang Cocok', class: 'accuracy-low' };
     } else {
-        return { text: 'Tidak Cocok Sekali', class: 'accuracy-very-low' };
+        return { text: 'Tidak Cocok', class: 'accuracy-very-low' };
     }
 }
 
@@ -645,9 +655,11 @@ function toggleSpoiler(id) {
     if (content.style.display === 'none') {
         content.style.display = 'block';
         icon.textContent = '▲';
+        btn.childNodes[1].textContent = ' Sembunyikan Informasi Anime';
     } else {
         content.style.display = 'none';
         icon.textContent = '▼';
+        btn.childNodes[1].textContent = ' Tampilkan Informasi Anime';
     }
 }
 
@@ -677,9 +689,9 @@ scrollToTopBtn.addEventListener('click', () => {
 });
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', () => {
         const tabName = btn.getAttribute('data-tab');
-        switchTab(tabName);
+        switchTab(tabName, btn);
     });
 });
 
@@ -757,28 +769,35 @@ serverModal.addEventListener('click', (e) => {
     }
 });
 
-function updateServerInfo() {
-    const ramUsage = 45 + Math.random() * 15;
-    const cpuUsage = 20 + Math.random() * 30;
-    const storageUsage = 35 + Math.random() * 20;
-    const temperature = 45 + Math.random() * 15;
-    const totalRequests = 1250 + Math.floor(Math.random() * 500);
-    
-    document.getElementById('ramUsage').textContent = `${ramUsage.toFixed(1)}% (256 MB / 512 MB)`;
-    document.getElementById('cpuUsage').textContent = `${cpuUsage.toFixed(1)}%`;
-    document.getElementById('storageUsage').textContent = `${storageUsage.toFixed(1)}% (1.2 GB / 3 GB)`;
-    document.getElementById('temperature').textContent = `${temperature.toFixed(1)}°C`;
-    document.getElementById('totalRequests').textContent = totalRequests.toLocaleString();
-    
-    document.getElementById('ramBar').style.width = ramUsage + '%';
-    document.getElementById('cpuBar').style.width = cpuUsage + '%';
-    document.getElementById('storageBar').style.width = storageUsage + '%';
-    
-    const startTime = Date.now() - Math.random() * 86400000;
-    const uptime = Math.floor((Date.now() - startTime) / 1000);
-    const hours = Math.floor(uptime / 3600);
-    const minutes = Math.floor((uptime % 3600) / 60);
-    document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
+async function updateServerInfo() {
+    try {
+        const res = await fetch('/api/server-info');
+        const info = await res.json();
+
+        const { ram, cpu, uptime, totalRequests } = info;
+
+        document.getElementById('ramUsage').textContent = `${ram.percent}% (${ram.usedMB} MB / ${ram.totalMB} MB)`;
+        document.getElementById('ramBar').style.width = ram.percent + '%';
+        document.getElementById('ramTotal').textContent = `Total: ${ram.totalMB} MB`;
+
+        document.getElementById('cpuUsage').textContent = `${cpu.percent}%`;
+        document.getElementById('cpuBar').style.width = cpu.percent + '%';
+
+        document.getElementById('storageUsage').textContent = 'Replit Cloud';
+        document.getElementById('storageBar').style.width = '0%';
+
+        document.getElementById('temperature').textContent = 'N/A';
+        document.getElementById('totalRequests').textContent = totalRequests.toLocaleString();
+
+        const h = String(uptime.hours).padStart(2, '0');
+        const m = String(uptime.minutes).padStart(2, '0');
+        const s = String(uptime.seconds).padStart(2, '0');
+        document.getElementById('uptime').textContent = `${h}j ${m}m ${s}d`;
+    } catch (e) {
+        document.getElementById('ramUsage').textContent = 'Tidak tersedia';
+        document.getElementById('cpuUsage').textContent = 'Tidak tersedia';
+        document.getElementById('uptime').textContent = 'Tidak tersedia';
+    }
 }
 
 (function initStats() {

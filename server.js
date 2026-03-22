@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const app = express();
 const PORT = 5000;
 
@@ -61,6 +62,42 @@ app.get('/api/stats', (req, res) => {
   req.on('close', () => {
     sseClients.delete(res);
     broadcastStats();
+  });
+});
+
+const serverStartTime = Date.now();
+let totalRequests = 0;
+
+app.use((req, res, next) => {
+  totalRequests++;
+  next();
+});
+
+app.get('/api/server-info', (req, res) => {
+  const memUsage = process.memoryUsage();
+  const totalMem = os.totalmem();
+  const freeMem = os.freemem();
+  const usedMem = totalMem - freeMem;
+  const ramPercent = ((usedMem / totalMem) * 100).toFixed(1);
+  const ramUsedMB = Math.round(usedMem / 1024 / 1024);
+  const ramTotalMB = Math.round(totalMem / 1024 / 1024);
+
+  const uptimeSeconds = Math.floor(process.uptime());
+  const hours = Math.floor(uptimeSeconds / 3600);
+  const minutes = Math.floor((uptimeSeconds % 3600) / 60);
+  const seconds = uptimeSeconds % 60;
+
+  const load = os.loadavg();
+  const cpuCount = os.cpus().length;
+  const cpuPercent = Math.min(((load[0] / cpuCount) * 100).toFixed(1), 100);
+
+  res.json({
+    ram: { percent: parseFloat(ramPercent), usedMB: ramUsedMB, totalMB: ramTotalMB },
+    cpu: { percent: parseFloat(cpuPercent) },
+    uptime: { hours, minutes, seconds },
+    totalRequests,
+    nodeVersion: process.version,
+    platform: os.platform()
   });
 });
 

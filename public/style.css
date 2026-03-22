@@ -566,6 +566,11 @@ main {
     color: white;
 }
 
+.accuracy-medium {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
 .accuracy-low {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
@@ -668,6 +673,26 @@ main {
     color: var(--text-color);
     min-width: 100px;
     display: inline-block;
+}
+
+.synopsis-section {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 8px;
+}
+
+.synopsis-section strong {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.synopsis-text {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
 }
 
 .alias-section {
