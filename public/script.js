@@ -671,12 +671,47 @@ async function searchTraceMoe() {
 }
 
 
+function closeAllInnerSpoilers(animeInfoEl) {
+    animeInfoEl.querySelectorAll('.spoiler-content').forEach(inner => {
+        if (inner.style.display !== 'none') {
+            inner.style.display = 'none';
+            const parent = inner.parentElement;
+            const sectionBtn = parent.querySelector('.section-spoiler-btn');
+            const indoBtn = parent.querySelector('.indo-spoiler-btn');
+            if (sectionBtn) {
+                const sIcon = sectionBtn.querySelector('.spoiler-icon');
+                const sLabel = sectionBtn.querySelector('.section-spoiler-label');
+                if (sIcon) sIcon.textContent = '▼';
+                if (sLabel) sLabel.textContent = 'Tampilkan';
+                sectionBtn.classList.remove('active');
+            }
+            if (indoBtn) {
+                const iIcon = indoBtn.querySelector('.spoiler-icon');
+                const iLabel = indoBtn.querySelector('.indo-spoiler-label');
+                if (iIcon) iIcon.textContent = '▼';
+                if (iLabel) iLabel.textContent = 'Tampilkan Situs';
+                indoBtn.classList.remove('active');
+            }
+        }
+    });
+}
+
 function toggleSpoiler(id) {
     const content = document.getElementById(id);
     const btn = content.previousElementSibling;
     const icon = btn.querySelector('.spoiler-icon');
     
     if (content.style.display === 'none') {
+        document.querySelectorAll('.anime-info.spoiler-content').forEach(other => {
+            if (other.id !== id && other.style.display !== 'none') {
+                other.style.display = 'none';
+                const otherBtn = other.previousElementSibling;
+                const otherIcon = otherBtn.querySelector('.spoiler-icon');
+                if (otherIcon) otherIcon.textContent = '▼';
+                otherBtn.childNodes[1].textContent = ' Tampilkan Informasi Anime';
+                closeAllInnerSpoilers(other);
+            }
+        });
         content.style.display = 'block';
         icon.textContent = '▲';
         btn.childNodes[1].textContent = ' Sembunyikan Informasi Anime';
