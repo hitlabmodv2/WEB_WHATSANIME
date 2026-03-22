@@ -889,10 +889,13 @@ const menuBtn = document.getElementById('menuBtn');
 const menuDropdown = document.getElementById('menuDropdown');
 const devModal = document.getElementById('devModal');
 const serverModal = document.getElementById('serverModal');
+const updateModal = document.getElementById('updateModal');
 const devModalClose = document.getElementById('devModalClose');
 const serverModalClose = document.getElementById('serverModalClose');
+const updateModalClose = document.getElementById('updateModalClose');
 const openDeveloper = document.getElementById('openDeveloper');
 const openServerInfo = document.getElementById('openServerInfo');
+const openUpdateLog = document.getElementById('openUpdateLog');
 
 menuBtn.addEventListener('click', () => {
     menuDropdown.classList.toggle('show');
@@ -914,6 +917,44 @@ function rotatePhrase() {
     phraseElement.textContent = codingPhrases[currentPhraseIndex];
     currentPhraseIndex = (currentPhraseIndex + 1) % codingPhrases.length;
 }
+
+openUpdateLog.addEventListener('click', () => {
+    menuDropdown.classList.remove('show');
+    updateModal.classList.add('show');
+});
+
+updateModalClose.addEventListener('click', () => {
+    updateModal.classList.remove('show');
+});
+
+updateModal.addEventListener('click', (e) => {
+    if (e.target === updateModal) {
+        updateModal.classList.remove('show');
+    }
+});
+
+function toggleUpdateEntry(id, headerEl) {
+    const body = document.getElementById(id);
+    const chevron = headerEl.querySelector('.update-chevron');
+    const allBodies = headerEl.closest('.modal-body').querySelectorAll('.update-entry-body');
+    const allHeaders = headerEl.closest('.modal-body').querySelectorAll('.update-entry-header');
+
+    const isOpen = body.style.display !== 'none';
+    allBodies.forEach(b => { b.style.display = 'none'; });
+    allHeaders.forEach(h => {
+        const ch = h.querySelector('.update-chevron');
+        if (ch) ch.textContent = '▼';
+        h.classList.remove('active');
+    });
+
+    if (!isOpen) {
+        body.style.display = 'block';
+        if (chevron) chevron.textContent = '▲';
+        headerEl.classList.add('active');
+    }
+}
+
+window.toggleUpdateEntry = toggleUpdateEntry;
 
 openDeveloper.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
