@@ -926,10 +926,23 @@ function unlockScroll() {
     document.body.style.overflow = '';
 }
 
+function formatUpdateTimestamp() {
+    const now = new Date();
+    const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    const tgl = String(now.getDate()).padStart(2, '0');
+    const bln = bulan[now.getMonth()];
+    const thn = now.getFullYear();
+    const jam = String(now.getHours()).padStart(2, '0');
+    const mnt = String(now.getMinutes()).padStart(2, '0');
+    return `${tgl} ${bln} ${thn}, ${jam}.${mnt}`;
+}
+
 openUpdateLog.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     updateModal.classList.add('show');
     lockScroll();
+    const timeEl = document.getElementById('update-v13-time');
+    if (timeEl) timeEl.textContent = formatUpdateTimestamp();
 });
 
 updateModalClose.addEventListener('click', () => {
