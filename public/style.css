@@ -1566,6 +1566,37 @@ footer {
     box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4);
 }
 
+.back-to-page-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 18px;
+    padding: 11px 16px;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px dashed rgba(99, 102, 241, 0.4);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-to-page-btn:hover {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.back-to-page-btn:active {
+    transform: translateY(0);
+}
+
 .server-info-grid {
     display: grid;
     grid-template-columns: 1fr;
