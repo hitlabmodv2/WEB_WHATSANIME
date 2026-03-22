@@ -146,6 +146,25 @@ app.post('/proxy-image', async (req, res) => {
   }
 });
 
+app.post('/api/translate', async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) return res.status(400).json({ error: 'Text required' });
+    const clean = text.replace(/<[^>]*>/g, '').substring(0, 500);
+    const encoded = encodeURIComponent(clean);
+    const url = `https://api.mymemory.translated.net/get?q=${encoded}&langpair=en|id`;
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.responseStatus === 200) {
+      res.json({ translated: data.responseData.translatedText });
+    } else {
+      res.status(500).json({ error: 'Translation failed' });
+    }
+  } catch (e) {
+    res.status(500).json({ error: 'Translation error' });
+  }
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });

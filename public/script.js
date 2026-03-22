@@ -342,7 +342,17 @@ async function displayTraceMoeResults(results) {
                                 </button>
                             </div>
                             <div id="syn-${cardId}" class="spoiler-content" style="display:none;">
-                                <p class="synopsis-text">${animeData.description.replace(/\n/g, ' ').substring(0, 400)}${animeData.description.length > 400 ? '...' : ''}</p>
+                                <div class="synopsis-block">
+                                    <div class="synopsis-lang-label">🇬🇧 <span>English</span></div>
+                                    <p class="synopsis-text">${animeData.description.replace(/\n/g, ' ').substring(0, 400)}${animeData.description.length > 400 ? '...' : ''}</p>
+                                </div>
+                                <div class="synopsis-divider"></div>
+                                <div class="synopsis-block">
+                                    <div class="synopsis-lang-label">🇮🇩 <span>Indonesia</span></div>
+                                    <p class="synopsis-text synopsis-indo" id="syn-indo-${cardId}">
+                                        <span class="translating-loader">⏳ Menerjemahkan...</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     ` : ''}
@@ -407,6 +417,11 @@ async function displayTraceMoeResults(results) {
         cardHTML += `</div>`;
         card.innerHTML = cardHTML;
         resultsContainer.appendChild(card);
+
+        if (animeData?.description) {
+            const shortDesc = animeData.description.replace(/\n/g, ' ').substring(0, 400);
+            fetchSynopsisTranslation(cardId, shortDesc);
+        }
     }
 
     resultsSection.style.display = 'block';
@@ -811,6 +826,26 @@ function toggleInlineSpoiler(id, btn, showText, hideText) {
 }
 
 window.toggleInlineSpoiler = toggleInlineSpoiler;
+
+async function fetchSynopsisTranslation(cardId, text) {
+    const el = document.getElementById(`syn-indo-${cardId}`);
+    if (!el) return;
+    try {
+        const res = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text })
+        });
+        const data = await res.json();
+        if (data.translated) {
+            el.textContent = data.translated;
+        } else {
+            el.textContent = '⚠️ Gagal menerjemahkan.';
+        }
+    } catch (e) {
+        el.textContent = '⚠️ Gagal menerjemahkan.';
+    }
+}
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
