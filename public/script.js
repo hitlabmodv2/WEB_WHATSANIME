@@ -538,13 +538,16 @@ function updateDateTime() {
     document.getElementById('datetime').textContent = formatter.format(now);
 }
 
+function getJakartaHour() {
+    const utcHour = new Date().getUTCHours();
+    return (utcHour + 7) % 24;
+}
+
 function updateBackground() {
-    const now = new Date();
-    const jakartaTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
-    const hour = jakartaTime.getHours();
-    
+    const hour = getJakartaHour();
+
     document.body.classList.remove('bg-morning', 'bg-afternoon', 'bg-evening', 'bg-night');
-    
+
     if (hour >= 5 && hour < 12) {
         document.body.classList.add('bg-morning');
     } else if (hour >= 12 && hour < 18) {
