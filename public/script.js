@@ -361,16 +361,24 @@ async function displayTraceMoeResults(results) {
                     ` : ''}
                     
                     <div class="indo-anime-links">
-                        <strong style="color: var(--primary-color);">🇮🇩 Nonton & Download Anime Sub Indo:</strong>
-                        <div class="indo-links-grid">
-                            ${animeSitesIndo.map(site => `
-                                <a href="${generateAnimeUrl(site.url, animeData.title)}" target="_blank" class="indo-link-card" style="background:${site.bg}">
-                                    <span class="link-icon">${site.icon}</span>
-                                    <span class="link-text">${site.name}</span>
-                                </a>
-                            `).join('')}
+                        <div class="indo-spoiler-header">
+                            <span class="indo-flag-label">🇮🇩 Nonton & Download Anime Sub Indo</span>
+                            <button class="spoiler-btn indo-spoiler-btn" onclick="toggleIndoSpoiler('indo-${cardId}', this)">
+                                <span class="spoiler-icon">▼</span>
+                                <span class="indo-spoiler-label">Tampilkan Situs</span>
+                            </button>
                         </div>
-                        <p class="indo-links-note">Klik situs di atas untuk mencari anime ini langsung</p>
+                        <div class="indo-spoiler-content spoiler-content" id="indo-${cardId}" style="display: none;">
+                            <div class="indo-links-grid">
+                                ${animeSitesIndo.map(site => `
+                                    <a href="${generateAnimeUrl(site.url, animeData.title)}" target="_blank" class="indo-link-card" style="background:${site.bg}">
+                                        <span class="link-icon">${site.icon}</span>
+                                        <span class="link-text">${site.name}</span>
+                                    </a>
+                                `).join('')}
+                            </div>
+                            <p class="indo-links-note">Klik situs di atas untuk mencari anime ini langsung</p>
+                        </div>
                     </div>
                 </div>
             `;
@@ -679,6 +687,26 @@ function toggleDevSpoiler() {
 }
 
 window.toggleDevSpoiler = toggleDevSpoiler;
+
+function toggleIndoSpoiler(id, btn) {
+    const content = document.getElementById(id);
+    const icon = btn.querySelector('.spoiler-icon');
+    const label = btn.querySelector('.indo-spoiler-label');
+
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.textContent = '▲';
+        label.textContent = 'Sembunyikan Situs';
+        btn.classList.add('active');
+    } else {
+        content.style.display = 'none';
+        icon.textContent = '▼';
+        label.textContent = 'Tampilkan Situs';
+        btn.classList.remove('active');
+    }
+}
+
+window.toggleIndoSpoiler = toggleIndoSpoiler;
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
