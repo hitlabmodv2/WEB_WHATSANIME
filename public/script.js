@@ -708,12 +708,39 @@ function toggleDevSpoiler() {
 
 window.toggleDevSpoiler = toggleDevSpoiler;
 
+function closeSpoilersInCard(exceptId, card) {
+    card.querySelectorAll('.spoiler-content').forEach(content => {
+        if (content.id && content.id !== exceptId && !content.classList.contains('anime-info') && content.style.display !== 'none') {
+            content.style.display = 'none';
+            const parent = content.parentElement;
+            const sectionBtn = parent.querySelector('.section-spoiler-btn');
+            const indoBtn = parent.querySelector('.indo-spoiler-btn');
+            if (sectionBtn) {
+                const icon = sectionBtn.querySelector('.spoiler-icon');
+                const label = sectionBtn.querySelector('.section-spoiler-label');
+                if (icon) icon.textContent = '▼';
+                if (label) label.textContent = 'Tampilkan';
+                sectionBtn.classList.remove('active');
+            }
+            if (indoBtn) {
+                const icon = indoBtn.querySelector('.spoiler-icon');
+                const label = indoBtn.querySelector('.indo-spoiler-label');
+                if (icon) icon.textContent = '▼';
+                if (label) label.textContent = 'Tampilkan Situs';
+                indoBtn.classList.remove('active');
+            }
+        }
+    });
+}
+
 function toggleIndoSpoiler(id, btn) {
     const content = document.getElementById(id);
     const icon = btn.querySelector('.spoiler-icon');
     const label = btn.querySelector('.indo-spoiler-label');
 
     if (content.style.display === 'none') {
+        const card = btn.closest('.result-card');
+        if (card) closeSpoilersInCard(id, card);
         content.style.display = 'block';
         icon.textContent = '▲';
         label.textContent = 'Sembunyikan Situs';
@@ -734,6 +761,8 @@ function toggleInlineSpoiler(id, btn, showText, hideText) {
     const label = btn.querySelector('.section-spoiler-label');
 
     if (content.style.display === 'none') {
+        const card = btn.closest('.result-card');
+        if (card) closeSpoilersInCard(id, card);
         content.style.display = 'block';
         icon.textContent = '▲';
         label.textContent = hideText;
