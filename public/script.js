@@ -984,7 +984,13 @@ window.toggleUpdateEntry = toggleUpdateEntry;
 
 function toggleMusicGroup(btn) {
     const group = btn.closest('.music-group');
-    group.classList.toggle('collapsed');
+    const isCollapsed = group.classList.contains('collapsed');
+    const container = group.closest('.modal-body') || group.parentElement;
+    const allGroups = container.querySelectorAll('.music-group');
+    allGroups.forEach(g => g.classList.add('collapsed'));
+    if (isCollapsed) {
+        group.classList.remove('collapsed');
+    }
 }
 window.toggleMusicGroup = toggleMusicGroup;
 
