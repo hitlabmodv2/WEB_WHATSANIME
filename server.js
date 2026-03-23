@@ -165,6 +165,39 @@ app.post('/api/translate', async (req, res) => {
   }
 });
 
+app.get('/api/anime-music', async (req, res) => {
+  try {
+    const slug = req.query.anime || 'naruto';
+    const url = `https://api.animethemes.moe/anime/${slug}?include=animethemes.animethemeentries.videos.audio,animethemes.song.artists`;
+    const response = await fetch(url);
+    const data = await response.json();
+    const anime = data.anime;
+    if (!anime) return res.status(404).json({ error: 'Anime not found' });
+    const songs = [];
+    for (const theme of anime.animethemes || []) {
+      const entry = (theme.animethemeentries || [])[0];
+      if (!entry) continue;
+      const video = (entry.videos || [])[0];
+      if (!video || !video.audio) continue;
+      songs.push({
+        id: theme.id,
+        type: theme.type,
+        sequence: theme.sequence,
+        slug: theme.slug,
+        title: theme.song ? theme.song.title : theme.slug,
+        artist: theme.song && theme.song.artists && theme.song.artists.length
+          ? theme.song.artists.map(a => a.name).join(', ')
+          : '—',
+        episodes: entry.episodes || '',
+        audioUrl: video.audio.link
+      });
+    }
+    res.json({ animeName: anime.name, songs });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to fetch anime music' });
+  }
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });

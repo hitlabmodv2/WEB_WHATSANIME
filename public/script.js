@@ -1098,6 +1098,9 @@ openMusicPlayer.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     musicModal.classList.add('show');
     lockScroll();
+    if (mpcSongs.length === 0) {
+        loadAnimeMusic('naruto', null);
+    }
 });
 
 musicModalClose.addEventListener('click', () => {
@@ -1112,11 +1115,167 @@ musicModal.addEventListener('click', (e) => {
     }
 });
 
-function switchPlaylist(playlistId, btnEl) {
-    document.querySelectorAll('.music-playlist-tab').forEach(b => b.classList.remove('active'));
-    btnEl.classList.add('active');
-    const iframe = document.getElementById('deezerEmbed');
-    iframe.src = `https://widget.deezer.com/widget/dark/playlist/${playlistId}`;
+/* ==================== CUSTOM MUSIC PLAYER ==================== */
+const musicAudio = document.getElementById('musicAudio');
+const mpcPlay = document.getElementById('mpcPlay');
+const mpcPrev = document.getElementById('mpcPrev');
+const mpcNext = document.getElementById('mpcNext');
+const mpcProgress = document.getElementById('mpcProgress');
+const mpcVolume = document.getElementById('mpcVolume');
+const mpcCurrent = document.getElementById('mpcCurrent');
+const mpcDuration = document.getElementById('mpcDuration');
+const mpcTitle = document.getElementById('mpcTitle');
+const mpcArtist = document.getElementById('mpcArtist');
+const mpcEpisodes = document.getElementById('mpcEpisodes');
+const mpcCover = document.getElementById('mpcCover');
+const mpcSongList = document.getElementById('mpcSongList');
+const mpcVolIcon = document.getElementById('mpcVolIcon');
+
+let mpcSongs = [];
+let mpcCurrentIndex = -1;
+let mpcLoaded = false;
+
+function mpcFmtTime(s) {
+    if (isNaN(s) || s < 0) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${sec.toString().padStart(2, '0')}`;
 }
 
-window.switchPlaylist = switchPlaylist;
+function mpcSetSong(index) {
+    if (index < 0 || index >= mpcSongs.length) return;
+    mpcCurrentIndex = index;
+    const song = mpcSongs[index];
+    musicAudio.src = song.audioUrl;
+    mpcTitle.textContent = song.title;
+    mpcArtist.textContent = song.artist || '—';
+    mpcEpisodes.textContent = song.episodes ? `Ep. ${song.episodes}` : '';
+    mpcCover.textContent = song.type === 'OP' ? '🎤' : song.type === 'ED' ? '🎶' : '🎵';
+    mpcProgress.value = 0;
+    mpcCurrent.textContent = '0:00';
+    mpcDuration.textContent = '0:00';
+    document.querySelectorAll('.mpc-song-item').forEach((el, i) => {
+        el.classList.toggle('active', i === index);
+    });
+    musicAudio.play().then(() => {
+        mpcPlay.textContent = '⏸';
+        mpcCover.classList.add('playing');
+    }).catch(() => {});
+}
+
+function mpcRenderList() {
+    mpcSongList.innerHTML = '';
+    mpcSongs.forEach((song, i) => {
+        const div = document.createElement('div');
+        div.className = 'mpc-song-item' + (i === mpcCurrentIndex ? ' active' : '');
+        const badgeClass = song.type === 'OP' ? 'op' : song.type === 'ED' ? 'ed' : '';
+        div.innerHTML = `
+            <span class="mpc-song-badge ${badgeClass}">${song.type}${song.sequence || ''}</span>
+            <span class="mpc-song-name">${song.title}</span>
+            <span class="mpc-song-artist">${song.artist}</span>
+        `;
+        div.addEventListener('click', () => mpcSetSong(i));
+        mpcSongList.appendChild(div);
+    });
+}
+
+async function loadAnimeMusic(slug, tabEl) {
+    document.querySelectorAll('.music-tab').forEach(b => b.classList.remove('active'));
+    if (tabEl) tabEl.classList.add('active');
+    mpcSongList.innerHTML = '<div class="mpc-loading">⏳ Memuat daftar lagu...</div>';
+    mpcCurrentIndex = -1;
+    mpcTitle.textContent = 'Memuat...';
+    mpcArtist.textContent = '—';
+    mpcEpisodes.textContent = '';
+    musicAudio.pause();
+    mpcPlay.textContent = '▶';
+    mpcCover.classList.remove('playing');
+    try {
+        const res = await fetch(`/api/anime-music?anime=${slug}`);
+        const data = await res.json();
+        if (data.error || !data.songs || data.songs.length === 0) {
+            mpcSongList.innerHTML = '<div class="mpc-error">❌ Tidak ada lagu ditemukan.</div>';
+            mpcTitle.textContent = 'Pilih lagu di bawah';
+            return;
+        }
+        mpcSongs = data.songs;
+        mpcRenderList();
+        mpcTitle.textContent = 'Pilih lagu di bawah';
+        mpcArtist.textContent = data.animeName || '';
+    } catch (e) {
+        mpcSongList.innerHTML = '<div class="mpc-error">❌ Gagal memuat lagu. Coba lagi.</div>';
+    }
+}
+
+mpcPlay.addEventListener('click', () => {
+    if (mpcCurrentIndex < 0 && mpcSongs.length > 0) { mpcSetSong(0); return; }
+    if (musicAudio.paused) {
+        musicAudio.play();
+        mpcPlay.textContent = '⏸';
+        mpcCover.classList.add('playing');
+    } else {
+        musicAudio.pause();
+        mpcPlay.textContent = '▶';
+        mpcCover.classList.remove('playing');
+    }
+});
+
+mpcPrev.addEventListener('click', () => {
+    if (mpcSongs.length === 0) return;
+    const prev = (mpcCurrentIndex - 1 + mpcSongs.length) % mpcSongs.length;
+    mpcSetSong(prev);
+});
+
+mpcNext.addEventListener('click', () => {
+    if (mpcSongs.length === 0) return;
+    const next = (mpcCurrentIndex + 1) % mpcSongs.length;
+    mpcSetSong(next);
+});
+
+musicAudio.addEventListener('timeupdate', () => {
+    if (!isNaN(musicAudio.duration) && musicAudio.duration > 0) {
+        const pct = (musicAudio.currentTime / musicAudio.duration) * 100;
+        mpcProgress.value = pct;
+        mpcCurrent.textContent = mpcFmtTime(musicAudio.currentTime);
+        mpcDuration.textContent = mpcFmtTime(musicAudio.duration);
+    }
+});
+
+mpcProgress.addEventListener('input', () => {
+    if (!isNaN(musicAudio.duration)) {
+        musicAudio.currentTime = (mpcProgress.value / 100) * musicAudio.duration;
+    }
+});
+
+mpcVolume.addEventListener('input', () => {
+    musicAudio.volume = parseFloat(mpcVolume.value);
+    mpcVolIcon.textContent = mpcVolume.value == 0 ? '🔇' : mpcVolume.value < 0.4 ? '🔉' : '🔊';
+});
+
+mpcVolIcon.addEventListener('click', () => {
+    if (musicAudio.volume > 0) {
+        mpcVolIcon._prev = musicAudio.volume;
+        musicAudio.volume = 0;
+        mpcVolume.value = 0;
+        mpcVolIcon.textContent = '🔇';
+    } else {
+        musicAudio.volume = mpcVolIcon._prev || 0.8;
+        mpcVolume.value = musicAudio.volume;
+        mpcVolIcon.textContent = '🔊';
+    }
+});
+
+musicAudio.addEventListener('ended', () => {
+    const next = (mpcCurrentIndex + 1) % mpcSongs.length;
+    mpcSetSong(next);
+});
+
+musicAudio.addEventListener('error', () => {
+    mpcTitle.textContent = '❌ Gagal load audio';
+    mpcPlay.textContent = '▶';
+    mpcCover.classList.remove('playing');
+});
+
+musicAudio.volume = 0.8;
+
+window.loadAnimeMusic = loadAnimeMusic;

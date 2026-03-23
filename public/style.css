@@ -2190,3 +2190,233 @@ footer {
         padding: 4px 9px;
     }
 }
+
+/* ==================== CUSTOM MUSIC PLAYER ==================== */
+.mpc-now-playing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    min-height: 66px;
+}
+
+.mpc-cover {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    animation: mpcSpin 6s linear infinite paused;
+}
+
+.mpc-cover.playing {
+    animation-play-state: running;
+}
+
+@keyframes mpcSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.mpc-info { flex: 1; min-width: 0; }
+
+.mpc-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mpc-artist {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+}
+
+.mpc-episodes {
+    font-size: 0.7rem;
+    color: rgba(99,102,241,0.8);
+    margin-top: 2px;
+}
+
+.mpc-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.mpc-time {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.4);
+    min-width: 32px;
+    text-align: center;
+}
+
+.mpc-progress {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.mpc-progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #6366f1;
+    cursor: pointer;
+}
+
+.mpc-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.mpc-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #e2e8f0;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mpc-btn:hover { background: rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.4); }
+
+.mpc-play-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border: none;
+}
+
+.mpc-play-btn:hover { opacity: 0.85; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+
+.mpc-volume-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+}
+
+.mpc-vol-icon { font-size: 1rem; cursor: pointer; }
+
+.mpc-volume {
+    width: 80px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.mpc-volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #8b5cf6;
+    cursor: pointer;
+}
+
+.mpc-song-list {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    margin-bottom: 14px;
+}
+
+.mpc-song-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+}
+
+.mpc-song-item:last-child { border-bottom: none; }
+.mpc-song-item:hover { background: rgba(99,102,241,0.1); }
+.mpc-song-item.active { background: rgba(99,102,241,0.15); }
+
+.mpc-song-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 8px;
+    background: rgba(99,102,241,0.25);
+    color: #a5b4fc;
+    flex-shrink: 0;
+    min-width: 36px;
+    text-align: center;
+}
+
+.mpc-song-badge.op { background: rgba(245,158,11,0.2); color: #fcd34d; }
+.mpc-song-badge.ed { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+
+.mpc-song-name {
+    flex: 1;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mpc-song-artist {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+}
+
+.mpc-loading {
+    padding: 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.85rem;
+}
+
+.mpc-error {
+    padding: 16px;
+    text-align: center;
+    color: #f87171;
+    font-size: 0.82rem;
+}
+
+@media (max-width: 480px) {
+    .mpc-volume { width: 60px; }
+    .mpc-song-artist { display: none; }
+}

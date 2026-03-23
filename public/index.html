@@ -550,32 +550,43 @@
                 <button class="modal-close" id="musicModalClose">✕</button>
             </div>
             <div class="modal-body music-modal-body">
-                <p class="music-intro">Dengarkan OST/OP/ED anime favoritmu langsung dari Spotify!</p>
+                <p class="music-intro">🎧 Putar full OST/OP/ED Naruto — gratis, tanpa login, ada volume control!</p>
 
                 <div class="music-anime-tabs">
-                    <button class="music-tab active" data-anime="naruto">🍃 Naruto</button>
+                    <button class="music-tab active" data-anime="naruto" onclick="loadAnimeMusic('naruto', this)">🍃 Naruto</button>
+                    <button class="music-tab" data-anime="narutoshippuuden" onclick="loadAnimeMusic('narutoshippuuden', this)">🌀 Shippuden</button>
                 </div>
 
-                <div class="music-playlist-tabs" id="narutoTabs">
-                    <button class="music-playlist-tab active" onclick="switchPlaylist('7270771464', this)">🎬 Semua (OP+ED+OST)</button>
-                    <button class="music-playlist-tab" onclick="switchPlaylist('63132954', this)">🎤 OP & ED</button>
-                    <button class="music-playlist-tab" onclick="switchPlaylist('9498272842', this)">🎶 Shippuden OST</button>
-                    <button class="music-playlist-tab" onclick="switchPlaylist('9507829902', this)">🎼 Pure OST</button>
+                <audio id="musicAudio"></audio>
+
+                <div class="mpc-now-playing" id="mpcNowPlaying">
+                    <div class="mpc-cover" id="mpcCover">🎵</div>
+                    <div class="mpc-info">
+                        <div class="mpc-title" id="mpcTitle">Pilih lagu di bawah</div>
+                        <div class="mpc-artist" id="mpcArtist">—</div>
+                        <div class="mpc-episodes" id="mpcEpisodes"></div>
+                    </div>
                 </div>
 
-                <div class="music-player-wrap">
-                    <iframe id="deezerEmbed"
-                        src="https://widget.deezer.com/widget/dark/playlist/7270771464"
-                        width="100%"
-                        height="400"
-                        frameborder="0"
-                        allowtransparency="true"
-                        allow="encrypted-media; clipboard-write; autoplay"
-                        style="border-radius: 14px;">
-                    </iframe>
+                <div class="mpc-progress-wrap">
+                    <span class="mpc-time" id="mpcCurrent">0:00</span>
+                    <input type="range" class="mpc-progress" id="mpcProgress" min="0" max="100" value="0" step="0.1">
+                    <span class="mpc-time" id="mpcDuration">0:00</span>
                 </div>
 
-                <p class="music-note">🎵 Powered by Deezer — klik ▶ untuk putar. Volume ada di pojok kanan bawah player.</p>
+                <div class="mpc-controls">
+                    <button class="mpc-btn" id="mpcPrev" title="Sebelumnya">⏮</button>
+                    <button class="mpc-btn mpc-play-btn" id="mpcPlay" title="Play/Pause">▶</button>
+                    <button class="mpc-btn" id="mpcNext" title="Berikutnya">⏭</button>
+                    <div class="mpc-volume-wrap">
+                        <span class="mpc-vol-icon" id="mpcVolIcon">🔊</span>
+                        <input type="range" class="mpc-volume" id="mpcVolume" min="0" max="1" step="0.01" value="0.8">
+                    </div>
+                </div>
+
+                <div class="mpc-song-list" id="mpcSongList">
+                    <div class="mpc-loading">⏳ Memuat daftar lagu...</div>
+                </div>
 
                 <button class="back-to-page-btn" onclick="document.getElementById('musicModal').classList.remove('show'); document.body.style.overflow='';">
                     ← Kembali ke Halaman
