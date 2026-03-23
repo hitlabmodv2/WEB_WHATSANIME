@@ -231,7 +231,10 @@ app.get('/api/anime-music-mix', async (req, res) => {
       'naruto', 'narutoshippuuden', 'one_piece', 'bleach',
       'shingeki_no_kyojin', 'kimetsu_no_yaiba', 'jujutsu_kaisen',
       'death_note', 'fullmetal_alchemist_brotherhood', 'dragon_ball_z',
-      'fairy_tail', 'sword_art_online', 'tokyo_ghoul', 'dragon_ball_super'
+      'fairy_tail', 'sword_art_online', 'tokyo_ghoul', 'dragon_ball_super',
+      'oshi_no_ko', 'chainsaw_man', 'boku_no_hero_academia',
+      'hunter_x_hunter', 'black_clover', 'vinland_saga',
+      'mob_psycho_100', 're_zero_kara_hajimeru_isekai_seikatsu'
     ];
     const results = await Promise.allSettled(mixSlugs.map(s => fetchAnimeSongs(s)));
     let allSongs = [];

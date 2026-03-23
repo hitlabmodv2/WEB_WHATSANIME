@@ -1142,6 +1142,23 @@ function mpcFmtTime(s) {
     return `${m}:${sec.toString().padStart(2, '0')}`;
 }
 
+const SVG_PLAY = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>`;
+const SVG_PAUSE = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+const SVG_VOL_HIGH = `<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
+const SVG_VOL_LOW = `<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/></svg>`;
+const SVG_VOL_MUTE = `<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>`;
+const SVG_COVER_OP = `<svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>`;
+const SVG_COVER_ED = `<svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/><circle cx="7" cy="17" r="1" fill="rgba(255,255,255,0.4)"/></svg>`;
+const SVG_COVER_DEF = `<svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>`;
+
+function mpcSetPlayIcon(playing) {
+    mpcPlay.innerHTML = playing ? SVG_PAUSE : SVG_PLAY;
+}
+
+function mpcSetVolIcon(vol) {
+    mpcVolIcon.innerHTML = vol === 0 ? SVG_VOL_MUTE : vol < 0.4 ? SVG_VOL_LOW : SVG_VOL_HIGH;
+}
+
 function mpcSetSong(index) {
     if (index < 0 || index >= mpcSongs.length) return;
     mpcCurrentIndex = index;
@@ -1150,7 +1167,7 @@ function mpcSetSong(index) {
     mpcTitle.textContent = song.title;
     mpcArtist.textContent = song.artist || '—';
     mpcEpisodes.textContent = song.episodes ? `Ep. ${song.episodes}` : '';
-    mpcCover.textContent = song.type === 'OP' ? '🎤' : song.type === 'ED' ? '🎶' : '🎵';
+    mpcCover.innerHTML = song.type === 'OP' ? SVG_COVER_OP : song.type === 'ED' ? SVG_COVER_ED : SVG_COVER_DEF;
     mpcProgress.value = 0;
     mpcCurrent.textContent = '0:00';
     mpcDuration.textContent = '0:00';
@@ -1158,7 +1175,7 @@ function mpcSetSong(index) {
         el.classList.toggle('active', i === index);
     });
     musicAudio.play().then(() => {
-        mpcPlay.textContent = '⏸';
+        mpcSetPlayIcon(true);
         mpcCover.classList.add('playing');
     }).catch(() => {});
 }
@@ -1182,47 +1199,48 @@ function mpcRenderList() {
 async function loadAnimeMix(tabEl) {
     document.querySelectorAll('.music-tab').forEach(b => b.classList.remove('active'));
     if (tabEl) tabEl.classList.add('active');
-    mpcSongList.innerHTML = '<div class="mpc-loading">⏳ Memuat mix dari semua anime...</div>';
+    mpcSongList.innerHTML = '<div class="mpc-loading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="vertical-align:middle;margin-right:6px;animation:mpcSpin 1s linear infinite"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>Memuat mix dari semua anime...</div>';
     mpcCurrentIndex = -1;
     mpcTitle.textContent = 'Memuat...';
     mpcArtist.textContent = '—';
     mpcEpisodes.textContent = '';
     musicAudio.pause();
-    mpcPlay.textContent = '▶';
+    mpcSetPlayIcon(false);
     mpcCover.classList.remove('playing');
     try {
         const res = await fetch('/api/anime-music-mix');
         const data = await res.json();
         if (data.error || !data.songs || data.songs.length === 0) {
-            mpcSongList.innerHTML = '<div class="mpc-error">❌ Tidak ada lagu ditemukan.</div>';
+            mpcSongList.innerHTML = '<div class="mpc-error"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="vertical-align:middle;margin-right:5px;color:#f87171"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>Tidak ada lagu ditemukan.</div>';
             mpcTitle.textContent = 'Pilih lagu di bawah';
             return;
         }
         mpcSongs = data.songs;
         mpcRenderList();
         mpcTitle.textContent = 'Pilih lagu di bawah';
-        mpcArtist.textContent = data.animeName || '🎲 Mix Semua Anime';
+        mpcArtist.textContent = data.animeName || 'Mix Semua Anime';
+        autoShowSongList();
     } catch (e) {
-        mpcSongList.innerHTML = '<div class="mpc-error">❌ Gagal memuat mix. Coba lagi.</div>';
+        mpcSongList.innerHTML = '<div class="mpc-error"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="vertical-align:middle;margin-right:5px;color:#f87171"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>Gagal memuat mix. Coba lagi.</div>';
     }
 }
 
 async function loadAnimeMusic(slug, tabEl) {
     document.querySelectorAll('.music-tab').forEach(b => b.classList.remove('active'));
     if (tabEl) tabEl.classList.add('active');
-    mpcSongList.innerHTML = '<div class="mpc-loading">⏳ Memuat daftar lagu...</div>';
+    mpcSongList.innerHTML = '<div class="mpc-loading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="vertical-align:middle;margin-right:6px;animation:mpcSpin 1s linear infinite"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>Memuat daftar lagu...</div>';
     mpcCurrentIndex = -1;
     mpcTitle.textContent = 'Memuat...';
     mpcArtist.textContent = '—';
     mpcEpisodes.textContent = '';
     musicAudio.pause();
-    mpcPlay.textContent = '▶';
+    mpcSetPlayIcon(false);
     mpcCover.classList.remove('playing');
     try {
         const res = await fetch(`/api/anime-music?anime=${slug}`);
         const data = await res.json();
         if (data.error || !data.songs || data.songs.length === 0) {
-            mpcSongList.innerHTML = '<div class="mpc-error">❌ Tidak ada lagu ditemukan.</div>';
+            mpcSongList.innerHTML = '<div class="mpc-error"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="vertical-align:middle;margin-right:5px;color:#f87171"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>Tidak ada lagu ditemukan.</div>';
             mpcTitle.textContent = 'Pilih lagu di bawah';
             return;
         }
@@ -1230,8 +1248,9 @@ async function loadAnimeMusic(slug, tabEl) {
         mpcRenderList();
         mpcTitle.textContent = 'Pilih lagu di bawah';
         mpcArtist.textContent = data.animeName || '';
+        autoShowSongList();
     } catch (e) {
-        mpcSongList.innerHTML = '<div class="mpc-error">❌ Gagal memuat lagu. Coba lagi.</div>';
+        mpcSongList.innerHTML = '<div class="mpc-error"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="vertical-align:middle;margin-right:5px;color:#f87171"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>Gagal memuat lagu. Coba lagi.</div>';
     }
 }
 
@@ -1239,11 +1258,11 @@ mpcPlay.addEventListener('click', () => {
     if (mpcCurrentIndex < 0 && mpcSongs.length > 0) { mpcSetSong(0); return; }
     if (musicAudio.paused) {
         musicAudio.play();
-        mpcPlay.textContent = '⏸';
+        mpcSetPlayIcon(true);
         mpcCover.classList.add('playing');
     } else {
         musicAudio.pause();
-        mpcPlay.textContent = '▶';
+        mpcSetPlayIcon(false);
         mpcCover.classList.remove('playing');
     }
 });
@@ -1277,7 +1296,7 @@ mpcProgress.addEventListener('input', () => {
 
 mpcVolume.addEventListener('input', () => {
     musicAudio.volume = parseFloat(mpcVolume.value);
-    mpcVolIcon.textContent = mpcVolume.value == 0 ? '🔇' : mpcVolume.value < 0.4 ? '🔉' : '🔊';
+    mpcSetVolIcon(musicAudio.volume);
 });
 
 mpcVolIcon.addEventListener('click', () => {
@@ -1285,11 +1304,11 @@ mpcVolIcon.addEventListener('click', () => {
         mpcVolIcon._prev = musicAudio.volume;
         musicAudio.volume = 0;
         mpcVolume.value = 0;
-        mpcVolIcon.textContent = '🔇';
+        mpcSetVolIcon(0);
     } else {
         musicAudio.volume = mpcVolIcon._prev || 0.8;
         mpcVolume.value = musicAudio.volume;
-        mpcVolIcon.textContent = '🔊';
+        mpcSetVolIcon(musicAudio.volume);
     }
 });
 
@@ -1299,12 +1318,34 @@ musicAudio.addEventListener('ended', () => {
 });
 
 musicAudio.addEventListener('error', () => {
-    mpcTitle.textContent = '❌ Gagal load audio';
-    mpcPlay.textContent = '▶';
+    mpcTitle.textContent = 'Gagal load audio';
+    mpcSetPlayIcon(false);
     mpcCover.classList.remove('playing');
 });
+
+let songListVisible = false;
+function autoShowSongList() {
+    songListVisible = true;
+    const wrap = document.getElementById('mpcSongListWrap');
+    const toggle = document.getElementById('mpcSongListToggle');
+    const txt = document.getElementById('mpcToggleText');
+    if (wrap) wrap.style.display = 'block';
+    if (toggle) toggle.classList.add('open');
+    if (txt) txt.textContent = 'Sembunyikan';
+}
+
+function toggleSongList() {
+    songListVisible = !songListVisible;
+    const wrap = document.getElementById('mpcSongListWrap');
+    const toggle = document.getElementById('mpcSongListToggle');
+    const txt = document.getElementById('mpcToggleText');
+    if (wrap) wrap.style.display = songListVisible ? 'block' : 'none';
+    if (toggle) toggle.classList.toggle('open', songListVisible);
+    if (txt) txt.textContent = songListVisible ? 'Sembunyikan' : 'Tampilkan';
+}
 
 musicAudio.volume = 0.8;
 
 window.loadAnimeMusic = loadAnimeMusic;
 window.loadAnimeMix = loadAnimeMix;
+window.toggleSongList = toggleSongList;
