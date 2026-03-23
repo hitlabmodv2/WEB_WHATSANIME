@@ -163,8 +163,8 @@
                             <li>🎧 Custom <strong>HTML5 audio player</strong> buatan sendiri — tanpa iframe pihak ketiga</li>
                             <li>▶ Kontrol lengkap: <strong>Play/Pause, Prev, Next, Progress bar, Volume slider</strong></li>
                             <li>🔊 <strong>Volume control</strong> selalu terlihat — klik ikon untuk mute/unmute</li>
-                            <li>📋 <strong>Daftar lagu lengkap</strong> OP & ED Naruto — klik langsung untuk putar</li>
-                            <li>🌀 Tab <strong>Naruto & Naruto Shippuden</strong> — bisa ganti anime</li>
+                            <li>📋 <strong>14 tab anime populer</strong> — Naruto, Shippuden, One Piece, Bleach, Demon Slayer, Attack on Titan, Jujutsu Kaisen, Death Note, FMA Brotherhood, SAO, Fairy Tail, Dragon Ball Z, Tokyo Ghoul, Dragon Ball Super</li>
+                            <li>🎲 Tab <strong>Mix Semua</strong> — putar campuran lagu dari semua anime secara acak</li>
                             <li>⏭ <strong>Auto-next</strong> — otomatis lanjut ke lagu berikutnya setelah selesai</li>
                             <li>💿 Cover emoji berputar animasi saat lagu berjalan</li>
                             <li>🌐 Powered by <strong>AnimeThemes API</strong> — full song, gratis, tanpa login</li>
@@ -577,11 +577,24 @@
                 <button class="modal-close" id="musicModalClose">✕</button>
             </div>
             <div class="modal-body music-modal-body">
-                <p class="music-intro">🎧 Putar full OST/OP/ED Naruto — gratis, tanpa login, ada volume control!</p>
+                <p class="music-intro">🎧 Putar full OST/OP/ED anime populer — gratis, tanpa login, ada volume control!</p>
 
                 <div class="music-anime-tabs">
                     <button class="music-tab active" data-anime="naruto" onclick="loadAnimeMusic('naruto', this)">🍃 Naruto</button>
                     <button class="music-tab" data-anime="narutoshippuuden" onclick="loadAnimeMusic('narutoshippuuden', this)">🌀 Shippuden</button>
+                    <button class="music-tab" data-anime="one_piece" onclick="loadAnimeMusic('one_piece', this)">☠️ One Piece</button>
+                    <button class="music-tab" data-anime="bleach" onclick="loadAnimeMusic('bleach', this)">💀 Bleach</button>
+                    <button class="music-tab" data-anime="kimetsu_no_yaiba" onclick="loadAnimeMusic('kimetsu_no_yaiba', this)">🔥 Demon Slayer</button>
+                    <button class="music-tab" data-anime="shingeki_no_kyojin" onclick="loadAnimeMusic('shingeki_no_kyojin', this)">⚔️ Attack on Titan</button>
+                    <button class="music-tab" data-anime="jujutsu_kaisen" onclick="loadAnimeMusic('jujutsu_kaisen', this)">🧿 Jujutsu Kaisen</button>
+                    <button class="music-tab" data-anime="death_note" onclick="loadAnimeMusic('death_note', this)">📓 Death Note</button>
+                    <button class="music-tab" data-anime="fullmetal_alchemist_brotherhood" onclick="loadAnimeMusic('fullmetal_alchemist_brotherhood', this)">⚙️ FMA Brotherhood</button>
+                    <button class="music-tab" data-anime="sword_art_online" onclick="loadAnimeMusic('sword_art_online', this)">🗡️ SAO</button>
+                    <button class="music-tab" data-anime="fairy_tail" onclick="loadAnimeMusic('fairy_tail', this)">🧚 Fairy Tail</button>
+                    <button class="music-tab" data-anime="dragon_ball_z" onclick="loadAnimeMusic('dragon_ball_z', this)">🐉 Dragon Ball Z</button>
+                    <button class="music-tab" data-anime="tokyo_ghoul" onclick="loadAnimeMusic('tokyo_ghoul', this)">👁️ Tokyo Ghoul</button>
+                    <button class="music-tab" data-anime="dragon_ball_super" onclick="loadAnimeMusic('dragon_ball_super', this)">✨ Dragon Ball Super</button>
+                    <button class="music-tab music-tab-mix" data-anime="__mix__" onclick="loadAnimeMix(this)">🎲 Mix Semua</button>
                 </div>
 
                 <audio id="musicAudio"></audio>

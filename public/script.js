@@ -1179,6 +1179,34 @@ function mpcRenderList() {
     });
 }
 
+async function loadAnimeMix(tabEl) {
+    document.querySelectorAll('.music-tab').forEach(b => b.classList.remove('active'));
+    if (tabEl) tabEl.classList.add('active');
+    mpcSongList.innerHTML = '<div class="mpc-loading">⏳ Memuat mix dari semua anime...</div>';
+    mpcCurrentIndex = -1;
+    mpcTitle.textContent = 'Memuat...';
+    mpcArtist.textContent = '—';
+    mpcEpisodes.textContent = '';
+    musicAudio.pause();
+    mpcPlay.textContent = '▶';
+    mpcCover.classList.remove('playing');
+    try {
+        const res = await fetch('/api/anime-music-mix');
+        const data = await res.json();
+        if (data.error || !data.songs || data.songs.length === 0) {
+            mpcSongList.innerHTML = '<div class="mpc-error">❌ Tidak ada lagu ditemukan.</div>';
+            mpcTitle.textContent = 'Pilih lagu di bawah';
+            return;
+        }
+        mpcSongs = data.songs;
+        mpcRenderList();
+        mpcTitle.textContent = 'Pilih lagu di bawah';
+        mpcArtist.textContent = data.animeName || '🎲 Mix Semua Anime';
+    } catch (e) {
+        mpcSongList.innerHTML = '<div class="mpc-error">❌ Gagal memuat mix. Coba lagi.</div>';
+    }
+}
+
 async function loadAnimeMusic(slug, tabEl) {
     document.querySelectorAll('.music-tab').forEach(b => b.classList.remove('active'));
     if (tabEl) tabEl.classList.add('active');
@@ -1279,3 +1307,4 @@ musicAudio.addEventListener('error', () => {
 musicAudio.volume = 0.8;
 
 window.loadAnimeMusic = loadAnimeMusic;
+window.loadAnimeMix = loadAnimeMix;
