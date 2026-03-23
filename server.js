@@ -181,7 +181,30 @@ const ANIME_SLUGS = {
   tokyo_ghoul:    { name: 'Tokyo Ghoul', emoji: '👁️' },
   black_clover_tv: { name: 'Black Clover', emoji: '🍀' },
   boruto_naruto_next_generations: { name: 'Boruto', emoji: '🌿' },
-  dragon_ball_super: { name: 'Dragon Ball Super', emoji: '⭐' }
+  dragon_ball_super: { name: 'Dragon Ball Super', emoji: '⭐' },
+  one_punch_man:  { name: 'One Punch Man', emoji: '👊' },
+  hunter_x_hunter: { name: 'Hunter x Hunter', emoji: '🎯' },
+  overlord:       { name: 'Overlord', emoji: '💀' },
+  tensei_shitara_slime_datta_ken: { name: 'TenSura', emoji: '🟦' },
+  kono_subarashii_sekai_ni_shukufuku_wo: { name: 'KonoSuba', emoji: '💧' },
+  re_zero_kara_hajimeru_isekai_seikatsu: { name: 'Re:Zero', emoji: '🔄' },
+  mob_psycho_100: { name: 'Mob Psycho 100', emoji: '💫' },
+  chainsaw_man:   { name: 'Chainsaw Man', emoji: '🪚' },
+  vinland_saga:   { name: 'Vinland Saga', emoji: '⚓' },
+  boku_no_hero_academia: { name: 'My Hero Academia', emoji: '🦸' },
+  oshi_no_ko:     { name: 'Oshi no Ko', emoji: '⭐' },
+  bocchi_the_rock: { name: 'Bocchi the Rock', emoji: '🎸' },
+  spy_x_family:   { name: 'Spy x Family', emoji: '🕵️' },
+  blue_lock:      { name: 'Blue Lock', emoji: '⚽' },
+  dr_stone:       { name: 'Dr. Stone', emoji: '🧪' },
+  ore_dake_level_up_na_ken: { name: 'Solo Leveling', emoji: '⬆️' },
+  dandadan:       { name: 'Dandadan', emoji: '👻' },
+  kaijuu_8_gou:   { name: 'Kaiju No. 8', emoji: '🦕' },
+  sousou_no_frieren: { name: 'Frieren', emoji: '🧝' },
+  mushoku_tensei_isekai_ittara_honki_dasu: { name: 'Mushoku Tensei', emoji: '📖' },
+  mashle:         { name: 'Mashle', emoji: '🍫' },
+  kusuriya_no_hitorigoto: { name: 'Apothecary Diaries', emoji: '🌸' },
+  toaru_kagaku_no_railgun: { name: 'Railgun', emoji: '⚡' },
 };
 
 async function fetchAnimeSongs(slug) {
@@ -233,8 +256,14 @@ app.get('/api/anime-music-mix', async (req, res) => {
       'death_note', 'fullmetal_alchemist_brotherhood', 'dragon_ball_z',
       'fairy_tail', 'sword_art_online', 'tokyo_ghoul', 'dragon_ball_super',
       'oshi_no_ko', 'chainsaw_man', 'boku_no_hero_academia',
-      'hunter_x_hunter', 'black_clover', 'vinland_saga',
-      'mob_psycho_100', 're_zero_kara_hajimeru_isekai_seikatsu'
+      'hunter_x_hunter', 'black_clover_tv', 'vinland_saga',
+      'mob_psycho_100', 're_zero_kara_hajimeru_isekai_seikatsu',
+      'one_punch_man', 'overlord', 'tensei_shitara_slime_datta_ken',
+      'kono_subarashii_sekai_ni_shukufuku_wo', 'bocchi_the_rock',
+      'spy_x_family', 'blue_lock', 'dr_stone',
+      'ore_dake_level_up_na_ken', 'dandadan', 'kaijuu_8_gou',
+      'sousou_no_frieren', 'mushoku_tensei_isekai_ittara_honki_dasu',
+      'mashle', 'kusuriya_no_hitorigoto', 'toaru_kagaku_no_railgun'
     ];
     const results = await Promise.allSettled(mixSlugs.map(s => fetchAnimeSongs(s)));
     let allSongs = [];
