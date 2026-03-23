@@ -941,7 +941,7 @@ openUpdateLog.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     updateModal.classList.add('show');
     lockScroll();
-    const timeEl = document.getElementById('update-v13-time');
+    const timeEl = document.getElementById('update-v14-time');
     if (timeEl) timeEl.textContent = formatUpdateTimestamp();
 });
 
