@@ -1088,3 +1088,35 @@ async function updateServerInfo() {
 
     connect();
 })();
+
+/* ==================== MUSIC PLAYER MODAL ==================== */
+const musicModal = document.getElementById('musicModal');
+const musicModalClose = document.getElementById('musicModalClose');
+const openMusicPlayer = document.getElementById('openMusicPlayer');
+
+openMusicPlayer.addEventListener('click', () => {
+    menuDropdown.classList.remove('show');
+    musicModal.classList.add('show');
+    lockScroll();
+});
+
+musicModalClose.addEventListener('click', () => {
+    musicModal.classList.remove('show');
+    unlockScroll();
+});
+
+musicModal.addEventListener('click', (e) => {
+    if (e.target === musicModal) {
+        musicModal.classList.remove('show');
+        unlockScroll();
+    }
+});
+
+function switchPlaylist(playlistId, btnEl) {
+    document.querySelectorAll('.music-playlist-tab').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+    const iframe = document.getElementById('spotifyEmbed');
+    iframe.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`;
+}
+
+window.switchPlaylist = switchPlaylist;
