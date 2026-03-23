@@ -165,42 +165,89 @@ app.post('/api/translate', async (req, res) => {
   }
 });
 
+const ANIME_SLUGS = {
+  naruto:         { name: 'Naruto', emoji: '🍃' },
+  narutoshippuuden: { name: 'Naruto Shippuden', emoji: '🌀' },
+  one_piece:      { name: 'One Piece', emoji: '🏴‍☠️' },
+  bleach:         { name: 'Bleach', emoji: '⚔️' },
+  shingeki_no_kyojin: { name: 'Attack on Titan', emoji: '💥' },
+  kimetsu_no_yaiba: { name: 'Demon Slayer', emoji: '🔥' },
+  jujutsu_kaisen: { name: 'Jujutsu Kaisen', emoji: '🏙️' },
+  death_note:     { name: 'Death Note', emoji: '📓' },
+  fullmetal_alchemist_brotherhood: { name: 'FMA Brotherhood', emoji: '⚙️' },
+  dragon_ball_z:  { name: 'Dragon Ball Z', emoji: '🐉' },
+  fairy_tail:     { name: 'Fairy Tail', emoji: '✨' },
+  sword_art_online: { name: 'SAO', emoji: '🎮' },
+  tokyo_ghoul:    { name: 'Tokyo Ghoul', emoji: '👁️' },
+  black_clover_tv: { name: 'Black Clover', emoji: '🍀' },
+  boruto_naruto_next_generations: { name: 'Boruto', emoji: '🌿' },
+  dragon_ball_super: { name: 'Dragon Ball Super', emoji: '⭐' }
+};
+
+async function fetchAnimeSongs(slug) {
+  const url = `https://api.animethemes.moe/anime/${slug}?include=animethemes.animethemeentries.videos.audio,animethemes.song.artists`;
+  const response = await fetch(url, {
+    headers: { 'User-Agent': 'WhatAnimeFinder/1.0 (anime music player)', 'Accept': 'application/json' }
+  });
+  if (!response.ok) return null;
+  const data = await response.json();
+  const anime = data.anime;
+  if (!anime) return null;
+  const info = ANIME_SLUGS[slug] || {};
+  const songs = [];
+  for (const theme of anime.animethemes || []) {
+    const entry = (theme.animethemeentries || [])[0];
+    if (!entry) continue;
+    const video = (entry.videos || [])[0];
+    if (!video || !video.audio) continue;
+    songs.push({
+      id: theme.id, type: theme.type, sequence: theme.sequence, slug: theme.slug,
+      title: theme.song ? theme.song.title : theme.slug,
+      artist: theme.song && theme.song.artists && theme.song.artists.length
+        ? theme.song.artists.map(a => a.name).join(', ') : '—',
+      episodes: entry.episodes || '',
+      audioUrl: video.audio.link,
+      animeName: info.name || anime.name,
+      animeEmoji: info.emoji || '🎵'
+    });
+  }
+  return { animeName: info.name || anime.name, songs };
+}
+
 app.get('/api/anime-music', async (req, res) => {
   try {
     const slug = req.query.anime || 'naruto';
-    const url = `https://api.animethemes.moe/anime/${slug}?include=animethemes.animethemeentries.videos.audio,animethemes.song.artists`;
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'WhatAnimeFinder/1.0 (anime music player)',
-        'Accept': 'application/json'
-      }
-    });
-    if (!response.ok) throw new Error(`API ${response.status}`);
-    const data = await response.json();
-    const anime = data.anime;
-    if (!anime) return res.status(404).json({ error: 'Anime not found' });
-    const songs = [];
-    for (const theme of anime.animethemes || []) {
-      const entry = (theme.animethemeentries || [])[0];
-      if (!entry) continue;
-      const video = (entry.videos || [])[0];
-      if (!video || !video.audio) continue;
-      songs.push({
-        id: theme.id,
-        type: theme.type,
-        sequence: theme.sequence,
-        slug: theme.slug,
-        title: theme.song ? theme.song.title : theme.slug,
-        artist: theme.song && theme.song.artists && theme.song.artists.length
-          ? theme.song.artists.map(a => a.name).join(', ')
-          : '—',
-        episodes: entry.episodes || '',
-        audioUrl: video.audio.link
-      });
-    }
-    res.json({ animeName: anime.name, songs });
+    const result = await fetchAnimeSongs(slug);
+    if (!result) return res.status(404).json({ error: 'Anime not found' });
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: 'Failed to fetch anime music' });
+  }
+});
+
+app.get('/api/anime-music-mix', async (req, res) => {
+  try {
+    const mixSlugs = [
+      'naruto', 'narutoshippuuden', 'one_piece', 'bleach',
+      'shingeki_no_kyojin', 'kimetsu_no_yaiba', 'jujutsu_kaisen',
+      'death_note', 'fullmetal_alchemist_brotherhood', 'dragon_ball_z',
+      'fairy_tail', 'sword_art_online', 'tokyo_ghoul', 'dragon_ball_super'
+    ];
+    const results = await Promise.allSettled(mixSlugs.map(s => fetchAnimeSongs(s)));
+    let allSongs = [];
+    for (const r of results) {
+      if (r.status === 'fulfilled' && r.value && r.value.songs) {
+        const songs = r.value.songs.slice(0, 5);
+        allSongs = allSongs.concat(songs);
+      }
+    }
+    for (let i = allSongs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allSongs[i], allSongs[j]] = [allSongs[j], allSongs[i]];
+    }
+    res.json({ animeName: '🎲 Mix Semua Anime', songs: allSongs });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to fetch mix' });
   }
 });
 
