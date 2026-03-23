@@ -941,6 +941,8 @@ openUpdateLog.addEventListener('click', () => {
     menuDropdown.classList.remove('show');
     updateModal.classList.add('show');
     lockScroll();
+    const timeEl15 = document.getElementById('update-v15-time');
+    if (timeEl15) timeEl15.textContent = formatUpdateTimestamp();
     const timeEl = document.getElementById('update-v14-time');
     if (timeEl) timeEl.textContent = formatUpdateTimestamp();
 });
@@ -979,6 +981,12 @@ function toggleUpdateEntry(id, headerEl) {
 }
 
 window.toggleUpdateEntry = toggleUpdateEntry;
+
+function toggleMusicGroup(btn) {
+    const group = btn.closest('.music-group');
+    group.classList.toggle('collapsed');
+}
+window.toggleMusicGroup = toggleMusicGroup;
 
 openDeveloper.addEventListener('click', () => {
     menuDropdown.classList.remove('show');

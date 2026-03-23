@@ -2153,6 +2153,75 @@ footer {
     flex-wrap: wrap;
 }
 
+.music-group {
+    margin-bottom: 4px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.02);
+}
+
+.music-group-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+    text-align: left;
+}
+
+.music-group-header:hover {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.8);
+}
+
+.music-group-header-new {
+    color: rgba(255, 160, 60, 0.7);
+}
+
+.music-group-header-new:hover {
+    color: rgba(255, 180, 80, 1);
+}
+
+.music-group-chevron {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.music-group.collapsed .music-group-chevron {
+    transform: rotate(-90deg);
+}
+
+.music-group-body {
+    padding: 0 10px 8px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.25s ease;
+    max-height: 300px;
+    opacity: 1;
+}
+
+.music-group.collapsed .music-group-body {
+    max-height: 0;
+    opacity: 0;
+    padding-bottom: 0;
+    pointer-events: none;
+}
+
 .music-tab {
     display: inline-flex;
     align-items: center;

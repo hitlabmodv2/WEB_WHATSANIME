@@ -145,11 +145,35 @@
             <div class="modal-body">
                 <p class="update-intro">Riwayat pembaruan WhatAnime Finder — semua fitur baru & perbaikan.</p>
 
-                <!-- v1.4 TERBARU -->
+                <!-- v1.5 TERBARU -->
+                <div class="update-entry">
+                    <div class="update-entry-header" onclick="toggleUpdateEntry('update-v15', this)">
+                        <div class="update-entry-title">
+                            <span class="update-version new-badge">v1.5</span>
+                            <span class="update-title-text">🎵 40+ Anime &amp; Grup Spoiler Musik</span>
+                        </div>
+                        <div class="update-entry-meta">
+                            <span class="update-date" id="update-v15-time">–</span>
+                            <span class="update-chevron">▼</span>
+                        </div>
+                    </div>
+                    <div class="update-entry-body" id="update-v15" style="display: none;">
+                        <ul class="update-list">
+                            <li>🎌 Tambah <strong>20+ anime baru</strong> yang dicek secara realtime via AnimeThemes API</li>
+                            <li>🔥 Grup baru <strong>Terbaru 2024–2026</strong> — Solo Leveling, Dandadan, Kaiju No. 8, Frieren, Mushoku Tensei, Mashle</li>
+                            <li>⚡ Tambah anime populer: One Punch Man, Spy x Family, Blue Lock, Bocchi the Rock, Dr. Stone, Apothecary Diaries, KonoSuba, Overlord, TenSura, Railgun</li>
+                            <li>📂 Setiap grup musik kini bisa <strong>dibuka/ditutup (spoiler accordion)</strong> agar tampilan lebih rapi</li>
+                            <li>🔧 Perbaikan bug slug <strong>Black Clover</strong> yang sebelumnya tidak bisa diputar</li>
+                            <li>🎲 Mix Semua Anime kini mencakup <strong>38+ anime</strong> dari sebelumnya 22</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- v1.4 -->
                 <div class="update-entry">
                     <div class="update-entry-header" onclick="toggleUpdateEntry('update-v14', this)">
                         <div class="update-entry-title">
-                            <span class="update-version new-badge">v1.4</span>
+                            <span class="update-version">v1.4</span>
                             <span class="update-title-text">🎵 Musik Anime OST/ED Player</span>
                         </div>
                         <div class="update-entry-meta">
@@ -582,136 +606,161 @@
                     <span>Putar full OST / OP / ED anime populer &mdash; gratis, tanpa login, dengan volume control!</span>
                 </div>
 
-                <div class="music-tab-group-label">Classic &amp; Legend</div>
-                <div class="music-anime-tabs" id="tabsClassic">
-                    <button class="music-tab active" data-anime="naruto" onclick="loadAnimeMusic('naruto', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 8C8 10 5.9 16.17 3.82 22c2.47-1.15 5.5-2.57 8.18-2L12 22c2-3 5-8 5-14z"/></svg>Naruto
+                <!-- Group: Classic & Legend -->
+                <div class="music-group">
+                    <button class="music-group-header" onclick="toggleMusicGroup(this)">
+                        <span>🏛️ Classic &amp; Legend</span>
+                        <svg class="music-group-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
-                    <button class="music-tab" data-anime="narutoshippuuden" onclick="loadAnimeMusic('narutoshippuuden', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7a5 5 0 0 1 0 10" stroke-linecap="round"/></svg>Shippuden
-                    </button>
-                    <button class="music-tab" data-anime="one_piece" onclick="loadAnimeMusic('one_piece', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="6"/><path d="M9 14v2l-3 1v2h12v-2l-3-1v-2"/><line x1="6" y1="21" x2="18" y2="21" stroke="currentColor" stroke-width="2"/></svg>One Piece
-                    </button>
-                    <button class="music-tab" data-anime="bleach" onclick="loadAnimeMusic('bleach', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 2h2v8h8v2h-8v8h-2v-8H3v-2h8z"/></svg>Bleach
-                    </button>
-                    <button class="music-tab" data-anime="dragon_ball_z" onclick="loadAnimeMusic('dragon_ball_z', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke-linecap="round"/></svg>Dragon Ball Z
-                    </button>
-                    <button class="music-tab" data-anime="dragon_ball_super" onclick="loadAnimeMusic('dragon_ball_super', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 5h5l-4 3 1.5 5L12 12l-4.5 3L9 10 5 7h5z"/></svg>DB Super
-                    </button>
-                    <button class="music-tab" data-anime="fairy_tail" onclick="loadAnimeMusic('fairy_tail', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>Fairy Tail
-                    </button>
-                    <button class="music-tab" data-anime="hunter_x_hunter" onclick="loadAnimeMusic('hunter_x_hunter', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hunter x Hunter
-                    </button>
-                    <button class="music-tab" data-anime="one_punch_man" onclick="loadAnimeMusic('one_punch_man', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3l-1 4H4l3.5 2.5L6 14l5-3 5 3-1.5-4.5L18 7h-4L13 3z"/><circle cx="12" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>One Punch Man
-                    </button>
-                    <button class="music-tab" data-anime="toaru_kagaku_no_railgun" onclick="loadAnimeMusic('toaru_kagaku_no_railgun', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>Railgun
-                    </button>
+                    <div class="music-group-body" id="tabsClassic">
+                        <button class="music-tab active" data-anime="naruto" onclick="loadAnimeMusic('naruto', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 8C8 10 5.9 16.17 3.82 22c2.47-1.15 5.5-2.57 8.18-2L12 22c2-3 5-8 5-14z"/></svg>Naruto
+                        </button>
+                        <button class="music-tab" data-anime="narutoshippuuden" onclick="loadAnimeMusic('narutoshippuuden', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7a5 5 0 0 1 0 10" stroke-linecap="round"/></svg>Shippuden
+                        </button>
+                        <button class="music-tab" data-anime="one_piece" onclick="loadAnimeMusic('one_piece', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="6"/><path d="M9 14v2l-3 1v2h12v-2l-3-1v-2"/><line x1="6" y1="21" x2="18" y2="21" stroke="currentColor" stroke-width="2"/></svg>One Piece
+                        </button>
+                        <button class="music-tab" data-anime="bleach" onclick="loadAnimeMusic('bleach', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 2h2v8h8v2h-8v8h-2v-8H3v-2h8z"/></svg>Bleach
+                        </button>
+                        <button class="music-tab" data-anime="dragon_ball_z" onclick="loadAnimeMusic('dragon_ball_z', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke-linecap="round"/></svg>Dragon Ball Z
+                        </button>
+                        <button class="music-tab" data-anime="dragon_ball_super" onclick="loadAnimeMusic('dragon_ball_super', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 5h5l-4 3 1.5 5L12 12l-4.5 3L9 10 5 7h5z"/></svg>DB Super
+                        </button>
+                        <button class="music-tab" data-anime="fairy_tail" onclick="loadAnimeMusic('fairy_tail', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>Fairy Tail
+                        </button>
+                        <button class="music-tab" data-anime="hunter_x_hunter" onclick="loadAnimeMusic('hunter_x_hunter', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hunter x Hunter
+                        </button>
+                        <button class="music-tab" data-anime="one_punch_man" onclick="loadAnimeMusic('one_punch_man', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3l-1 4H4l3.5 2.5L6 14l5-3 5 3-1.5-4.5L18 7h-4L13 3z"/><circle cx="12" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>One Punch Man
+                        </button>
+                        <button class="music-tab" data-anime="toaru_kagaku_no_railgun" onclick="loadAnimeMusic('toaru_kagaku_no_railgun', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>Railgun
+                        </button>
+                    </div>
                 </div>
 
-                <div class="music-tab-group-label">Modern &amp; Trending</div>
-                <div class="music-anime-tabs" id="tabsModern">
-                    <button class="music-tab tab-modern" data-anime="kimetsu_no_yaiba" onclick="loadAnimeMusic('kimetsu_no_yaiba', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8c0-5.39-2.59-10.2-6.5-13.33z"/></svg>Demon Slayer
+                <!-- Group: Modern & Trending -->
+                <div class="music-group">
+                    <button class="music-group-header" onclick="toggleMusicGroup(this)">
+                        <span>⚡ Modern &amp; Trending</span>
+                        <svg class="music-group-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
-                    <button class="music-tab tab-modern" data-anime="shingeki_no_kyojin" onclick="loadAnimeMusic('shingeki_no_kyojin', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.64 5.64l2.12 2.12M16.24 16.24l2.12 2.12M5.64 18.36l2.12-2.12M16.24 7.76l2.12-2.12"/></svg>Attack on Titan
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="jujutsu_kaisen" onclick="loadAnimeMusic('jujutsu_kaisen', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="12" rx="9" ry="6"/><ellipse cx="12" cy="12" rx="4" ry="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="var(--bg-start,#1a1a2e)"/></svg>Jujutsu Kaisen
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="boku_no_hero_academia" onclick="loadAnimeMusic('boku_no_hero_academia', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2l1.5 4H5L12 22l7-16h-3.5L17 2z"/></svg>My Hero Academia
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="chainsaw_man" onclick="loadAnimeMusic('chainsaw_man', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="10" width="14" height="4" rx="1"/><rect x="17" y="9" width="4" height="6" rx="1"/><rect x="4" y="7" width="2" height="2" rx="0.5"/><rect x="7" y="7" width="2" height="2" rx="0.5"/><rect x="10" y="7" width="2" height="2" rx="0.5"/><rect x="4" y="15" width="2" height="2" rx="0.5"/><rect x="7" y="15" width="2" height="2" rx="0.5"/><rect x="10" y="15" width="2" height="2" rx="0.5"/></svg>Chainsaw Man
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="black_clover_tv" onclick="loadAnimeMusic('black_clover_tv', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c0 0-4 3.5-4 7a4 4 0 0 0 8 0c0-3.5-4-7-4-7z"/><path d="M5 9c0 0-3 3.5-3 7a4 4 0 0 0 8 0c0-3.5-3-7-3-7z"/><path d="M19 9c0 0-3 3.5-3 7a4 4 0 0 0 8 0c0-3.5-3-7-3-7z"/></svg>Black Clover
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="vinland_saga" onclick="loadAnimeMusic('vinland_saga', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3l2 7H4l7 11 7-11h-5l2-7z"/></svg>Vinland Saga
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="spy_x_family" onclick="loadAnimeMusic('spy_x_family', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><circle cx="16" cy="9" r="2"/><path d="M3 20c0-4 3-6 6-6h2c3 0 6 2 6 6" stroke-linecap="round"/><path d="M16 16c2-1 4 0 4 3" stroke-linecap="round"/></svg>Spy x Family
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="blue_lock" onclick="loadAnimeMusic('blue_lock', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>Blue Lock
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="bocchi_the_rock" onclick="loadAnimeMusic('bocchi_the_rock', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3c-1 0-2 .5-2 2v1H5v2h2v9c0 1.5 1 3 3 3h4c2 0 3-1.5 3-3V8h2V6h-2V5c0-1.5-1-2-2-2H9zm0 2h6v1H9V5zm0 3h6v9c0 .5-.5 1-1 1h-4c-.5 0-1-.5-1-1V8z"/></svg>Bocchi the Rock
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="dr_stone" onclick="loadAnimeMusic('dr_stone', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3l-5 9h4l-1 9 9-12h-5z" stroke-linecap="round" stroke-linejoin="round"/></svg>Dr. Stone
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="kusuriya_no_hitorigoto" onclick="loadAnimeMusic('kusuriya_no_hitorigoto', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C9 2 7 4 7 7c0 2 1 4 5 5 4-1 5-3 5-5 0-3-2-5-5-5z"/><path d="M7 13c-3 1-5 3-5 5h20c0-2-2-4-5-5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Apothecary Diaries
-                    </button>
+                    <div class="music-group-body" id="tabsModern">
+                        <button class="music-tab tab-modern" data-anime="kimetsu_no_yaiba" onclick="loadAnimeMusic('kimetsu_no_yaiba', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8c0-5.39-2.59-10.2-6.5-13.33z"/></svg>Demon Slayer
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="shingeki_no_kyojin" onclick="loadAnimeMusic('shingeki_no_kyojin', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.64 5.64l2.12 2.12M16.24 16.24l2.12 2.12M5.64 18.36l2.12-2.12M16.24 7.76l2.12-2.12"/></svg>Attack on Titan
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="jujutsu_kaisen" onclick="loadAnimeMusic('jujutsu_kaisen', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="12" rx="9" ry="6"/><ellipse cx="12" cy="12" rx="4" ry="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="var(--bg-start,#1a1a2e)"/></svg>Jujutsu Kaisen
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="boku_no_hero_academia" onclick="loadAnimeMusic('boku_no_hero_academia', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2l1.5 4H5L12 22l7-16h-3.5L17 2z"/></svg>My Hero Academia
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="chainsaw_man" onclick="loadAnimeMusic('chainsaw_man', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="10" width="14" height="4" rx="1"/><rect x="17" y="9" width="4" height="6" rx="1"/><rect x="4" y="7" width="2" height="2" rx="0.5"/><rect x="7" y="7" width="2" height="2" rx="0.5"/><rect x="10" y="7" width="2" height="2" rx="0.5"/><rect x="4" y="15" width="2" height="2" rx="0.5"/><rect x="7" y="15" width="2" height="2" rx="0.5"/><rect x="10" y="15" width="2" height="2" rx="0.5"/></svg>Chainsaw Man
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="black_clover_tv" onclick="loadAnimeMusic('black_clover_tv', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c0 0-4 3.5-4 7a4 4 0 0 0 8 0c0-3.5-4-7-4-7z"/><path d="M5 9c0 0-3 3.5-3 7a4 4 0 0 0 8 0c0-3.5-3-7-3-7z"/><path d="M19 9c0 0-3 3.5-3 7a4 4 0 0 0 8 0c0-3.5-3-7-3-7z"/></svg>Black Clover
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="vinland_saga" onclick="loadAnimeMusic('vinland_saga', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3l2 7H4l7 11 7-11h-5l2-7z"/></svg>Vinland Saga
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="spy_x_family" onclick="loadAnimeMusic('spy_x_family', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><circle cx="16" cy="9" r="2"/><path d="M3 20c0-4 3-6 6-6h2c3 0 6 2 6 6" stroke-linecap="round"/><path d="M16 16c2-1 4 0 4 3" stroke-linecap="round"/></svg>Spy x Family
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="blue_lock" onclick="loadAnimeMusic('blue_lock', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>Blue Lock
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="bocchi_the_rock" onclick="loadAnimeMusic('bocchi_the_rock', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3c-1 0-2 .5-2 2v1H5v2h2v9c0 1.5 1 3 3 3h4c2 0 3-1.5 3-3V8h2V6h-2V5c0-1.5-1-2-2-2H9zm0 2h6v1H9V5zm0 3h6v9c0 .5-.5 1-1 1h-4c-.5 0-1-.5-1-1V8z"/></svg>Bocchi the Rock
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="dr_stone" onclick="loadAnimeMusic('dr_stone', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3l-5 9h4l-1 9 9-12h-5z" stroke-linecap="round" stroke-linejoin="round"/></svg>Dr. Stone
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="kusuriya_no_hitorigoto" onclick="loadAnimeMusic('kusuriya_no_hitorigoto', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C9 2 7 4 7 7c0 2 1 4 5 5 4-1 5-3 5-5 0-3-2-5-5-5z"/><path d="M7 13c-3 1-5 3-5 5h20c0-2-2-4-5-5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Apothecary Diaries
+                        </button>
+                    </div>
                 </div>
 
-                <div class="music-tab-group-label">YOASOBI &amp; Populer</div>
-                <div class="music-anime-tabs" id="tabsYoasobi">
-                    <button class="music-tab tab-yoasobi" data-anime="oshi_no_ko" onclick="loadAnimeMusic('oshi_no_ko', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 5h5l-4 3 1.5 5L12 12l-4.5 3L9 10 5 7h5z"/><circle cx="12" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Oshi no Ko
+                <!-- Group: YOASOBI & Populer -->
+                <div class="music-group">
+                    <button class="music-group-header" onclick="toggleMusicGroup(this)">
+                        <span>🎤 YOASOBI &amp; Populer</span>
+                        <svg class="music-group-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
-                    <button class="music-tab tab-yoasobi" data-anime="death_note" onclick="loadAnimeMusic('death_note', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 11h8M8 15h5" stroke-linecap="round"/></svg>Death Note
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="fullmetal_alchemist_brotherhood" onclick="loadAnimeMusic('fullmetal_alchemist_brotherhood', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg>FMA Brotherhood
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="sword_art_online" onclick="loadAnimeMusic('sword_art_online', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 8.5L22 12l-7.5 1.5L12 22l-2.5-8.5L2 12l7.5-1.5z"/></svg>SAO
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="tokyo_ghoul" onclick="loadAnimeMusic('tokyo_ghoul', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7 4 3 8 3 12s4 9 9 9 9-5 9-9-4-8-9-8zm0 3c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3z"/></svg>Tokyo Ghoul
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="re_zero_kara_hajimeru_isekai_seikatsu" onclick="loadAnimeMusic('re_zero_kara_hajimeru_isekai_seikatsu', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14" stroke-linecap="round"/><path d="M16 5l2-2M16 5h3M16 5v3" stroke-linecap="round"/></svg>Re:Zero
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="mob_psycho_100" onclick="loadAnimeMusic('mob_psycho_100', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M8 14s-6 1-6 5h20c0-4-6-5-6-5"/><path d="M12 14v4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="19" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Mob Psycho 100
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="kono_subarashii_sekai_ni_shukufuku_wo" onclick="loadAnimeMusic('kono_subarashii_sekai_ni_shukufuku_wo', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 4h4l-3.5 2.5 1.5 4-3.5-2.5-3.5 2.5 1.5-4L7 6h4z"/><path d="M12 14c-4 0-6 2-6 4h12c0-2-2-4-6-4z"/></svg>KonoSuba
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="overlord" onclick="loadAnimeMusic('overlord', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 6v6c0 5 3.5 9.7 8 11 4.5-1.3 8-6 8-11V6L12 2z"/></svg>Overlord
-                    </button>
-                    <button class="music-tab tab-yoasobi" data-anime="tensei_shitara_slime_datta_ken" onclick="loadAnimeMusic('tensei_shitara_slime_datta_ken', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="13" r="8"/><path d="M9 11c1-2 5-2 6 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9.5" cy="9.5" r="1"/><circle cx="14.5" cy="9.5" r="1"/></svg>TenSura
-                    </button>
+                    <div class="music-group-body" id="tabsYoasobi">
+                        <button class="music-tab tab-yoasobi" data-anime="oshi_no_ko" onclick="loadAnimeMusic('oshi_no_ko', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 5h5l-4 3 1.5 5L12 12l-4.5 3L9 10 5 7h5z"/><circle cx="12" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Oshi no Ko
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="death_note" onclick="loadAnimeMusic('death_note', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 11h8M8 15h5" stroke-linecap="round"/></svg>Death Note
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="fullmetal_alchemist_brotherhood" onclick="loadAnimeMusic('fullmetal_alchemist_brotherhood', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg>FMA Brotherhood
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="sword_art_online" onclick="loadAnimeMusic('sword_art_online', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 8.5L22 12l-7.5 1.5L12 22l-2.5-8.5L2 12l7.5-1.5z"/></svg>SAO
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="tokyo_ghoul" onclick="loadAnimeMusic('tokyo_ghoul', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7 4 3 8 3 12s4 9 9 9 9-5 9-9-4-8-9-8zm0 3c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3z"/></svg>Tokyo Ghoul
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="re_zero_kara_hajimeru_isekai_seikatsu" onclick="loadAnimeMusic('re_zero_kara_hajimeru_isekai_seikatsu', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14" stroke-linecap="round"/><path d="M16 5l2-2M16 5h3M16 5v3" stroke-linecap="round"/></svg>Re:Zero
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="mob_psycho_100" onclick="loadAnimeMusic('mob_psycho_100', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M8 14s-6 1-6 5h20c0-4-6-5-6-5"/><path d="M12 14v4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="19" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Mob Psycho 100
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="kono_subarashii_sekai_ni_shukufuku_wo" onclick="loadAnimeMusic('kono_subarashii_sekai_ni_shukufuku_wo', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 4h4l-3.5 2.5 1.5 4-3.5-2.5-3.5 2.5 1.5-4L7 6h4z"/><path d="M12 14c-4 0-6 2-6 4h12c0-2-2-4-6-4z"/></svg>KonoSuba
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="overlord" onclick="loadAnimeMusic('overlord', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 6v6c0 5 3.5 9.7 8 11 4.5-1.3 8-6 8-11V6L12 2z"/></svg>Overlord
+                        </button>
+                        <button class="music-tab tab-yoasobi" data-anime="tensei_shitara_slime_datta_ken" onclick="loadAnimeMusic('tensei_shitara_slime_datta_ken', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="13" r="8"/><path d="M9 11c1-2 5-2 6 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9.5" cy="9.5" r="1"/><circle cx="14.5" cy="9.5" r="1"/></svg>TenSura
+                        </button>
+                    </div>
                 </div>
 
-                <div class="music-tab-group-label" style="background:linear-gradient(90deg,#ff6b35,#f7c59f,#efefd0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Terbaru 2024–2026</div>
-                <div class="music-anime-tabs" id="tabsNew">
-                    <button class="music-tab tab-modern" data-anime="ore_dake_level_up_na_ken" onclick="loadAnimeMusic('ore_dake_level_up_na_ken', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>Solo Leveling
+                <!-- Group: Terbaru 2024-2026 -->
+                <div class="music-group">
+                    <button class="music-group-header music-group-header-new" onclick="toggleMusicGroup(this)">
+                        <span>🔥 Terbaru 2024–2026</span>
+                        <svg class="music-group-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
-                    <button class="music-tab tab-modern" data-anime="dandadan" onclick="loadAnimeMusic('dandadan', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 16l-2 5h12l-2-5"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/></svg>Dandadan
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="kaijuu_8_gou" onclick="loadAnimeMusic('kaijuu_8_gou', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l5-12 4 6 3-4 6 10H3z"/></svg>Kaiju No. 8
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="sousou_no_frieren" onclick="loadAnimeMusic('sousou_no_frieren', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c-2 3-4 6-4 9a4 4 0 0 0 8 0c0-3-2-6-4-9z" fill="currentColor"/><path d="M8 18c-2 1-4 3-4 4h16c0-1-2-3-4-4" stroke-linecap="round"/></svg>Frieren
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="mushoku_tensei_isekai_ittara_honki_dasu" onclick="loadAnimeMusic('mushoku_tensei_isekai_ittara_honki_dasu', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 7h8M8 11h8M8 15h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Mushoku Tensei
-                    </button>
-                    <button class="music-tab tab-modern" data-anime="mashle" onclick="loadAnimeMusic('mashle', this)">
-                        <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="5"/><path d="M7 14h10l1 7H6z"/></svg>Mashle
-                    </button>
+                    <div class="music-group-body" id="tabsNew">
+                        <button class="music-tab tab-modern" data-anime="ore_dake_level_up_na_ken" onclick="loadAnimeMusic('ore_dake_level_up_na_ken', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>Solo Leveling
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="dandadan" onclick="loadAnimeMusic('dandadan', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 16l-2 5h12l-2-5"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/></svg>Dandadan
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="kaijuu_8_gou" onclick="loadAnimeMusic('kaijuu_8_gou', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l5-12 4 6 3-4 6 10H3z"/></svg>Kaiju No. 8
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="sousou_no_frieren" onclick="loadAnimeMusic('sousou_no_frieren', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c-2 3-4 6-4 9a4 4 0 0 0 8 0c0-3-2-6-4-9z" fill="currentColor"/><path d="M8 18c-2 1-4 3-4 4h16c0-1-2-3-4-4" stroke-linecap="round"/></svg>Frieren
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="mushoku_tensei_isekai_ittara_honki_dasu" onclick="loadAnimeMusic('mushoku_tensei_isekai_ittara_honki_dasu', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 7h8M8 11h8M8 15h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Mushoku Tensei
+                        </button>
+                        <button class="music-tab tab-modern" data-anime="mashle" onclick="loadAnimeMusic('mashle', this)">
+                            <svg class="tab-svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="5"/><path d="M7 14h10l1 7H6z"/></svg>Mashle
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Group: Mix -->
                 <div class="music-tab-group-label music-tab-group-mix">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     Campuran Acak
