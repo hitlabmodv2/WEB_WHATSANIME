@@ -169,7 +169,13 @@ app.get('/api/anime-music', async (req, res) => {
   try {
     const slug = req.query.anime || 'naruto';
     const url = `https://api.animethemes.moe/anime/${slug}?include=animethemes.animethemeentries.videos.audio,animethemes.song.artists`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'WhatAnimeFinder/1.0 (anime music player)',
+        'Accept': 'application/json'
+      }
+    });
+    if (!response.ok) throw new Error(`API ${response.status}`);
     const data = await response.json();
     const anime = data.anime;
     if (!anime) return res.status(404).json({ error: 'Anime not found' });
