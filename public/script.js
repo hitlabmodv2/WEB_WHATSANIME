@@ -1115,8 +1115,8 @@ musicModal.addEventListener('click', (e) => {
 function switchPlaylist(playlistId, btnEl) {
     document.querySelectorAll('.music-playlist-tab').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
-    const iframe = document.getElementById('spotifyEmbed');
-    iframe.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`;
+    const iframe = document.getElementById('deezerEmbed');
+    iframe.src = `https://widget.deezer.com/widget/dark/playlist/${playlistId}`;
 }
 
 window.switchPlaylist = switchPlaylist;
